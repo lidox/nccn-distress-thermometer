@@ -1,40 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--  Wohnsituation, Versicherung, Arbeit/ Schule, Beförderung ( Transport), Kinderbetreuung -->
-    <!-- Housing situation, insurance, work / school, transport (transport), childcare -->
 
-    <CheckBox
-        android:id="@+id/housing_situation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="@string/housing_situation" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <CheckBox
-        android:id="@+id/insurance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/insurance" />
+        <TextView
+            android:id="@+id/title_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/checkbox_description"
+            android:textSize="@dimen/textAppearanceLabel" />
 
-    <CheckBox
-        android:id="@+id/work_or_school"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/work_or_school" />
+        <CheckBox
+            android:id="@+id/housing_situation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_label"
+            android:layout_margin="10dp"
+            android:text="@string/housing_situation"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
 
-    <CheckBox
-        android:id="@+id/transport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/transport" />
+        <CheckBox
+            android:id="@+id/insurance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/housing_situation"
+            android:layout_margin="10dp"
+            android:text="@string/insurance"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
 
-    <CheckBox
-        android:id="@+id/childcare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/childcare" />
+        <CheckBox
+            android:id="@+id/work_or_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insurance"
+            android:layout_margin="10dp"
+            android:text="@string/work_or_school"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
 
+        <CheckBox
+            android:id="@+id/transport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/work_or_school"
+            android:layout_margin="10dp"
+            android:text="@string/transport"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
 
-</LinearLayout>
+        <CheckBox
+            android:id="@+id/childcare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/transport"
+            android:layout_margin="10dp"
+            android:text="@string/childcare"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+    </RelativeLayout>
+</ScrollView>

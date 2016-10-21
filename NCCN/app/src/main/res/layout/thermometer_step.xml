@@ -6,23 +6,45 @@
 
     <TextView
         android:id="@+id/title_label"
-        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/textAppearanceLabel"
-        android:text="place holder" />
+        android:layout_margin="5dp"
+        android:text="@string/thermometer_description"
+        android:textSize="@dimen/textAppearanceLabel" />
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+        android:id="@+id/thermometer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_label"
-        app:dsb_max="10"
-        app:dsb_min="0"
         app:dsb_allowTrackClickToDrag="false"
-        app:dsb_progressColor="@color/colorAccent"
-        app:dsb_rippleColor="@color/colorAccent"
         app:dsb_indicatorColor="@color/colorPrimaryDark"
         app:dsb_indicatorFormatter="%d"
-        />
+        app:dsb_max="10"
+        app:dsb_min="0"
+        app:dsb_progressColor="@color/colorAccent"
+        app:dsb_rippleColor="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/description_left_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/thermometer"
+        android:layout_margin="5dp"
+        android:text="@string/enougt_power"
+        android:textSize="@dimen/textAppearanceLabel" />
+
+    <TextView
+        android:id="@+id/description_right_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="5dp"
+        android:text="@string/lot_of_problems"
+        android:layout_below="@+id/thermometer"
+        android:textSize="@dimen/textAppearanceLabel" />
+
+
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.artursworld.nccn.controller.wizard;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Strings;
@@ -40,7 +41,7 @@ public class WizardNCCN extends TextStepper {
     @Override
     public void onComplete() {
         super.onComplete();
-        System.out.println("completed Wizard NCCN");
+        Log.i(WizardNCCN.class.getSimpleName(), "completed Wizard NCCN");
     }
 
 }

@@ -2,6 +2,7 @@ package com.artursworld.nccn.model.wizard;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,12 +51,12 @@ public class PracticalProblemsStep extends AbstractStep {
 
     @Override
     public void onNext() {
-        System.out.println("onNext");
+        Log.i(PracticalProblemsStep.class.getSimpleName(), "onNext");
     }
 
     @Override
     public void onPrevious() {
-        System.out.println("onPrevious");
+        Log.i(PracticalProblemsStep.class.getSimpleName(), "onPrevious");
     }
 
     @Override
