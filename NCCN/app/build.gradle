@@ -26,4 +26,7 @@ dependencies {
 
     // wizard pager
     compile 'com.github.techfreak:wizardpager:1.0.0'
+
+    // wizard stepper
+    compile 'com.github.fcannizzaro:material-stepper:1.2.2'
 }
