@@ -1,15 +1,9 @@
 <resources>
     <string name="app_name">NCCN</string>
-    <string name="previous">Zurück</string>
-    <string name="next">Weiter</string>
-    <string name="finish">Submit order</string>
-
-    <string name="submit_confirm_message">Place the order with the deli? You will receive an email
-        confirmation.</string>
-    <string name="submit_confirm_button">Place order</string>
-
-    <string name="label_your_name">Name</string>
-    <string name="hint_your_name">e.g. Larry</string>
-    <string name="label_your_email">Email</string>
-    <string name="hint_your_email">Optional</string>
+    <string name="ms_prev">PREV</string>
+    <string name="ms_next">NEXT</string>
+    <string name="ms_end">COMPLETE</string>
+    <string name="ms_continue">CONTINUE</string>
+    <string name="ms_optional">Optional</string>
+    <string name="ms_text_step">Step $current of $total</string>
 </resources>
