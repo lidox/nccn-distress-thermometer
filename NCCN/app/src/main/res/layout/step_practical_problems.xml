@@ -15,11 +15,21 @@
             android:text="@string/checkbox_description"
             android:textSize="@dimen/textAppearanceLabel" />
 
+        <TextView
+            android:id="@+id/subtitle_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_label"
+            android:layout_margin="5dp"
+            android:textSize="@dimen/textAppearanceLabelLarge"
+            android:text="@string/practicle_problems"
+            />
+
         <CheckBox
             android:id="@+id/housing_situation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title_label"
+            android:layout_below="@+id/subtitle_label"
             android:layout_margin="10dp"
             android:text="@string/housing_situation"
             android:textSize="@dimen/textAppearanceLabelLarge" />

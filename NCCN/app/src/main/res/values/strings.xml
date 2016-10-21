@@ -18,4 +18,8 @@
     <string name="lot_of_problems">Extrem belastet</string>
     <string name="thermometer_description">Bitte wählen Sie am Thermometer die Zahl aus (0-10 ), die am besten beschreibt, wie belastet Sie sich in der letzten Woche einschließlich heute gefühlt haben.</string>
     <string name="checkbox_description">Bitte geben Sie an, ob Sie in einem der nachfolgenden Bereiche in der letzten Woche einschließlich heute Probleme hatten. Für \'JA\' kreuzen Sie den jedeweiligen Bereich an. Für \'NEIN\' lassen Sie das Feld frei.</string>
+    <string name="practicle_problems">Practicle Problems</string>
+    <string name="family_problems">Familiäre Probleme</string>
+    <string name="partner_problems">Im Umgang mit dem Partner</string>
+    <string name="children_problems">Im Umgang mit den Kindern</string>
 </resources>

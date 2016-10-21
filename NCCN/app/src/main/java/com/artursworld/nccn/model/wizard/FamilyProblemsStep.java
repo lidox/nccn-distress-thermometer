@@ -1,6 +1,6 @@
 package com.artursworld.nccn.model.wizard;
 
-
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,16 +11,16 @@ import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Strings;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
-public class PracticalProblemsStep extends AbstractStep {
+public class FamilyProblemsStep extends AbstractStep {
 
     private int currentIndex = 1;
-    private String simpleClassName = PracticalProblemsStep.class.getSimpleName();
+    private String simpleClassName = FamilyProblemsStep.class.getSimpleName();
     private final static String CLICK = Strings.getStringByRId(R.string.click);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.step_practical_problems, container, false);
+        View v = inflater.inflate(R.layout.step_family_problems_step, container, false);
 
         if (savedInstanceState != null)
             currentIndex = savedInstanceState.getInt(CLICK, 0);
@@ -73,5 +73,4 @@ public class PracticalProblemsStep extends AbstractStep {
     public boolean nextIf() {
         return currentIndex > 1;
     }
-
 }
