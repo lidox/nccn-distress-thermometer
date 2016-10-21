@@ -24,9 +24,13 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
 
-    // wizard pager
-    compile 'com.github.techfreak:wizardpager:1.0.0'
-
     // wizard stepper
     compile 'com.github.fcannizzaro:material-stepper:1.2.2'
+
+    // thermometer seekbar
+    // https://github.com/AnderWeb/discreteSeekBar
+    compile 'org.adw.library:discrete-seekbar:1.0.1'
+
+    // cool alert dialog
+    // compile 'cn.pedant.sweetalert:library:1.3'
 }

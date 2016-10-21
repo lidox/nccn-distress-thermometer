@@ -1,18 +1,16 @@
 package com.artursworld.nccn.model.wizard;
 
+
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.artursworld.nccn.R;
-import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.controller.util.Strings;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
-public class ThermometerStep extends AbstractStep {
+public class PracticalProblemsStep extends AbstractStep {
 
     private int i = 1;
 
@@ -21,22 +19,10 @@ public class ThermometerStep extends AbstractStep {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.thermometer_step, container, false);
-        //button = (Button) v.findViewById(R.id.button);
+        View v = inflater.inflate(R.layout.step_practical_problems, container, false);
 
         if (savedInstanceState != null)
             i = savedInstanceState.getInt(CLICK, 0);
-
-       // button.setText(Html.fromHtml("Tap <b>" + i + "</b>"));
-
-       /* button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((Button) view).setText(Html.fromHtml("Tap <b>" + (++i) + "</b>"));
-                mStepper.getExtras().putInt(CLICK, i);
-            }
-        });
-        */
 
         return v;
     }

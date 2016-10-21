@@ -2,6 +2,9 @@ package com.artursworld.nccn.controller.wizard;
 
 import android.os.Bundle;
 
+import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.model.wizard.PracticalProblemsStep;
 import com.artursworld.nccn.model.wizard.ThermometerStep;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.TextStepper;
@@ -15,10 +18,10 @@ public class WizardNCCN extends TextStepper {
     protected void onCreate(Bundle savedInstanceState) {
 
         setErrorTimeout(1000);
-        setTitle("Text Stepper");
+        setTitle(Strings.getStringByRId(R.string.app_name));
 
         addStep(createFragment(new ThermometerStep()));
-        //addStep(createFragment(new StepSample()));
+        addStep(createFragment(new PracticalProblemsStep()));
         //addStep(createFragment(new StepSample()));
         //addStep(createFragment(new StepSample()));
         //addStep(createFragment(new StepSample()));
@@ -37,7 +40,7 @@ public class WizardNCCN extends TextStepper {
     @Override
     public void onComplete() {
         super.onComplete();
-        System.out.println("completed Wizzard NCCN");
+        System.out.println("completed Wizard NCCN");
     }
 
 }

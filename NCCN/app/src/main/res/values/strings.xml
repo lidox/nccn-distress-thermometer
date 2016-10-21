@@ -6,4 +6,11 @@
     <string name="ms_continue">CONTINUE</string>
     <string name="ms_optional">Optional</string>
     <string name="ms_text_step">Step $current of $total</string>
+    <string name="click">click</string>
+    <string name="can_skip">You can skip</string>
+    <string name="housing_situation">Housing Situation</string>
+    <string name="insurance">Insurance</string>
+    <string name="work_or_school">Work / School</string>
+    <string name="transport">Transport</string>
+    <string name="childcare">Childcare</string>
 </resources>
