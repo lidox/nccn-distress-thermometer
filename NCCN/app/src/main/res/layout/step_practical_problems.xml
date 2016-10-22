@@ -12,8 +12,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:textColor="#5C5C5C"
+            android:paddingTop="20dp"
             android:text="@string/checkbox_description"
-            android:textSize="@dimen/textAppearanceLabel" />
+            android:textSize="@dimen/textAppearanceLabelLarge" />
 
         <TextView
             android:id="@+id/subtitle_label"
@@ -21,9 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_label"
             android:layout_margin="5dp"
-            android:textSize="@dimen/textAppearanceLabelLarge"
             android:text="@string/practicle_problems"
-            />
+            android:textSize="@dimen/textAppearanceLabelLarge" />
 
         <CheckBox
             android:id="@+id/housing_situation"
