@@ -5,9 +5,11 @@ import android.util.Log;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.model.wizard.BodyProblemsStep;
 import com.artursworld.nccn.model.wizard.EmotionalProblemsStep;
 import com.artursworld.nccn.model.wizard.FamilyProblemsStep;
 import com.artursworld.nccn.model.wizard.PracticalProblemsStep;
+import com.artursworld.nccn.model.wizard.ReligiousSpiritualProblems;
 import com.artursworld.nccn.model.wizard.ThermometerStep;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.TextStepper;
@@ -27,8 +29,8 @@ public class WizardNCCN extends TextStepper {
         addStep(createFragment(new PracticalProblemsStep()));
         addStep(createFragment(new FamilyProblemsStep()));
         addStep(createFragment(new EmotionalProblemsStep()));
-        //addStep(createFragment(new StepSample()));
-
+        addStep(createFragment(new ReligiousSpiritualProblems()));
+        addStep(createFragment(new BodyProblemsStep()));
         super.onCreate(savedInstanceState);
 
     }

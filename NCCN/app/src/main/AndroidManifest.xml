@@ -18,7 +18,9 @@
         </activity>
         <activity android:name=".controller.wizard.WizardNCCN" />
         <activity android:name=".model.wizard.FamilyProblemsStep" />
-        <activity android:name=".model.wizard.EmotionalProblemsStep"></activity>
+        <activity android:name=".model.wizard.EmotionalProblemsStep" />
+        <activity android:name=".model.wizard.ReligiousSpiritualProblems" />
+        <activity android:name=".model.wizard.BodyProblemsStep"></activity>
     </application>
 
 </manifest>

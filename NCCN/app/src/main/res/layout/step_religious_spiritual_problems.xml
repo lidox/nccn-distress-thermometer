@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.artursworld.nccn.model.wizard.ReligiousSpiritualProblems">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/subtitle_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/religious_spriritual_problems"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <CheckBox
+            android:id="@+id/god"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subtitle_label"
+            android:layout_margin="10dp"
+            android:text="@string/god"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <CheckBox
+            android:id="@+id/lose_your_mind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/god"
+            android:layout_margin="10dp"
+            android:text="@string/lose_your_mind"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+    </RelativeLayout>
+
+</ScrollView>
