@@ -22,4 +22,11 @@
     <string name="family_problems">Familiäre Probleme</string>
     <string name="partner_problems">Im Umgang mit dem Partner</string>
     <string name="children_problems">Im Umgang mit den Kindern</string>
+    <string name="emotional_problems">Emotional Problems</string>
+    <string name="carrie">Sorgen</string>
+    <string name="scary">Ängste</string>
+    <string name="unhappy">Traurigkeit</string>
+    <string name="depressive">Depression</string>
+    <string name="nervous">Nervosität</string>
+    <string name="all_day_activity">Verlust des Interesses an alltäglichen Aktivitäten</string>
 </resources>

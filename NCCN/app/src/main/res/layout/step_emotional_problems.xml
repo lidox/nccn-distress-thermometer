@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.artursworld.nccn.model.wizard.EmotionalProblemsStep">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/subtitle_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/emotional_problems"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <CheckBox
+            android:id="@+id/carrie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subtitle_label"
+            android:layout_margin="10dp"
+            android:text="@string/carrie"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <CheckBox
+            android:id="@+id/scary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/carrie"
+            android:layout_margin="10dp"
+            android:text="@string/scary"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <CheckBox
+            android:id="@+id/unhappy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scary"
+            android:layout_margin="10dp"
+            android:text="@string/unhappy"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <CheckBox
+            android:id="@+id/depressive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/unhappy"
+            android:layout_margin="10dp"
+            android:text="@string/depressive"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <CheckBox
+            android:id="@+id/nervous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/depressive"
+            android:layout_margin="10dp"
+            android:text="@string/nervous"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <CheckBox
+            android:id="@+id/all_day_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nervous"
+            android:layout_margin="10dp"
+            android:text="@string/all_day_activity"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+    </RelativeLayout>
+
+</ScrollView>

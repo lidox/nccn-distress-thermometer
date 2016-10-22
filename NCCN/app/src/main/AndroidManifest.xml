@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.wizard.WizardNCCN" />
-        <activity android:name=".model.wizard.FamilyProblemsStep"></activity>
+        <activity android:name=".model.wizard.FamilyProblemsStep" />
+        <activity android:name=".model.wizard.EmotionalProblemsStep"></activity>
     </application>
 
 </manifest>
