@@ -29,7 +29,7 @@
     <string name="nervous">Nervosität</string>
     <string name="all_day_activity">Verlust des Interesses an alltäglichen Aktivitäten</string>
     <string name="religious_spriritual_problems">Spirituelle / religiöse Belange</string>
-    <string name="god">Im Bezug auf God</string>
+    <string name="god">Im Bezug auf Gott</string>
     <string name="lose_your_mind">Verlust des Glaubens</string>
     <string name="body_problems">Körperliche Probleme</string>
     <string name="hurts">Schmerzen</string>
@@ -51,6 +51,6 @@
     <string name="dry_or_stuffy_nose">Trockene / verstopfte Nase</string>
     <string name="tingling_in_hands_feet">Kribbeln in den Händen / Füßen</string>
     <string name="swollen_or_bloated_feeling">Angeschwollen / aufgedunsen fühlen</string>
-    <string name="memory_or_concentration">Gedächnis / Konzentration</string>
+    <string name="memory_or_concentration">Gedächtnis / Konzentration</string>
     <string name="sexual_problems">Sexuelle Probleme</string>
 </resources>
