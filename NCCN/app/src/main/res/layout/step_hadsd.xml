@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/question_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="#5C5C5C"
+            android:paddingTop="20dp"
+            android:text="Question"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <RadioGroup
+            android:id="@+id/answer_radio_group"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/question_label"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/textAppearanceLabelLarge"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/answer_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:text="A"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/answer_b"
+                android:text="B"
+                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/answer_c"
+                android:text="C"
+                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <RadioButton
+                android:id="@+id/answer_d"
+                android:text="D"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:layout_height="wrap_content"
+                />
+
+        </RadioGroup>
+
+    </RelativeLayout>
+</ScrollView>

@@ -1,29 +1,42 @@
-package com.artursworld.nccn.model.wizard;
+package com.artursworld.nccn.model.wizard.distressthermometer;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.controller.util.Strings;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
-public class ReligiousSpiritualProblems extends AbstractStep {
+public class ThermometerStep extends AbstractStep {
 
-    private int currentIndex = 1;
-    private String simpleClassName = ReligiousSpiritualProblems.class.getSimpleName();
+    private int i = 1;
+
     private final static String CLICK = Strings.getStringByRId(R.string.click);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.step_religious_spiritual_problems, container, false);
+        View v = inflater.inflate(R.layout.thermometer_step, container, false);
+        //button = (Button) v.findViewById(R.id.button);
 
         if (savedInstanceState != null)
-            currentIndex = savedInstanceState.getInt(CLICK, 0);
+            i = savedInstanceState.getInt(CLICK, 0);
+
+       // button.setText(Html.fromHtml("Tap <b>" + i + "</b>"));
+
+       /* button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((Button) view).setText(Html.fromHtml("Tap <b>" + (++i) + "</b>"));
+                mStepper.getExtras().putInt(CLICK, i);
+            }
+        });
+        */
 
         return v;
     }
@@ -31,7 +44,7 @@ public class ReligiousSpiritualProblems extends AbstractStep {
     @Override
     public void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
-        state.putInt(CLICK, currentIndex);
+        state.putInt(CLICK, i);
     }
 
     @Override
@@ -44,19 +57,19 @@ public class ReligiousSpiritualProblems extends AbstractStep {
         return true;
     }
 
+
     @Override
     public void onStepVisible() {
-        Log.i(simpleClassName, "onStepVisible");
     }
 
     @Override
     public void onNext() {
-        Log.i(simpleClassName, "onNext");
+        System.out.println("onNext");
     }
 
     @Override
     public void onPrevious() {
-        Log.i(simpleClassName, "onPrevious");
+        System.out.println("onPrevious");
     }
 
     @Override
@@ -65,13 +78,12 @@ public class ReligiousSpiritualProblems extends AbstractStep {
     }
 
     @Override
-    public String error() {
-        return "<b>You must click!</b> <small>this is the condition!</small>";
+    public boolean nextIf() {
+        return i > 1;
     }
 
     @Override
-    public boolean nextIf() {
-        return currentIndex > 1;
+    public String error() {
+        return "<b>You must click!</b> <small>this is the condition!</small>";
     }
 }
-

@@ -8,4 +8,17 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="com.artursworld.nccn.view.Launcher">
 
+    <Button
+        android:id="@+id/btn_distress_thermometer"
+        android:layout_width="match_parent"
+        android:text="Distress"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_HADS_D"
+        android:text="HADS-D"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/btn_distress_thermometer"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

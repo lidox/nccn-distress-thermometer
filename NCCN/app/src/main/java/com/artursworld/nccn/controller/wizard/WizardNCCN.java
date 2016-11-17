@@ -5,12 +5,12 @@ import android.util.Log;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Strings;
-import com.artursworld.nccn.model.wizard.BodyProblemsStep;
-import com.artursworld.nccn.model.wizard.EmotionalProblemsStep;
-import com.artursworld.nccn.model.wizard.FamilyProblemsStep;
-import com.artursworld.nccn.model.wizard.PracticalProblemsStep;
-import com.artursworld.nccn.model.wizard.ReligiousSpiritualProblems;
-import com.artursworld.nccn.model.wizard.ThermometerStep;
+import com.artursworld.nccn.model.wizard.distressthermometer.BodyProblemsStep;
+import com.artursworld.nccn.model.wizard.distressthermometer.EmotionalProblemsStep;
+import com.artursworld.nccn.model.wizard.distressthermometer.FamilyProblemsStep;
+import com.artursworld.nccn.model.wizard.distressthermometer.PracticalProblemsStep;
+import com.artursworld.nccn.model.wizard.distressthermometer.ReligiousSpiritualProblems;
+import com.artursworld.nccn.model.wizard.distressthermometer.ThermometerStep;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.TextStepper;
 

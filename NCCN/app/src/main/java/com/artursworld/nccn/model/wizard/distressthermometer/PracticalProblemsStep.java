@@ -1,6 +1,6 @@
-package com.artursworld.nccn.model.wizard;
+package com.artursworld.nccn.model.wizard.distressthermometer;
 
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,16 +11,16 @@ import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Strings;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
-public class EmotionalProblemsStep extends AbstractStep {
+public class PracticalProblemsStep extends AbstractStep {
 
     private int currentIndex = 1;
-    private String simpleClassName = EmotionalProblemsStep.class.getSimpleName();
+    private String simpleClassName = PracticalProblemsStep.class.getSimpleName();
     private final static String CLICK = Strings.getStringByRId(R.string.click);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.step_emotional_problems, container, false);
+        View v = inflater.inflate(R.layout.step_practical_problems, container, false);
 
         if (savedInstanceState != null)
             currentIndex = savedInstanceState.getInt(CLICK, 0);
@@ -73,4 +73,5 @@ public class EmotionalProblemsStep extends AbstractStep {
     public boolean nextIf() {
         return currentIndex > 1;
     }
+
 }

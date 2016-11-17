@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
@@ -20,8 +21,9 @@ android {
 }
 
 dependencies {
+    androidTestCompile 'junit:junit:4.12'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
 
     // wizard stepper
@@ -33,4 +35,10 @@ dependencies {
 
     // cool alert dialog
     // compile 'cn.pedant.sweetalert:library:1.3'
+
+    // find by id remover
+    dependencies {
+        compile 'com.jakewharton:butterknife:8.4.0'
+        annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    }
 }
