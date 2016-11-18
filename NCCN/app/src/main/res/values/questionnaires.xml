@@ -1,11 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="hadsd_questionnaire">
-        <string-array name="@string/question1_tense">
-            <item>@string/q1_1_mostly</item>
-            <item>@string/q1_2_often</item>
-            <item>@string/q1_3_occasionally</item>
-            <item>@string/q1_4_not_at_all</item>
-        </string-array>
+    <string-array name="question1">
+        <item>@string/question1_tense</item>
+        <item>@string/q1_1_mostly</item>
+        <item>@string/q1_2_often</item>
+        <item>@string/q1_3_occasionally</item>
+        <item>@string/q1_4_not_at_all</item>
     </string-array>
+    <string-array name="question2">
+        <item>@string/question2_foreboding</item>
+        <item>@string/q2_1_very_intensive</item>
+        <item>@string/q2_2_yes_intensive</item>
+        <item>@string/q2_3_a_bit</item>
+        <item>@string/q1_4_not_at_all</item>
+    </string-array>
+    <string-array name="question3">
+        <item>@string/question3_thougths</item>
+        <item>@string/big_part</item>
+        <item>@string/relativly_often</item>
+        <item>@string/q2_3_a_bit</item>
+        <item>@string/sometime_never</item>
+    </string-array>
+    <string-array name="question4">
+        <item>@string/question4_relax</item>
+        <item>@string/yes_of_course</item>
+        <item>@string/usually_yes</item>
+        <item>@string/not_often</item>
+        <item>@string/q1_4_not_at_all</item>
+    </string-array>
+    <string-array name="question5">
+        <item>@string/question5_anxious_feeling</item>
+        <item>@string/q1_4_not_at_all</item>
+        <item>@string/occasionally</item>
+        <item>@string/quite_often</item>
+        <item>@string/very_often</item>
+    </string-array>
+    <string-array name="question6">
+        <item>@string/question6_restless</item>
+        <item>@string/yes_indeed</item>
+        <item>@string/quite</item>
+        <item>@string/not_much</item>
+        <item>@string/not_at_all</item>
+    </string-array>
+    <string-array name="question7">
+        <item>@string/question7_panic</item>
+        <item>@string/yes_indeed</item>
+        <item>@string/quite_often</item>
+        <item>@string/not_very_often</item>
+        <item>@string/not_at_all</item>
+    </string-array>
+    <string-array name="question8">
+        <item>@string/question8_pleasure</item>
+        <item>@string/exactly_like_that</item>
+        <item>@string/not_so_much</item>
+        <item>@string/only_very_little</item>
+        <item>@string/hardly_or_not_at_all</item>
+    </string-array>
+    <string-array name="question9">
+        <item>@string/question9_can_laugh</item>
+        <item>@string/yes_as_always</item>
+        <item>@string/not_quite_that_much</item>
+        <item>@string/now_much_less</item>
+        <item>@string/not_at_all</item>
+    </string-array>
+    <string-array name="question10">
+        <item>@string/question10_happy</item>
+        <item>@string/not_at_all</item>
+        <item>@string/rarely</item>
+        <item>@string/sometimes</item>
+        <item>@string/q1_1_mostly</item>
+    </string-array>
+    <string-array name="question11">
+        <item>@string/question11_braked</item>
+        <item>@string/almost_always</item>
+        <item>@string/very_often</item>
+        <item>@string/sometimes</item>
+        <item>@string/not_at_all</item>
+    </string-array>
+    <string-array name="question12">
+        <item>@string/question12_lost_interest</item>
+        <item>@string/yes_exactly</item>
+        <item>@string/i_dont_care_as_much_as_i_should</item>
+        <item>@string/maybe_i_care_too_little_about_it</item>
+        <item>@string/i_care_as_much_about_it_as_always</item>
+    </string-array>
+    <string-array name="question13">
+        <item>@string/question13_joy_in_future</item>
+        <item>@string/yes_very_much</item>
+        <item>@string/rather_less_than_before</item>
+        <item>@string/much_less_than_before</item>
+        <item>@string/hardly_to_not_at_all</item>
+    </string-array>
+    <string-array name="question14">
+        <item>@string/question14_i_can_enjoy_a_good_book_radio_tv</item>
+        <item>@string/often</item>
+        <item>@string/sometimes</item>
+        <item>@string/rather_rare</item>
+        <item>@string/very_rare</item>
+    </string-array>
+
+
+    <string-array name="hadsd_questionnaire">
+        <item>@array/question1</item>
+        <item>@array/question2</item>
+        <item>@array/question3</item>
+        <item>@array/question4</item>
+        <item>@array/question5</item>
+        <item>@array/question6</item>
+        <item>@array/question7</item>
+        <item>@array/question8</item>
+        <item>@array/question9</item>
+        <item>@array/question10</item>
+        <item>@array/question11</item>
+        <item>@array/question12</item>
+        <item>@array/question13</item>
+        <item>@array/question14</item>
+    </string-array>
+
 </resources>
