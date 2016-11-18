@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hadsd_questionnaire">
+        <string-array name="@string/question1_tense">
+            <item>@string/q1_1_mostly</item>
+            <item>@string/q1_2_often</item>
+            <item>@string/q1_3_occasionally</item>
+            <item>@string/q1_4_not_at_all</item>
+        </string-array>
+    </string-array>
+</resources>

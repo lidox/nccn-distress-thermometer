@@ -9,6 +9,10 @@ import android.widget.Toolbar;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.wizard.WizardHADSD;
 import com.artursworld.nccn.controller.wizard.WizardNCCN;
+import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
+import com.artursworld.nccn.model.entity.User;
+import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.UserManager;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,6 +29,10 @@ public class Launcher extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        UserManager m = new UserManager();
+        m.insertUser(new User("Artur Schaefer"));
+        HADSDQuestionnaireManager qm = new HADSDQuestionnaireManager();
+        //qm.insertQuestionnaire(new HADSDQuestionnaire("Artur Schaefer"));
     }
 
     @OnClick(R.id.btn_distress_thermometer) void startDistressThermometerQuestionnaire() {

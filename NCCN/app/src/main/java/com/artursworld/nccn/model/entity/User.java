@@ -13,6 +13,10 @@ public class User {
         this.creationDate = new Date();
     }
 
+    public String toString(){
+        return this.name;
+    }
+
     public Date getCreationDate() {
         return creationDate;
     }

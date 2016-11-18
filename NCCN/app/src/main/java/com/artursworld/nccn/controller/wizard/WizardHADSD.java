@@ -5,6 +5,10 @@ import android.util.Log;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
+import com.artursworld.nccn.model.entity.User;
+import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.model.wizard.hadsd.AbstractHadsdStep;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.TextStepper;
@@ -14,10 +18,16 @@ import com.github.fcannizzaro.materialstepper.style.TextStepper;
 public class WizardHADSD extends TextStepper {
 
     public static final String QUESTION_DATA = "WizardHADSD-question-data";
+    public static final String QUESTION_NUMBER = "WizardHADSD-QUESTION_NUMBER";
+    public static final String SELECTED_USER = "WizardHADSD-SELECTED_USER";
+
     private int currentWizardPosition = 1;
+    private User selectedUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        selectedUser = new UserManager().getAllUsers().get(0); // TODO: changes this to real selected user later
 
         // configuration
         setErrorTimeout(1000);
@@ -123,7 +133,6 @@ public class WizardHADSD extends TextStepper {
 
 
         super.onCreate(savedInstanceState);
-
     }
 
     private void addStepByTextIds(int questionId, int answerAId, int answerBId ,int answerCId, int answerDId) {
@@ -134,11 +143,13 @@ public class WizardHADSD extends TextStepper {
                 Strings.getStringByRId(answerBId),
                 Strings.getStringByRId(answerCId),
                 Strings.getStringByRId(answerDId)});
+        //bundle.putByteArray(ANSWER_DATA, answerBytes);
         addStep(createFragment(new AbstractHadsdStep(), bundle));
     }
 
     private AbstractStep createFragment(AbstractStep fragment, Bundle b) {
-        b.putInt("position", currentWizardPosition ++);
+        b.putInt(QUESTION_NUMBER, currentWizardPosition ++);
+        b.putString(SELECTED_USER, selectedUser.getName());
         fragment.setArguments(b);
         return fragment;
     }
