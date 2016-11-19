@@ -29,9 +29,11 @@ public class Launcher extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        UserManager m = new UserManager();
-        m.insertUser(new User("Artur Schaefer"));
-        HADSDQuestionnaireManager qm = new HADSDQuestionnaireManager();
+
+        // TODO: add good user management
+        //UserManager m = new UserManager();
+        //m.insertUser(new User("Artur Schaefer"));
+        //HADSDQuestionnaireManager qm = new HADSDQuestionnaireManager();
         //qm.insertQuestionnaire(new HADSDQuestionnaire("Artur Schaefer"));
     }
 

@@ -5,15 +5,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Strings;
-import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
-import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.model.wizard.hadsd.AbstractHadsdStep;
-import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.TextStepper;
 
+import java.util.List;
 
 
 public class WizardHADSD extends TextStepper {
@@ -28,26 +28,11 @@ public class WizardHADSD extends TextStepper {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        selectedUser = new UserManager().getAllUsers().get(0); // TODO: changes this to real selected user later
+        // TODO: changes this to real selected user. Maybe this should not be transmitted to fragment. instead get it in fragment
+        selectedUser = new UserManager().getAllUsers().get(0);
 
-        TypedArray menuResources = getResources().obtainTypedArray(R.array.hadsd_questionnaire);
-        TypedArray itemDef;
-        for (int i = 0; i < menuResources.length(); i++) {
-            int resId = menuResources.getResourceId(i, -1);
-            if (resId < 0) {
-                continue;
-            }
-
-            itemDef = getResources().obtainTypedArray(resId);
-            String question = itemDef.getString(0);
-            String answerA = itemDef.getString(1);
-            String answerB = itemDef.getString(2);
-            String answerC = itemDef.getString(3);
-            String answerD = itemDef.getString(4);
-
-            // add question and answers
-            addStepByTextIds(question, answerA, answerB, answerC, answerD);
-        }
+        // laod questionnairy into fragments
+        putAllQuestionAndAnswersToNewFragments();
 
         // configuration
         setErrorTimeout(1000);
@@ -55,17 +40,38 @@ public class WizardHADSD extends TextStepper {
         super.onCreate(savedInstanceState);
     }
 
-    private void addStepByTextIds(String question, String answerA, String answerB ,String answerC, String answerD) {
-        Bundle bundle = new Bundle();
-        bundle.putStringArray(QUESTION_DATA, new String[]{question, answerA, answerB, answerC, answerD});
-        addStep(createFragment(new AbstractHadsdStep(), bundle));
+
+    /**
+     * Get all questions and answers from resource file and put them question by question into sinle fragments
+     */
+    private void putAllQuestionAndAnswersToNewFragments() {
+        List<TypedArray> questionnairyList = Questionnairy.getQuestionnairyListById(R.array.hadsd_questionnaire, App.getAppContext());
+        for(TypedArray questionItem: questionnairyList){
+            String question = questionItem.getString(0);
+            String answerA = questionItem.getString(1);
+            String answerB = questionItem.getString(2);
+            String answerC = questionItem.getString(3);
+            String answerD = questionItem.getString(4);
+            addFragmentStepByTextIds(question, answerA, answerB, answerC, answerD);
+        }
     }
 
-    private AbstractStep createFragment(AbstractStep fragment, Bundle b) {
-        b.putInt(QUESTION_NUMBER, currentWizardPosition ++);
-        b.putString(SELECTED_USER, selectedUser.getName());
-        fragment.setArguments(b);
-        return fragment;
+    /**
+     * Adds a single question and its answers with some configuration information to the questionnairy
+     * @param question the question
+     * @param answerA a possible answer
+     * @param answerB a possible answer
+     * @param answerC a possible answer
+     * @param answerD a possible answer
+     */
+    private void addFragmentStepByTextIds(String question, String answerA, String answerB ,String answerC, String answerD) {
+        Bundle bundle = new Bundle();
+        bundle.putStringArray(QUESTION_DATA, new String[]{question, answerA, answerB, answerC, answerD});
+        bundle.putInt(QUESTION_NUMBER, currentWizardPosition ++);
+        bundle.putString(SELECTED_USER, selectedUser.getName());
+        AbstractHadsdStep fragment = new AbstractHadsdStep();
+        fragment.setArguments(bundle);
+        addStep(fragment);
     }
 
     @Override
