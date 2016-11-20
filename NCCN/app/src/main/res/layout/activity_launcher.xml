@@ -11,14 +11,22 @@
     <Button
         android:id="@+id/btn_distress_thermometer"
         android:layout_width="match_parent"
-        android:text="Distress"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Distress" />
 
     <Button
         android:id="@+id/btn_HADS_D"
-        android:text="HADS-D"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/btn_distress_thermometer"
-        android:layout_height="wrap_content" />
+        android:text="HADS-D" />
+
+    <Button
+        android:id="@+id/btn_quality_of_life"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_HADS_D"
+        android:text="Quality of Life" />
+
 
 </RelativeLayout>

@@ -18,6 +18,7 @@
         </activity>
         <activity android:name=".controller.wizard.WizardNCCN" />
         <activity android:name=".controller.wizard.WizardHADSD" />
+        <activity android:name=".controller.wizard.WizardQualityOfLife"/>
     </application>
 
 </manifest>

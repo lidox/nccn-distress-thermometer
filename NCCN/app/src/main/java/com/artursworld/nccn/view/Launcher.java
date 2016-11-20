@@ -9,6 +9,7 @@ import android.widget.Toolbar;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.wizard.WizardHADSD;
 import com.artursworld.nccn.controller.wizard.WizardNCCN;
+import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
@@ -45,5 +46,9 @@ public class Launcher extends AppCompatActivity {
 
     @OnClick(R.id.btn_HADS_D) void startHADS_D_Questionnaire() {
         startActivityForResult(new Intent(this, WizardHADSD.class), 2);
+    }
+
+    @OnClick(R.id.btn_quality_of_life) void startQOLQuestionnaire() {
+        startActivityForResult(new Intent(this, WizardQualityOfLife.class), 3);
     }
 }
