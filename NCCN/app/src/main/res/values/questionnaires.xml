@@ -316,11 +316,11 @@
         <item>@string/very</item>
     </string-array>
     <string-array name="question29_quality_of_life">
-        <item>@string/seven_possible</item>
+        <item>@string/c_seven_possible</item>
         <item>@string/how_would_you_rate_your_overall_health_over_the_past_week</item>
     </string-array>
     <string-array name="question30_quality_of_life">
-        <item>@string/seven_possible</item>
+        <item>@string/c_seven_possible</item>
         <item>@string/how_would_you_rate_your_overall_quality_of_life_during_the_last_week</item>
     </string-array>
     <string-array name="question31_quality_of_life">
