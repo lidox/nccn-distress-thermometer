@@ -53,4 +53,35 @@
     <string name="swollen_or_bloated_feeling">"Feel puffy / swollen"</string>
     <string name="memory_or_concentration">"Memory / concentration"</string>
     <string name="sexual_problems">"Sexual Problems"</string>
+
+    <!-- EORTC QLQ-C30 -Version 3.0- und EORTC QLQ-BN20 Quality of Life Frequently -->
+    <string name="is_it_difficult_to_be_physically_active">Bereitet es Ihnen Schwierigkeiten, sich körperlich anzustrengen (z.B. eine schwere Einkaufstasche oder einen Koffer zu tragen?)</string>
+    <string name="a_little">wenig</string>
+    <string name="moderate">mäßig</string>
+    <string name="very">sehr</string>
+    <string name="is_it_difficult_to_have_a_longer_walk">Bereitet es Ihnen Schwierigkeiten, einen längeren Spaziergang zu machen?</string>
+    <string name="is_it_difficult_to_a_short_distance_except_outside">Bereitet es Ihnen Schwierigkeiten, eine kurze Strecke außer Haus zu gehen?</string>
+    <string name="have_to_lie_in_bed_during_the_day_or_sit_in_an_armchair">Müssen Sie tagsüber im Bett liegen oder in einem Sessel sitzen?</string>
+    <string name="need_help_with_eating_dressing_washing_or_using_the_toilet">Brauchen Sie Hilfe beim Essen, Anziehen, Waschen oder Benutzen der Toilette?</string>
+    <string name="were_you_at_your_work_limited">Waren Sie bei Ihrer Arbeit oder bei anderen tagtäglichen Beschäftigungen eingeschränkt?</string>
+    <string name="were_you_on_your_hobbies_or_others_leisure_activities_restricted">Waren Sie bei Ihren Hobbys oder anderen Freizeitbeschäftigungen eingeschränkt?</string>
+    <string name="were_you_short_of_breath">Waren Sie kurzatmig?</string>
+    <string name="did_you_have_pain">Hatten Sie Schmerzen?</string>
+    <string name="did_you_have_to_rest">Mussten Sie sich ausruhen?</string>
+    <string name="did_you_have_sleep_problems">Hatten Sie Schlafstörungen?</string>
+    <string name="did_you_feel_weak">Fühlten Sie sich schwach?</string>
+    <string name="did_you_have_an_appetite">Hatten Sie Appetitmangel?</string>
+    <string name="was_you_sick">War Ihnen übel?</string>
+    <string name="have_you_vomited">Haben Sie erbrochen?</string>
+    <string name="did_you_have_constipation">Did you have constipation?</string>
+    <string name="did_you_have_diarrhea">Hatten Sie Durchfall?</string>
+    <string name="were_you_tired">Waren Sie müde?</string>
+    <string name="felt_through_pain_in_your_everyday_life_impaired">Fühlten Sie sich durch Schmerzen in Ihrem alltäglichen Leben beeinträchtigt?</string>
+    <string name="had_trouble_concentrating_on_something">Hatten Sie Schwierigkeiten, sich auf etwas zu konzentrieren, z.B. auf das Zeitungslesen oder das Fernsehen?</string>
+    <string name="did_you_feel_tense">Fühlten Sie sich angespannt?</string>
+    <string name="have_you_worried">Haben Sie sich Sorgen gemacht?</string>
+    <string name="were_you_irritable">Waren Sie reizbar?</string>
+    <string name="did_you_feel_depressed">Fühlten Sie sich niedergeschlagen?</string>
+    <string name="did_you_have_trouble_remembering_things">Hatten Sie Schwierigkeiten, sich an Dinge zu erinnern?</string>
+
 </resources>

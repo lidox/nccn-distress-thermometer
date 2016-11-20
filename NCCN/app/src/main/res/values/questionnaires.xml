@@ -117,4 +117,209 @@
         <item>@array/question14</item>
     </string-array>
 
+
+    <!-- EORTC QLQ-C30 -Version 3.0- und EORTC QLQ-BN20 Quality of Life Frequently -->
+    <string-array name="question1_quality_of_life">
+        <item>@string/is_it_difficult_to_be_physically_active</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question2_quality_of_life">
+        <item>@string/is_it_difficult_to_have_a_longer_walk</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question3_quality_of_life">
+        <item>@string/is_it_difficult_to_a_short_distance_except_outside</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question4_quality_of_life">
+        <item>@string/have_to_lie_in_bed_during_the_day_or_sit_in_an_armchair</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question5_quality_of_life">
+        <item>@string/need_help_with_eating_dressing_washing_or_using_the_toilet</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question6_quality_of_life">
+        <item>@string/were_you_at_your_work_limited</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question7_quality_of_life">
+        <item>@string/were_you_on_your_hobbies_or_others_leisure_activities_restricted</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question8_quality_of_life">
+        <item>@string/were_you_short_of_breath</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question9_quality_of_life">
+        <item>@string/did_you_have_pain</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question10_quality_of_life">
+        <item>@string/did_you_have_to_rest</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question11_quality_of_life">
+        <item>@string/did_you_have_sleep_problems</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question12_quality_of_life">
+        <item>@string/did_you_feel_weak</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question13_quality_of_life">
+        <item>@string/did_you_have_an_appetite</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question14_quality_of_life">
+        <item>@string/was_you_sick</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question15_quality_of_life">
+        <item>@string/have_you_vomited</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question16_quality_of_life">
+        <item>@string/did_you_have_constipation</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question17_quality_of_life">
+        <item>@string/did_you_have_diarrhea</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question18_quality_of_life">
+        <item>@string/were_you_tired</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question19_quality_of_life">
+        <item>@string/felt_through_pain_in_your_everyday_life_impaired</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question20_quality_of_life">
+        <item>@string/had_trouble_concentrating_on_something</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question21_quality_of_life">
+        <item>@string/did_you_feel_tense</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question22_quality_of_life">
+        <item>@string/have_you_worried</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question23_quality_of_life">
+        <item>@string/were_you_irritable</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question24_quality_of_life">
+        <item>@string/did_you_feel_depressed</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question25_quality_of_life">
+        <item>@string/did_you_have_trouble_remembering_things</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+
+    <string-array name="quality_of_life_questionnaire">
+        <item>@array/question1_quality_of_life</item>
+        <item>@array/question2_quality_of_life</item>
+        <item>@array/question3_quality_of_life</item>
+        <item>@array/question4_quality_of_life</item>
+        <item>@array/question5_quality_of_life</item>
+        <item>@array/question6_quality_of_life</item>
+        <item>@array/question7_quality_of_life</item>
+        <item>@array/question8_quality_of_life</item>
+        <item>@array/question9_quality_of_life</item>
+        <item>@array/question10_quality_of_life</item>
+        <item>@array/question11_quality_of_life</item>
+        <item>@array/question12_quality_of_life</item>
+        <item>@array/question13_quality_of_life</item>
+        <item>@array/question14_quality_of_life</item>
+        <item>@array/question15_quality_of_life</item>
+        <item>@array/question16_quality_of_life</item>
+        <item>@array/question17_quality_of_life</item>
+        <item>@array/question18_quality_of_life</item>
+        <item>@array/question19_quality_of_life</item>
+        <item>@array/question20_quality_of_life</item>
+        <item>@array/question21_quality_of_life</item>
+        <item>@array/question22_quality_of_life</item>
+        <item>@array/question23_quality_of_life</item>
+        <item>@array/question24_quality_of_life</item>
+        <item>@array/question25_quality_of_life</item>
+    </string-array>
 </resources>
