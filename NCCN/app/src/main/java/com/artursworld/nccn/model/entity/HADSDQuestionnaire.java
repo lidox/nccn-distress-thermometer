@@ -5,6 +5,7 @@ import android.util.Log;
 import android.util.StringBuilderPrinter;
 
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class HADSDQuestionnaire {
     private Date updateDate;
     private List<byte[]> answerToQuestionList;
     private int questionCountOfHADSDQuestionnaire = 14;
+    private byte[] defaultByte = Bits.getByteByString("00000001");
 
     public HADSDQuestionnaire(String userNameId){
         this.userNameId_FK = userNameId;
@@ -26,7 +28,7 @@ public class HADSDQuestionnaire {
 
         answerToQuestionList = new ArrayList<>();
         for(int i = 0; i < questionCountOfHADSDQuestionnaire; i++){
-            answerToQuestionList.add(new byte[3]);
+            answerToQuestionList.add(defaultByte);
         }
     }
 
@@ -58,13 +60,6 @@ public class HADSDQuestionnaire {
         return answerToQuestionList;
     }
 
-    public void setAnswerToQuestionList(List<byte[]> answerToQuestionList) {
-        this.answerToQuestionList = answerToQuestionList;
-    }
-
-    public void addAnswerToQuestion(byte[] answer){
-        this.answerToQuestionList.add(answer);
-    }
 
     /**
      * Get the answer by the question number
@@ -82,5 +77,25 @@ public class HADSDQuestionnaire {
      */
     public void setAnswerByNr(int questionNr, byte[] newByte){
         this.getAnswerToQuestionList().set(questionNr, newByte);
+    }
+
+    public String getCreationTimeStamp(){
+        return EntityDbManager.dateFormat.format(this.getCreationDate_PK());
+    }
+
+    public String toString(){
+        StringBuilder ret = new StringBuilder();
+        ret.append(HADSDQuestionnaire.class.getSimpleName());
+        ret.append(" created on " + getCreationTimeStamp());
+        int index = 1;
+        for (byte[] item: answerToQuestionList){
+            ret.append(", Answerbyte" +index +" = " + Bits.getStringByByte(item));
+            index++;
+        }
+        return ret.toString();
+    }
+
+    public byte[] getDefaultByte(){
+        return defaultByte;
     }
 }

@@ -108,4 +108,43 @@ public class HADSDQuestionnaireManagerTest extends InstrumentationTestCase {
         assertEquals("00001000", resultByteString);
     }
 
+    @Test
+    public void testCreateAndGetQuestionaire2() throws Exception {
+        User medUser = new User("Siggi");
+        userDB.insertUser(medUser);
+
+        HADSDQuestionnaire q = new HADSDQuestionnaire(medUser.getName());
+        q.setAnswerByNr(0, Bits.getByteByString("00000001"));
+        q.setAnswerByNr(1, Bits.getByteByString("00000010"));
+        q.setAnswerByNr(2, Bits.getByteByString("00000100"));
+        q.setAnswerByNr(3, Bits.getByteByString("00001000"));
+        q.setAnswerByNr(4, Bits.getByteByString("00010000"));
+        q.setAnswerByNr(5, Bits.getByteByString("00100000"));
+        q.setAnswerByNr(6, Bits.getByteByString("01000000"));
+        q.setAnswerByNr(7, Bits.getByteByString("00000001"));
+        q.setAnswerByNr(8, Bits.getByteByString("00000101"));
+        q.setAnswerByNr(9, Bits.getByteByString("00001101"));
+        q.setAnswerByNr(10, Bits.getByteByString("00110101"));
+        q.setAnswerByNr(11, Bits.getByteByString("01100101"));
+        q.setAnswerByNr(12, Bits.getByteByString("11000101"));
+        q.setAnswerByNr(13, Bits.getByteByString("11111111"));
+        hadsdDB.insertQuestionnaire(q);
+
+        HADSDQuestionnaire result = hadsdDB.getHADSDQuestionnaireByUserName(medUser.getName());
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00000001")), Bits.getStringByByte(result.getAnswerToQuestionList().get(0)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00000010")), Bits.getStringByByte(result.getAnswerByNr(1)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00000100")), Bits.getStringByByte(result.getAnswerByNr(2)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00001000")), Bits.getStringByByte(result.getAnswerByNr(3)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00010000")), Bits.getStringByByte(result.getAnswerByNr(4)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00100000")), Bits.getStringByByte(result.getAnswerByNr(5)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("01000000")), Bits.getStringByByte(result.getAnswerByNr(6)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00000001")), Bits.getStringByByte(result.getAnswerByNr(7)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00000101")), Bits.getStringByByte(result.getAnswerByNr(8)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00001101")), Bits.getStringByByte(result.getAnswerByNr(9)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("00110101")), Bits.getStringByByte(result.getAnswerByNr(10)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("01100101")), Bits.getStringByByte(result.getAnswerByNr(11)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("11000101")), Bits.getStringByByte(result.getAnswerByNr(12)));
+        assertEquals(Bits.getStringByByte(Bits.getByteByString("11111111")), Bits.getStringByByte(result.getAnswerByNr(13)));
+    }
+
 }

@@ -29,6 +29,7 @@ public class AbstractHadsdStep extends AbstractStep {
     private RadioButton answerC_btn;
     private RadioButton answerD_btn;
 
+    private User selectedUser = null;
     private HADSDQuestionnaire questionnaire = null;
     private int currentQuestionNumber = 0;
     private RadioGroup answersGroup;
@@ -36,6 +37,16 @@ public class AbstractHadsdStep extends AbstractStep {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = getView(inflater, container);
+        /*
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                initBundledData();
+                return null;
+            }
+        }.execute();
+        */
         initBundledData();
         return v;
     }
@@ -55,19 +66,18 @@ public class AbstractHadsdStep extends AbstractStep {
         answerB_btn = (RadioButton) v.findViewById(R.id.answer_b);
         answerC_btn = (RadioButton) v.findViewById(R.id.answer_c);
         answerD_btn = (RadioButton) v.findViewById(R.id.answer_d);
-        addAnswerChangeListener(v);
+        answersGroup = (RadioGroup) v.findViewById(R.id.answer_radio_group);
         return v;
     }
 
     /**
      * Adds a change listener to the radio button group
-     * @param v the view containing the radio buttons
      */
-    private void addAnswerChangeListener(View v) {
-        answersGroup = (RadioGroup) v.findViewById(R.id.answer_radio_group);
+    private void addAnswerChangeListener() {
         answersGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                Log.i("", "onCheckedChanged("+radioGroup.toString()+", "+i+")");
                 onSelectedAnswerChanged(answersGroup);
             }
         });
@@ -81,13 +91,20 @@ public class AbstractHadsdStep extends AbstractStep {
     private void onSelectedAnswerChanged(RadioGroup answersGroup) {
         RadioButton checkedRadioButton = (RadioButton) answersGroup.findViewById(answersGroup.getCheckedRadioButtonId());
         int index = answersGroup.indexOfChild(checkedRadioButton);
-        Log.i(AbstractHadsdStep.class.getSimpleName(), "selected box = '" +checkedRadioButton.getText() +"' with index = " + index + " and current questionNr = " +currentQuestionNumber);
+        Log.i(AbstractHadsdStep.class.getSimpleName(), "New box selected= '" +checkedRadioButton.getText() +"' with index = " + index + " and current questionNr = " +currentQuestionNumber);
+
+        // load current answers again
         HADSDQuestionnaireManager m = new HADSDQuestionnaireManager();
+        questionnaire = m.getHADSDQuestionnaireByUserName(selectedUser.getName());
+
+        // display old and new byte
         byte[] oldByte = questionnaire.getAnswerByNr(currentQuestionNumber);
         byte[] newByte = Bits.getNewByteByRadioBtn(checkedRadioButton.isChecked(), index, oldByte);
         String old = Bits.getStringByByte(oldByte);
         String newOne = Bits.getStringByByte(newByte);
         Log.i(AbstractHadsdStep.class.getSimpleName(), "Changed answer bits from: "+ old + " to " +newOne);
+
+        // update new answer selections
         questionnaire.setAnswerByNr(currentQuestionNumber, newByte);
         m.update(questionnaire);
     }
@@ -108,9 +125,10 @@ public class AbstractHadsdStep extends AbstractStep {
         }
 
         currentQuestionNumber = bundle.getInt(WizardHADSD.QUESTION_NUMBER) - 1;
-        User selectedUser = new UserManager().getUserByName(bundle.getString(WizardHADSD.SELECTED_USER));
+        selectedUser = new UserManager().getUserByName(bundle.getString(WizardHADSD.SELECTED_USER));
         questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByUserName(selectedUser.getName());
         checkRadioButtonByBits();
+        addAnswerChangeListener();
     }
 
     /**
@@ -118,7 +136,7 @@ public class AbstractHadsdStep extends AbstractStep {
      */
     private void checkRadioButtonByBits() {
         byte[] answerByte = questionnaire.getAnswerByNr(currentQuestionNumber);
-        Log.i(AbstractHadsdStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte));
+        Log.i(AbstractHadsdStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr:" +(currentQuestionNumber+1) + "(index:"+currentQuestionNumber+")");
         StringBuilder bits = new StringBuilder(Bits.getStringByByte(answerByte)).reverse();
         int indexToCheck = bits.indexOf("1");
         RadioButton buttonToCheck = ((RadioButton)answersGroup.getChildAt(indexToCheck));

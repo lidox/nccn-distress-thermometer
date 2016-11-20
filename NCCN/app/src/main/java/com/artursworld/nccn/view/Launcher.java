@@ -31,10 +31,12 @@ public class Launcher extends AppCompatActivity {
         super.onStart();
 
         // TODO: add good user management
-        //UserManager m = new UserManager();
-        //m.insertUser(new User("Artur Schaefer"));
-        //HADSDQuestionnaireManager qm = new HADSDQuestionnaireManager();
-        //qm.insertQuestionnaire(new HADSDQuestionnaire("Artur Schaefer"));
+        /*
+        UserManager m = new UserManager();
+        m.insertUser(new User("Artur Schaefer"));
+        HADSDQuestionnaireManager qm = new HADSDQuestionnaireManager();
+        qm.insertQuestionnaire(new HADSDQuestionnaire("Artur Schaefer"));
+        */
     }
 
     @OnClick(R.id.btn_distress_thermometer) void startDistressThermometerQuestionnaire() {

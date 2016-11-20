@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.persistence.contracts.DBContracts;
 
@@ -24,7 +25,7 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
      * This constructor is used for unit tests
      * @param context the database context to use
      */
-    public HADSDQuestionnaireManager(Context context) {
+    HADSDQuestionnaireManager(Context context) {
         super(context);
     }
 
@@ -50,7 +51,6 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
     }
 
     private ContentValues getQuestionnaireContentValues(HADSDQuestionnaire questionnaire) {
-        int byteSize = 3;
         ContentValues values = new ContentValues();
 
         if(questionnaire.getUserNameId_FK() != null)
@@ -62,17 +62,29 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
         if(questionnaire.getUpdateDate() != null)
             values.put(DBContracts.HADSDTable.UPDATE_DATE, EntityDbManager.dateFormat.format(questionnaire.getUpdateDate()));
 
-        if(questionnaire.getAnswerToQuestionList().get(0) == null)
-            values.put(DBContracts.HADSDTable.ANSWER_TO_QUESTION1, new byte[byteSize]);
-        else
-            values.put(DBContracts.HADSDTable.ANSWER_TO_QUESTION1, questionnaire.getAnswerToQuestionList().get(0));
+        values = addAnswerToQuestion(questionnaire, values, 0, DBContracts.HADSDTable.ANSWER_TO_QUESTION1);
+        values = addAnswerToQuestion(questionnaire, values, 1, DBContracts.HADSDTable.ANSWER_TO_QUESTION2);
+        values = addAnswerToQuestion(questionnaire, values, 2, DBContracts.HADSDTable.ANSWER_TO_QUESTION3);
+        values = addAnswerToQuestion(questionnaire, values, 3, DBContracts.HADSDTable.ANSWER_TO_QUESTION4);
+        values = addAnswerToQuestion(questionnaire, values, 4, DBContracts.HADSDTable.ANSWER_TO_QUESTION5);
+        values = addAnswerToQuestion(questionnaire, values, 5, DBContracts.HADSDTable.ANSWER_TO_QUESTION6);
+        values = addAnswerToQuestion(questionnaire, values, 6, DBContracts.HADSDTable.ANSWER_TO_QUESTION7);
+        values = addAnswerToQuestion(questionnaire, values, 7, DBContracts.HADSDTable.ANSWER_TO_QUESTION8);
+        values = addAnswerToQuestion(questionnaire, values, 8, DBContracts.HADSDTable.ANSWER_TO_QUESTION9);
+        values = addAnswerToQuestion(questionnaire, values, 9, DBContracts.HADSDTable.ANSWER_TO_QUESTION10);
+        values = addAnswerToQuestion(questionnaire, values, 10, DBContracts.HADSDTable.ANSWER_TO_QUESTION11);
+        values = addAnswerToQuestion(questionnaire, values, 11, DBContracts.HADSDTable.ANSWER_TO_QUESTION12);
+        values = addAnswerToQuestion(questionnaire, values, 12, DBContracts.HADSDTable.ANSWER_TO_QUESTION13);
+        values = addAnswerToQuestion(questionnaire, values, 13, DBContracts.HADSDTable.ANSWER_TO_QUESTION14);
+        return values;
+    }
 
-        if(questionnaire.getAnswerToQuestionList().get(1) == null)
-            values.put(DBContracts.HADSDTable.ANSWER_TO_QUESTION2, new byte[byteSize]);
+    private ContentValues addAnswerToQuestion(HADSDQuestionnaire questionnaire, ContentValues values, int questionIndex, String attribute){
+        if(questionnaire.getAnswerToQuestionList().get(questionIndex) == null)
+            values.put(attribute, questionnaire.getDefaultByte());
         else
-            values.put(DBContracts.HADSDTable.ANSWER_TO_QUESTION2, questionnaire.getAnswerToQuestionList().get(1));
+            values.put(attribute, questionnaire.getAnswerByNr(questionIndex));
 
-        //TODO: so on...
         return values;
     }
 
@@ -83,7 +95,7 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
      * @return returns the Questionnaire by users name
      */
     public HADSDQuestionnaire getHADSDQuestionnaireByUserName(String name) {
-        List<HADSDQuestionnaire> medicalUserList = new ArrayList<HADSDQuestionnaire>();
+        List<HADSDQuestionnaire> medicalUserList = new ArrayList<>();
         Cursor cursor = database.query(DBContracts.HADSDTable.TABLE_NAME,
                 getColumns(),
                 DBContracts.HADSDTable.NAME_ID_FK + " LIKE '" + name + "'",
@@ -100,13 +112,22 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
 
             questionnaire.setAnswerByNr(0, cursor.getBlob(3));
             questionnaire.setAnswerByNr(1, cursor.getBlob(4));
-            //questionnaire.addAnswerToQuestion(cursor.getBlob(3));
-           // questionnaire.addAnswerToQuestion(cursor.getBlob(4));
-            // TODO: so on
+            questionnaire.setAnswerByNr(2, cursor.getBlob(5));
+            questionnaire.setAnswerByNr(3, cursor.getBlob(6));
+            questionnaire.setAnswerByNr(4, cursor.getBlob(7));
+            questionnaire.setAnswerByNr(5, cursor.getBlob(8));
+            questionnaire.setAnswerByNr(6, cursor.getBlob(9));
+            questionnaire.setAnswerByNr(7, cursor.getBlob(10));
+            questionnaire.setAnswerByNr(8, cursor.getBlob(11));
+            questionnaire.setAnswerByNr(9, cursor.getBlob(12));
+            questionnaire.setAnswerByNr(10, cursor.getBlob(13));
+            questionnaire.setAnswerByNr(11, cursor.getBlob(14));
+            questionnaire.setAnswerByNr(12, cursor.getBlob(15));
+            questionnaire.setAnswerByNr(13, cursor.getBlob(16));
             medicalUserList.add(questionnaire);
         }
 
-        if (cursor != null && !cursor.isClosed()) {
+        if (!cursor.isClosed()) {
             cursor.close();
         }
 
@@ -124,7 +145,19 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
                 DBContracts.HADSDTable.NAME_ID_FK,
                 DBContracts.HADSDTable.UPDATE_DATE,
                 DBContracts.HADSDTable.ANSWER_TO_QUESTION1,
-                DBContracts.HADSDTable.ANSWER_TO_QUESTION2
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION2,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION3,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION4,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION5,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION6,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION7,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION8,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION9,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION10,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION11,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION12,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION13,
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION14
         };
     }
 
