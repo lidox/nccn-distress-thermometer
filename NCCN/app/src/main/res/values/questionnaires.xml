@@ -294,6 +294,180 @@
         <item>@string/moderate</item>
         <item>@string/very</item>
     </string-array>
+    <string-array name="question26_quality_of_life">
+        <item>@string/physical_condition_or_your_medical_treatment_your_family_life_impaired</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question27_quality_of_life">
+        <item>@string/physical_condition_or_medical_treatment_compromised_your_cohabitation_with_other_people</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question28_quality_of_life">
+        <item>@string/physical_condition_or_your_medical_treatment_financial_difficulties</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question29_quality_of_life">
+        <item>@string/seven_possible</item>
+        <item>@string/how_would_you_rate_your_overall_health_over_the_past_week</item>
+    </string-array>
+    <string-array name="question30_quality_of_life">
+        <item>@string/seven_possible</item>
+        <item>@string/how_would_you_rate_your_overall_quality_of_life_during_the_last_week</item>
+    </string-array>
+    <string-array name="question31_quality_of_life">
+        <item>@string/did_you_feel_unsure_about_the_future</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question32_quality_of_life">
+        <item>@string/did_you_feel_that_you_suffered_health_setbacks</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question33_quality_of_life">
+        <item>@string/were_you_concerned_that_your_famaly_life_could_be_disturbed</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question34_quality_of_life">
+        <item>@string/did_you_have_a_headache</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question35_quality_of_life">
+        <item>@string/has_your_attitude_towards_the_future_deteriorated</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question36_quality_of_life">
+        <item>@string/have_you_seen_double</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question37_quality_of_life">
+        <item>@string/have_you_seen_blurry</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question38_quality_of_life">
+        <item>@string/did_you_have_trouble_reading</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question39_quality_of_life">
+        <item>@string/did_you_have_seizures</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question40_quality_of_life">
+        <item>@string/did_you_have_a_feeling_of_weakness_on_a_body_side</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question41_quality_of_life">
+        <item>@string/was_it_hard_to_find_the_right_words_to_express_yourself</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question42_quality_of_life">
+        <item>@string/did_you_have_difficulty_speaking</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question43_quality_of_life">
+        <item>@string/was_it_hard_for_you_to_share_your_thoughts_with_others</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question44_quality_of_life">
+        <item>@string/did_you_feel_sleepy_during_the_day</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question45_quality_of_life">
+        <item>@string/did_you_have_any_coordination_problems</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question46_quality_of_life">
+        <item>@string/do_you_care_about_your_hair_loss</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question47_quality_of_life">
+        <item>@string/did_your_skin_hurt</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question48_quality_of_life">
+        <item>@string/did_you_have_a_feeling_of_weakness_in_both_legs</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question49_quality_of_life">
+        <item>@string/did_you_feel_uncomfortable</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+    <string-array name="question50_quality_of_life">
+        <item>@string/did_you_have_trouble_controlling_your_bladder</item>
+        <item>@array/answers_quality_of_life</item>
+    </string-array>
+
+    <string-array name="answers_quality_of_life">
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
+    </string-array>
+
 
     <string-array name="quality_of_life_questionnaire">
         <item>@array/question1_quality_of_life</item>
@@ -321,5 +495,56 @@
         <item>@array/question23_quality_of_life</item>
         <item>@array/question24_quality_of_life</item>
         <item>@array/question25_quality_of_life</item>
+        <item>@array/question26_quality_of_life</item>
+        <item>@array/question27_quality_of_life</item>
+        <item>@array/question28_quality_of_life</item>
+        <item>@array/question29_quality_of_life</item>
+        <item>@array/question30_quality_of_life</item>
+        <item>@array/question31_quality_of_life</item>
+        <item>@array/question32_quality_of_life</item>
+        <item>@array/question33_quality_of_life</item>
+        <item>@array/question34_quality_of_life</item>
+        <item>@array/question35_quality_of_life</item>
+        <item>@array/question36_quality_of_life</item>
+        <item>@array/question37_quality_of_life</item>
+        <item>@array/question38_quality_of_life</item>
+        <item>@array/question39_quality_of_life</item>
+        <item>@array/question40_quality_of_life</item>
+        <item>@array/question41_quality_of_life</item>
+        <item>@array/question42_quality_of_life</item>
+        <item>@array/question43_quality_of_life</item>
+        <item>@array/question44_quality_of_life</item>
+        <item>@array/question45_quality_of_life</item>
+        <item>@array/question46_quality_of_life</item>
+        <item>@array/question47_quality_of_life</item>
+        <item>@array/question48_quality_of_life</item>
+        <item>@array/question49_quality_of_life</item>
+        <item>@array/question50_quality_of_life</item>
     </string-array>
+
+    <string name="physical_condition_or_your_medical_treatment_your_family_life_impaired">Hat Ihr körperlicher Zustand oder Ihre medizinische Behandlung Ihr Familienleben beeinträchtigt?</string>
+    <string name="physical_condition_or_medical_treatment_compromised_your_cohabitation_with_other_people">Hat Ihr körperlicher Zustand oder Ihre medizinische Behandlung Ihr Zusammensein oder Ihre gemeinsamen Unternehmungen mit anderen Menschen beeinträchtigt?</string>
+    <string name="physical_condition_or_your_medical_treatment_financial_difficulties">Hat Ihr körperlicher Zustand oder Ihre medizinische Behandlung für Sie finanzielle Schwierigkeiten mit sich gebracht?</string>
+    <string name="how_would_you_rate_your_overall_health_over_the_past_week">Wie würden Sie insgesamt Ihren Gesundheitszustand während der letzten Woche einschätzen?</string>
+    <string name="how_would_you_rate_your_overall_quality_of_life_during_the_last_week">Wie würden Sie insgesamt Ihre Lebensqualität während der letzten Woche einschätzen?</string>
+    <string name="did_you_feel_unsure_about_the_future">Fühlten Sie sich unsicher in Bezug auf die Zukunft?</string>
+    <string name="did_you_feel_that_you_suffered_health_setbacks">Hatten Sie das Gefühl, gesundheitliche Rückschläge erlitten zu haben?</string>
+    <string name="were_you_concerned_that_your_famaly_life_could_be_disturbed">Waren Sie besorgt, dass Ihr Familienleben gestört werden könnte?</string>
+    <string name="did_you_have_a_headache">Hatten Sie Kopfschmerzen?</string>
+    <string name="has_your_attitude_towards_the_future_deteriorated">Hat sich Ihre Einstellung zur Zukunft verschlechtert?</string>
+    <string name="have_you_seen_double">Haben Sie doppelt gesehen?</string>
+    <string name="have_you_seen_blurry">Haben Sie verschwommen gesehen?</string>
+    <string name="did_you_have_trouble_reading">Hatten Sie Schwierigkeiten beim Lesen?</string>
+    <string name="did_you_have_seizures">Hatten Sie Anfälle?</string>
+    <string name="did_you_have_a_feeling_of_weakness_on_a_body_side">Hatten Sie ein Schwächegefühl auf einer Körperseite?</string>
+    <string name="was_it_hard_to_find_the_right_words_to_express_yourself">Bereitete es Ihnen Mühe, die richtigen Worte zu finden, um sich auszudrücken?</string>
+    <string name="did_you_have_difficulty_speaking">Hatten Sie Schwierigkeiten beim Sprechen?</string>
+    <string name="was_it_hard_for_you_to_share_your_thoughts_with_others">Bereitete es Ihnen Mühe, anderen Ihre Gedanken mitzuteilen?</string>
+    <string name="did_you_feel_sleepy_during_the_day">Fühlten Sie sich tagsüber schläfrig?</string>
+    <string name="did_you_have_any_coordination_problems">Hatten Sie Koordinationsprobleme?</string>
+    <string name="do_you_care_about_your_hair_loss">Machte Ihnen Haarverlust zu schaffen?</string>
+    <string name="did_your_skin_hurt">Machte Ihnen Hautjucken zu schaffen?</string>
+    <string name="did_you_have_a_feeling_of_weakness_in_both_legs">Hatten Sie ein Schwächegefühl in beiden Beinen?</string>
+    <string name="did_you_feel_uncomfortable">Fühlten Sie sich unsicher auf den Beinen?</string>
+    <string name="did_you_have_trouble_controlling_your_bladder">Hatten Sie Mühe Ihre Blase zu kontrollieren?</string>
 </resources>
