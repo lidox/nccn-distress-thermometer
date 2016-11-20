@@ -1,5 +1,5 @@
 # NCCN 
-This app contains following questionnaires: Distress Thermometer, HADSD Questionnaire.
+This app contains following questionnaires: Distress Thermometer, HADSD Questionnaire and 'EORTC QLQ-C30 Quality Of Life'
 
 ## Distress Thermometer
 The German version of the NCCN Distress-Thermometer Empirical examination of a screening instrument for the detection of psychosocial load for cancer patients.
