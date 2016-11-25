@@ -10,7 +10,6 @@ public class DBContracts {
 
     // Useful SQL query parts
     private static final String TEXT_TYPE = " TEXT";
-    private static final String INTEGER_TYPE = " INTEGER";
     private static final String DATE_TYPE = " DATE";
     private static final String BLOB_TYPE = " BLOB";
     private static final String COMMA_SEP = ",";
@@ -52,6 +51,14 @@ public class DBContracts {
         public static final String ANSWER_TO_QUESTION14 = "ANSWER_TO_QUESTION14";
     }
 
+    public static abstract class QualityOfLifeTable {
+        public static final String TABLE_NAME = "quality_of_life_questionnaire";
+        public static final String NAME_ID_FK = "user_id"; //foreign key
+        public static final String CREATION_DATE_PK = "creation_date";
+        public static final String UPDATE_DATE = "update_date";
+        public static final String ANSWERS_TO_QUESTIONS = "answers_to_questions";
+    }
+
     // Create SQL queries
     public static final String CREATE_USER_TABLE = "CREATE TABLE "
             + UserTable.TABLE_NAME + "("
@@ -83,6 +90,16 @@ public class DBContracts {
             + "FOREIGN KEY(" + HADSDTable.NAME_ID_FK +") "
             + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";
 
+    public static final String CREATE_QUALITY_OF_TABLE = "CREATE TABLE "
+            + QualityOfLifeTable.TABLE_NAME + "("
+            + QualityOfLifeTable.CREATION_DATE_PK + DATE_TYPE + COMMA_SEP
+            + QualityOfLifeTable.NAME_ID_FK + DATE_TYPE + COMMA_SEP
+            + QualityOfLifeTable.UPDATE_DATE + DATE_TYPE + COMMA_SEP
+            + QualityOfLifeTable.ANSWERS_TO_QUESTIONS + BLOB_TYPE + COMMA_SEP
+            + " PRIMARY KEY ("+QualityOfLifeTable.CREATION_DATE_PK +") "
+            + "FOREIGN KEY(" + QualityOfLifeTable.NAME_ID_FK +") "
+            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";
+
     // Helper class manages database creation and version management
     public static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -104,6 +121,7 @@ public class DBContracts {
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(CREATE_USER_TABLE);
             db.execSQL(CREATE_HADSD_TABLE);
+            db.execSQL(CREATE_QUALITY_OF_TABLE);
         }
 
         @Override

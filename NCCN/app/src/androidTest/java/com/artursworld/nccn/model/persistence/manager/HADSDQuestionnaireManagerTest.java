@@ -49,7 +49,6 @@ public class HADSDQuestionnaireManagerTest extends InstrumentationTestCase {
         bytes = Bits.getByteByString(byteString);
         result = Bits.getStringByByte(bytes);
         assertEquals(byteString, result);
-
     }
 
     @Test
@@ -146,5 +145,6 @@ public class HADSDQuestionnaireManagerTest extends InstrumentationTestCase {
         assertEquals(Bits.getStringByByte(Bits.getByteByString("11000101")), Bits.getStringByByte(result.getAnswerByNr(12)));
         assertEquals(Bits.getStringByByte(Bits.getByteByString("11111111")), Bits.getStringByByte(result.getAnswerByNr(13)));
     }
+
 
 }

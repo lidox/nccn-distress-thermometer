@@ -9,6 +9,11 @@ import java.math.BigInteger;
 
 public class Bits {
 
+    /**
+     * Get an byte array by string
+     * @param byteString the string representing a byte
+     * @return an byte array
+     */
     public static byte[] getByteByString(String byteString){
         if(byteString.length() % 8 == 1){
             Log.e(HADSDQuestionnaire.class.getSimpleName(), "the byteString % 8 = 0 must be fulfilled");
