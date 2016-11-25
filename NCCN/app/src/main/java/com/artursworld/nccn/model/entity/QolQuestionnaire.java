@@ -1,6 +1,9 @@
 package com.artursworld.nccn.model.entity;
 
+import android.util.Log;
+
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.controller.util.Questionnairy;
 
 import java.util.Date;
 import java.util.Map;
@@ -16,7 +19,7 @@ public class QolQuestionnaire {
     private byte[] answersToQuestionsBytes;
 
     // configuration
-    private int questionCount = 50;
+    private int questionByteCount = 26;
     public static String defaultByte = "00010001";
     public static String exceptionalByte = "00000001";
 
@@ -26,37 +29,92 @@ public class QolQuestionnaire {
         this.updateDate = new Date();
 
         // init answer bytes
-        answersToQuestionsBytes = new byte[questionCount];
-        for(int i = 0; i < questionCount; i++){
-            if(i == 28 || i == 29) // question 29 and 30 are different
-                answersToQuestionsBytes[i] = Bits.getByteByString(exceptionalByte)[0];
-            else
-                answersToQuestionsBytes[i] = Bits.getByteByString(defaultByte)[0];
+        answersToQuestionsBytes = new byte[questionByteCount];
+        int index = 0;
+        for(; index < 14 ; index++){
+            answersToQuestionsBytes[index] = Bits.getByteByString(defaultByte)[0];
+        }
+        answersToQuestionsBytes[index++] = Bits.getByteByString(exceptionalByte)[0];
+        answersToQuestionsBytes[index++] = Bits.getByteByString(exceptionalByte)[0];
+        for(; index < 26 ; index++){
+            answersToQuestionsBytes[index] = Bits.getByteByString(defaultByte)[0];
         }
     }
 
-    //TODO: get Bits by question Nr. and set Bits by quest Nr.
     public String getBitsByQuestionNr(int questionNr){
+        if (validateQuestionNr(questionNr)) return null;
         StringBuilder result = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));
-        int byteStartIndex = 0;
-        int byteEndIndex = 0;
+        int[] startEndIndices = getStartEndIndexByQuestionNr(questionNr);
+        return result.substring(startEndIndices[0], startEndIndices[1]);
+    }
+
+    //TODO: get Bits by question Nr. and set Bits by quest Nr.
+    public void setBitsByQuestionNr(int questionNr, String newBits) {
+        if (validateQuestionNr(questionNr)) return;
+
+        if(questionNr == 29 || questionNr == 30)
+            if (newBits.length() != 8){
+                Log.e(QolQuestionnaire.class.getSimpleName(), "setBitsByQuestionNr accepts only bits of length 8 if quesitonNr = 29 or 30");
+                return;
+            }
+
+        if(questionNr != 29 && questionNr !=30)
+            if (newBits.length() !=4){
+                Log.e(QolQuestionnaire.class.getSimpleName(), "setBitsByQuestionNr accepts only bits of length 4 if quesitonNr != 29 or 30");
+                return;
+            }
+
+        StringBuilder result = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));
+        int[] startEndIndices = getStartEndIndexByQuestionNr(questionNr);
+        result.replace(startEndIndices[0], startEndIndices[1], newBits);
+        this.setAnswersToQuestionsBytes(Bits.getByteByString(result.toString()));
+    }
+
+    /**
+     * Accepts only question number between 1 and 50
+     * @param questionNr the question number to validate
+     * @return False if validatation fails, otherwise true
+     */
+    private boolean validateQuestionNr(int questionNr) {
+        if(questionNr < 1 || questionNr > 50){
+            Log.e(QolQuestionnaire.class.getSimpleName(), "getBitsByQuestionNr accepts only numbers between [1 - 50]");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Calculates the beginning index, inclusive and the ending index, exclusive
+     * of the question by question number
+     * @param questionNr the question number
+     * @return an array containing the beginning and ending index
+     */
+    private int[] getStartEndIndexByQuestionNr(int questionNr) {
+        int [] indexStartEnd = new int[2];
+        int beginningIndex = 0;
+        int endingIndex = 0;
         if(questionNr < 29){
-            byteStartIndex = (questionNr * 4) - 1;
+            questionNr = questionNr -1;
+            beginningIndex = (questionNr * 4);
+            endingIndex = beginningIndex + 4;
         }
         else if( questionNr == 29){
-            byteStartIndex = (28 * 4) -1;
+            beginningIndex = (28 * 4);
+            endingIndex = beginningIndex + 8;
         }
-
-        //Entry<String,Integer> e = new Entry<String, Integer>("w",3);
-        /*
-        for(int i = 0; i < answersToQuestionsBytes.length; i++){
-            if(i == 28 || i == 29) // question 29 and 30 are different
-                result = Bits.getStringByByte(answersToQuestionsBytes);
-            else
-                result = answersToQuestionsBytes[i] = defaultByte[0];
+        else if( questionNr == 30){
+            beginningIndex = (28 * 4) + 8;
+            endingIndex = beginningIndex + 8;
         }
-        */
-        return result.substring(byteStartIndex, byteEndIndex);
+        else if(questionNr > 30){
+            questionNr = questionNr -1;
+            int restIndex = ((questionNr - 28) * 4) -  8;
+            beginningIndex = (28 * 4) + (2 * 8) + restIndex;
+            endingIndex = beginningIndex + 4;
+        }
+        indexStartEnd[0] = beginningIndex;
+        indexStartEnd[1] = endingIndex;
+        return indexStartEnd;
     }
 
     public Date getCreationDate_PK() {
