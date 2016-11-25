@@ -11,7 +11,7 @@ import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
-import com.artursworld.nccn.model.wizard.hadsd.AbstractHadsdStep;
+import com.artursworld.nccn.model.wizard.qualityoflife.QualityOfLifeStep;
 import com.github.fcannizzaro.materialstepper.style.TextStepper;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class WizardQualityOfLife extends TextStepper {
         // TODO: changes this to real selected user. Maybe this should not be transmitted to fragment. instead get it in fragment
         selectedUser = new UserManager().getAllUsers().get(0);
 
-        // laod questionnairy into fragments
+        // laod questionnaire into fragments
         putAllQuestionAndAnswersToNewFragments();
 
         // configuration
@@ -45,7 +45,8 @@ public class WizardQualityOfLife extends TextStepper {
      * Get all questions and answers from resource file and put them question by question into sinle fragments
      */
     private void putAllQuestionAndAnswersToNewFragments() {
-        List<TypedArray> questionnairyList = Questionnairy.getQuestionnairyListById(R.array.hadsd_questionnaire, App.getAppContext());
+        List<TypedArray> questionnairyList = Questionnairy.getQuestionnairyListById(R.array.quality_of_life_questionnaire, App.getAppContext());
+
         for(TypedArray questionItem: questionnairyList){
             String question = questionItem.getString(0);
             boolean isSpecialQuestion = question.equals(Strings.getStringByRId(R.string.c_seven_possible));
@@ -75,7 +76,7 @@ public class WizardQualityOfLife extends TextStepper {
         bundle.putStringArray(QUESTION_DATA, new String[]{question, answerA, answerB, answerC, answerD});
         bundle.putInt(QUESTION_NUMBER, currentWizardPosition ++);
         bundle.putString(SELECTED_USER, selectedUser.getName());
-        AbstractHadsdStep fragment = new AbstractHadsdStep();
+        QualityOfLifeStep fragment = new QualityOfLifeStep();
         fragment.setArguments(bundle);
         addStep(fragment);
     }
