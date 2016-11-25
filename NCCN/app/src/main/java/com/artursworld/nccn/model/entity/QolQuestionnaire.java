@@ -48,26 +48,42 @@ public class QolQuestionnaire {
         return result.substring(startEndIndices[0], startEndIndices[1]);
     }
 
-    //TODO: get Bits by question Nr. and set Bits by quest Nr.
+    /**
+     * Sets new bits to the question by question number (first nr. 1 and last 50)
+     * @param questionNr the question number
+     * @param newBits the new bits to set
+     */
     public void setBitsByQuestionNr(int questionNr, String newBits) {
-        if (validateQuestionNr(questionNr)) return;
+        if (validateInput(questionNr, newBits)) return;
+
+        // get current byte string
+        StringBuilder result = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));
+
+        // get indices of bits pattern to replace
+        int[] startEndIndices = getStartEndIndexByQuestionNr(questionNr);
+
+        // replace bit pattern
+        result.replace(startEndIndices[0], startEndIndices[1], newBits);
+
+        // set new results to real byte array using the string of bytes
+        this.setAnswersToQuestionsBytes(Bits.getByteByString(result.toString()));
+    }
+
+    private boolean validateInput(int questionNr, String newBits) {
+        if (validateQuestionNr(questionNr)) return true;
 
         if(questionNr == 29 || questionNr == 30)
             if (newBits.length() != 8){
                 Log.e(QolQuestionnaire.class.getSimpleName(), "setBitsByQuestionNr accepts only bits of length 8 if quesitonNr = 29 or 30");
-                return;
+                return true;
             }
 
         if(questionNr != 29 && questionNr !=30)
             if (newBits.length() !=4){
                 Log.e(QolQuestionnaire.class.getSimpleName(), "setBitsByQuestionNr accepts only bits of length 4 if quesitonNr != 29 or 30");
-                return;
+                return true;
             }
-
-        StringBuilder result = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));
-        int[] startEndIndices = getStartEndIndexByQuestionNr(questionNr);
-        result.replace(startEndIndices[0], startEndIndices[1], newBits);
-        this.setAnswersToQuestionsBytes(Bits.getByteByString(result.toString()));
+        return false;
     }
 
     /**
