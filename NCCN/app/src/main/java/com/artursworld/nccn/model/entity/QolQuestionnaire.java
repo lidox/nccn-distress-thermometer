@@ -17,8 +17,8 @@ public class QolQuestionnaire {
 
     // configuration
     private int questionCount = 50;
-    private byte[] defaultByte = Bits.getByteByString("00010001");
-    private byte[] exceptionalByte = Bits.getByteByString("00000001");
+    public static String defaultByte = "00010001";
+    public static String exceptionalByte = "00000001";
 
     public QolQuestionnaire(String userNameId){
         this.userNameId_FK = userNameId;
@@ -29,16 +29,16 @@ public class QolQuestionnaire {
         answersToQuestionsBytes = new byte[questionCount];
         for(int i = 0; i < questionCount; i++){
             if(i == 28 || i == 29) // question 29 and 30 are different
-                answersToQuestionsBytes[i] = exceptionalByte[0];
+                answersToQuestionsBytes[i] = Bits.getByteByString(exceptionalByte)[0];
             else
-                answersToQuestionsBytes[i] = defaultByte[0];
+                answersToQuestionsBytes[i] = Bits.getByteByString(defaultByte)[0];
         }
     }
 
     //TODO: get Bits by question Nr. and set Bits by quest Nr.
     public String getBitsByQuestionNr(int questionNr){
         String result = "";
-        Entry<String,Integer> e = new Entry<String, Integer>("w",3);
+        //Entry<String,Integer> e = new Entry<String, Integer>("w",3);
         /*
         for(int i = 0; i < answersToQuestionsBytes.length; i++){
             if(i == 28 || i == 29) // question 29 and 30 are different

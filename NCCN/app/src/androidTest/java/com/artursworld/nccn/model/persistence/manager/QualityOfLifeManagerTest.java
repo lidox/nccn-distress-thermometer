@@ -33,6 +33,15 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
     public void testConstructor(){
         QolQuestionnaire questionnaire = new QolQuestionnaire("Artur");
         String answers = questionnaire.getAnswersToQuestionsAsString();
-        assertEquals("muhahaha", answers);
+        StringBuilder expected = new StringBuilder();
+        for(int i = 1; i < 29 ; i++){
+            expected.append(QolQuestionnaire.defaultByte);
+        }
+        expected.append(QolQuestionnaire.exceptionalByte);
+        expected.append(QolQuestionnaire.exceptionalByte);
+        for(int i = 1; i < 31 ; i++){
+            expected.append(QolQuestionnaire.defaultByte);
+        }
+        assertEquals(expected.toString(), answers);
     }
 }
