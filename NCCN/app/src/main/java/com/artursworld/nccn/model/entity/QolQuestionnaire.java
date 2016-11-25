@@ -37,8 +37,17 @@ public class QolQuestionnaire {
 
     //TODO: get Bits by question Nr. and set Bits by quest Nr.
     public String getBitsByQuestionNr(int questionNr){
-        String result = "";
-        Entry<String,Integer> e = new Entry<String, Integer>("w",3);
+        StringBuilder result = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));
+        int byteStartIndex = 0;
+        int byteEndIndex = 0;
+        if(questionNr < 29){
+            byteStartIndex = (questionNr * 4) - 1;
+        }
+        else if( questionNr == 29){
+            byteStartIndex = (28 * 4) -1;
+        }
+
+        //Entry<String,Integer> e = new Entry<String, Integer>("w",3);
         /*
         for(int i = 0; i < answersToQuestionsBytes.length; i++){
             if(i == 28 || i == 29) // question 29 and 30 are different
@@ -47,7 +56,7 @@ public class QolQuestionnaire {
                 result = answersToQuestionsBytes[i] = defaultByte[0];
         }
         */
-        return result;
+        return result.substring(byteStartIndex, byteEndIndex);
     }
 
     public Date getCreationDate_PK() {
