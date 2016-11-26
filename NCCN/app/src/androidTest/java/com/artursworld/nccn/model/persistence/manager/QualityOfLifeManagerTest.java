@@ -6,6 +6,7 @@ import android.test.RenamingDelegatingContext;
 
 import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
+import com.artursworld.nccn.model.entity.User;
 
 import org.junit.Test;
 
@@ -92,4 +93,60 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         String questionNr30_2 = questionnaire.getBitsByQuestionNr(30);
         assertEquals("In this case it should not change the bis, because wrong input", "01010101", questionNr30_2);
     }
+
+    @Test
+    public void testUpdateQuestionnaire() throws Exception {
+        // create user
+        User medUser = new User("Rush Hour");
+        userDB.insertUser(medUser);
+
+        // create questionnaire with question 1 = 0111
+        int questionNr = 1;
+        QolQuestionnaire q = new QolQuestionnaire(medUser.getName());
+        q.setBitsByQuestionNr(questionNr, "0111");
+        String s=q.getAnswersToQuestionsAsString();
+        db.insertQuestionnaire(q);
+
+        // check if created
+        QolQuestionnaire result = db.getQolQuestionnaireByUserName(medUser.getName());
+        assertEquals("0111", result.getBitsByQuestionNr(questionNr));
+
+        // update question nr. 1
+        result.setBitsByQuestionNr(questionNr, "0011");
+        db.update(result);
+
+        // check update
+        QolQuestionnaire updated = db.getQolQuestionnaireByUserName(medUser.getName());
+        assertEquals("0011", updated.getBitsByQuestionNr(questionNr));
+
+        // update question nr. 30 because it has 8 bits instead of 4 like the others
+        updated.setBitsByQuestionNr(30, "00001111");
+        db.update(updated);
+
+        // check the update
+        QolQuestionnaire updated30 = db.getQolQuestionnaireByUserName(medUser.getName());
+        assertEquals("00001111", updated30.getBitsByQuestionNr(30));
+    }
+
+    /*
+    @Test
+    public void testExceptionalCase1111(){
+        // create user
+        User medUser = new User("Revolution");
+        userDB.insertUser(medUser);
+
+        // create questionnaire with question 1 = 1111
+        int questionNr = 1;
+        QolQuestionnaire q = new QolQuestionnaire(medUser.getName());
+        q.setBitsByQuestionNr(questionNr, "1111");
+        String s=q.getAnswersToQuestionsAsString();
+        String s2 = q.getBitsByQuestionNr(questionNr);
+        db.insertQuestionnaire(q);
+
+        // check if created
+        QolQuestionnaire result = db.getQolQuestionnaireByUserName(medUser.getName());
+        assertEquals("1111", result.getBitsByQuestionNr(questionNr));
+    }
+    */
+
 }

@@ -66,7 +66,9 @@ public class QolQuestionnaire {
         result.replace(startEndIndices[0], startEndIndices[1], newBits);
 
         // set new results to real byte array using the string of bytes
-        this.setAnswersToQuestionsBytes(Bits.getByteByString(result.toString()));
+        byte[] byteByString = Bits.getByteByString(result.toString());
+        //String s = Bits.getStringByByte(byteByString);
+        this.setAnswersToQuestionsBytes(byteByString);
     }
 
     private boolean validateInput(int questionNr, String newBits) {

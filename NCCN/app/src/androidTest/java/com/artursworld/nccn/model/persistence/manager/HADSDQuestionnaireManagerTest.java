@@ -10,8 +10,6 @@ import com.artursworld.nccn.model.entity.User;
 
 import org.junit.Test;
 
-import java.math.BigInteger;
-
 
 public class HADSDQuestionnaireManagerTest extends InstrumentationTestCase {
 

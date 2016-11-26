@@ -21,6 +21,18 @@ public class Bits {
         }
 
         return new BigInteger(byteString, 2).toByteArray();
+         /*
+        ArrayList<Integer> arrayList = new ArrayList<>();
+
+        for(String str : byteString.split("(?<=\\G.{8})"))
+            arrayList.add(Integer.parseInt(str, 2));
+
+        byte[] result = new byte[arrayList.size()];
+        for(int i = 0; i < arrayList.size(); i++){
+            result[i]= arrayList.get(i).byteValue();
+        }
+        return result;
+        */
     }
 
     public static String getStringByByte(byte[] bytes){
@@ -30,6 +42,7 @@ public class Bits {
                 ret.append(Integer.toBinaryString(b & 255 | 256).substring(1));
             }
         }
+
         return ret.toString();
     }
 
