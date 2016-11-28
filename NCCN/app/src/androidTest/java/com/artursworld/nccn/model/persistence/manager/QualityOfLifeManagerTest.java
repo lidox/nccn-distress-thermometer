@@ -40,7 +40,6 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         expect.append("0000000100000001");
         expect.append("00010001000100010001000100010001000100010001000100010001000100010001000100010001"); // 20
         assertEquals(expect.toString(), questionnaire.getAnswersToQuestionsAsString());
-        
         assertEquals("8 bits per byte arrays * 26 arrays",8 * 26, questionnaire.getAnswersToQuestionsAsString().length());
     }
 
