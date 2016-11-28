@@ -106,12 +106,19 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         int questionNr = 1;
         QolQuestionnaire q = new QolQuestionnaire(medUser.getName());
         q.setBitsByQuestionNr(questionNr, "0111");
-        String s=q.getAnswersToQuestionsAsString();
+        q.setBitsByQuestionNr(7,"1111");
+        q.setBitsByQuestionNr(8,"1100");
+        q.setBitsByQuestionNr(9,"1000");
+        q.setBitsByQuestionNr(10,"1110");
         db.insertQuestionnaire(q);
 
         // check if created
         QolQuestionnaire result = db.getQolQuestionnaireByUserName(medUser.getName());
         assertEquals("0111", result.getBitsByQuestionNr(questionNr));
+        assertEquals("1111", result.getBitsByQuestionNr(7));
+        assertEquals("1100", result.getBitsByQuestionNr(8));
+        assertEquals("1000", result.getBitsByQuestionNr(9));
+        assertEquals("1110", result.getBitsByQuestionNr(10));
 
         // update question nr. 1
         result.setBitsByQuestionNr(questionNr, "0011");
@@ -176,6 +183,27 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         Iterable<String> result = Splitter.fixedLength(8).split(byteString);
         String[] parts = Iterables.toArray(result, String.class);
         assertEquals(26,parts.length);
+
+        String byteString2 = "100000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000000010000000100010001000100010001000100010001000100010001000100010001000100010001000100010001";
+        Iterable<String> result2 = Splitter.fixedLength(8).split(byteString2);
+        String[] parts2 = Iterables.toArray(result2, String.class);
+        assertEquals(26,parts2.length);
+    }
+
+    @Test
+    public void testBits1(){
+        String bits = "11110000";
+        byte [] asByte = Bits.getByteByString(bits);
+        String bitsAgain = Bits.getStringByByte(asByte);
+        assertEquals(bits, bitsAgain);
+    }
+
+    @Test
+    public void testBits2(){
+        String bits = "1111000011110000";
+        byte [] asByte = Bits.getByteByString(bits);
+        String bitsAgain = Bits.getStringByByte(asByte);
+        assertEquals(bits, bitsAgain);
     }
 
 

@@ -8,40 +8,27 @@ import com.google.common.collect.Iterables;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class Bits {
 
     /**
-     * Get an byte array by string
-     * @param byteString the string representing a byte
+     * Get an byte array by binary string
+     * @param binaryString the string representing a byte
      * @return an byte array
      */
-    public static byte[] getByteByString(String byteString){
-        /*BigInteger bigInteger = new BigInteger(byteString, 2);
-        return bigInteger.toByteArray();*/
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        Iterable<String> result = Splitter.fixedLength(8).split(byteString);
-        String[] parts = Iterables.toArray(result, String.class);
-        for(String str : parts){
-            arrayList.add(Integer.parseInt(str, 2));
-        }
-
-
-        byte[] ret = new byte[arrayList.size()];
-        for(int i = 0; i < arrayList.size(); i++){
-            ret[i] = arrayList.get(i).byteValue();
+    public static byte[] getByteByString(String binaryString){
+        Iterable iterable = Splitter.fixedLength(8).split(binaryString);
+        byte[] ret = new byte[Iterables.size(iterable) ];
+        Iterator iterator = iterable.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            Integer byteAsInt = Integer.parseInt(iterator.next().toString(), 2);
+            ret[i] = byteAsInt.byteValue();
+            i++;
         }
         return ret;
-
-        /*
-        byte[] b = new byte[byteString.length()];
-        for (int i=0; i<byteString.length(); i++) {
-            b[i]= byteString.charAt(i)=='1' ? (byte)1 : (byte)0;
-        }
-        return b;
-        */
-
     }
 
     public static String getStringByByte(byte[] bytes){
