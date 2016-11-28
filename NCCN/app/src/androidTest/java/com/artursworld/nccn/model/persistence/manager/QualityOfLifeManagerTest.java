@@ -7,6 +7,8 @@ import android.test.RenamingDelegatingContext;
 import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 
 import org.junit.Test;
 
@@ -128,7 +130,7 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         assertEquals("00001111", updated30.getBitsByQuestionNr(30));
     }
 
-    /*
+
     @Test
     public void testExceptionalCase1111(){
         // create user
@@ -147,6 +149,34 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         QolQuestionnaire result = db.getQolQuestionnaireByUserName(medUser.getName());
         assertEquals("1111", result.getBitsByQuestionNr(questionNr));
     }
-    */
+
+
+    @Test
+    public void testExceptionalCase1000(){
+        // create user
+        User medUser = new User("International");
+        userDB.insertUser(medUser);
+
+        // create questionnaire with question 1 = 1000
+        int questionNr = 1;
+        QolQuestionnaire q = new QolQuestionnaire(medUser.getName());
+        q.setBitsByQuestionNr(questionNr, "1000");
+        //String s=q.getAnswersToQuestionsA sString();
+        //String s2 = q.getBitsByQuestionNr(questionNr);
+        db.insertQuestionnaire(q);
+
+        // check if created
+        QolQuestionnaire result = db.getQolQuestionnaireByUserName(medUser.getName());
+        assertEquals("1000", result.getBitsByQuestionNr(questionNr));
+    }
+
+    @Test
+    public void testRegEx(){
+        String byteString = "1000000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000000010000000100010001000100010001000100010001000100010001000100010001000100010001000100010001";
+        Iterable<String> result = Splitter.fixedLength(8).split(byteString);
+        String[] parts = Iterables.toArray(result, String.class);
+        assertEquals(26,parts.length);
+    }
+
 
 }
