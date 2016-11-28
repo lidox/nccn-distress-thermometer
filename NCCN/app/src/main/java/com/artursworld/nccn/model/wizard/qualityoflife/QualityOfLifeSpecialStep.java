@@ -20,19 +20,16 @@ import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
-public class QualityOfLifeStep extends AbstractStep {
+public class QualityOfLifeSpecialStep extends AbstractStep {
 
     // View
     private TextView questionLabel;
-    private RadioButton answerA_btn;
-    private RadioButton answerB_btn;
-    private RadioButton answerC_btn;
-    private RadioButton answerD_btn;
+
 
     private User selectedUser = null;
     private QolQuestionnaire questionnaire = null;
     private int currentQuestionNumber = 0;
-    private RadioGroup answersGroup;
+    //private RadioGroup answersGroup = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,13 +47,14 @@ public class QualityOfLifeStep extends AbstractStep {
      */
     @NonNull
     private View getView(LayoutInflater inflater, ViewGroup container) {
-        View v = inflater.inflate(R.layout.step_quality_of_life, container, false);
+        View v = inflater.inflate(R.layout.step_special_quality_of_life, container, false);
         questionLabel = (TextView) v.findViewById(R.id.question_label);
-        answerA_btn = (RadioButton) v.findViewById(R.id.answer_a);
+        /*answerA_btn = (RadioButton) v.findViewById(R.id.answer_a);
         answerB_btn = (RadioButton) v.findViewById(R.id.answer_b);
         answerC_btn = (RadioButton) v.findViewById(R.id.answer_c);
         answerD_btn = (RadioButton) v.findViewById(R.id.answer_d);
-        answersGroup = (RadioGroup) v.findViewById(R.id.answer_radio_group);
+        */
+        //answersGroup = (RadioGroup) v.findViewById(R.id.answer_radio_group);
         return v;
     }
 
@@ -64,13 +62,14 @@ public class QualityOfLifeStep extends AbstractStep {
      * Adds a change listener to the radio button group
      */
     private void addAnswerChangeListener() {
-        answersGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        /*answersGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 Log.i("", "onCheckedChanged("+radioGroup.toString()+", "+i+")");
                 onSelectedAnswerChanged(answersGroup);
             }
         });
+        */
     }
 
     /**
@@ -106,16 +105,18 @@ public class QualityOfLifeStep extends AbstractStep {
         if (questionData != null){
             String question = questionData[0];
             questionLabel.setText(question);
+            /*
             answerA_btn.setText(questionData[1]);
             answerB_btn.setText(questionData[2]);
             answerC_btn.setText(questionData[3]);
             answerD_btn.setText(questionData[4]);
+            */
         }
 
         currentQuestionNumber = bundle.getInt(WizardQualityOfLife.QUESTION_NUMBER);
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
         questionnaire = new QualityOfLifeManager().getQolQuestionnaireByUserName(selectedUser.getName());
-        checkRadioButtonByBits();
+        //checkRadioButtonByBits();
         addAnswerChangeListener();
     }
 
@@ -123,6 +124,7 @@ public class QualityOfLifeStep extends AbstractStep {
      * Sets the radio button as 'checked' by byte array coming from database
      */
     private void checkRadioButtonByBits() {
+        /*
         byte[] answerByte = Bits.getByteByString(questionnaire.getBitsByQuestionNr(currentQuestionNumber));
         Log.i(QualityOfLifeStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr:" +(currentQuestionNumber) + "(index:"+currentQuestionNumber+")");
         StringBuilder bits = new StringBuilder(Bits.getStringByByte(answerByte)).reverse();
@@ -130,6 +132,7 @@ public class QualityOfLifeStep extends AbstractStep {
         RadioButton buttonToCheck = ((RadioButton)answersGroup.getChildAt(indexToCheck));
         if(buttonToCheck != null)
             buttonToCheck.setChecked(true);
+            */
     }
 
     @Override
@@ -167,3 +170,4 @@ public class QualityOfLifeStep extends AbstractStep {
         return "<b>You must click!</b> <small>this is the condition!</small>";
     }
 }
+

@@ -57,4 +57,14 @@ public class Bits {
         return  Bits.getByteByString(bits.toString());
     }
 
+    public static String getNewBinaryStringByRadioBtn(boolean checked, int index, String oldBinaryString, boolean needReset) {
+        if(needReset)
+            oldBinaryString = oldBinaryString.replace("1", "0");
+
+        int bit = checked ? 1 : 0;
+        StringBuilder bits = new StringBuilder(oldBinaryString);
+        bits.setCharAt( (bits.length() - index - 1), Character.forDigit(bit, 10));
+        return  bits.toString();
+    }
+
 }

@@ -11,6 +11,7 @@ import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
+import com.artursworld.nccn.model.wizard.qualityoflife.QualityOfLifeSpecialStep;
 import com.artursworld.nccn.model.wizard.qualityoflife.QualityOfLifeStep;
 import com.github.fcannizzaro.materialstepper.style.TextStepper;
 
@@ -52,8 +53,11 @@ public class WizardQualityOfLife extends TextStepper {
             boolean isSpecialQuestion = question.equals(Strings.getStringByRId(R.string.c_seven_possible));
             if(isSpecialQuestion){
                 Log.i(WizardQualityOfLife.class.getSimpleName(), "Special questions");
+                question = questionItem.getString(1);
+                addFragmentStepBySpecialQuestion(question);
             }
             else{
+                Log.i("", "loading question= " + question);
                 String answerA = questionItem.getString(1);
                 String answerB = questionItem.getString(2);
                 String answerC = questionItem.getString(3);
@@ -61,6 +65,16 @@ public class WizardQualityOfLife extends TextStepper {
                 addFragmentStepByTextIds(question, answerA, answerB, answerC, answerD);
             }
         }
+    }
+
+    private void addFragmentStepBySpecialQuestion(String question) {
+        Bundle bundle = new Bundle();
+        bundle.putStringArray(QUESTION_DATA, new String[]{question});
+        bundle.putInt(QUESTION_NUMBER, currentWizardPosition ++);
+        bundle.putString(SELECTED_USER, selectedUser.getName());
+        QualityOfLifeSpecialStep fragment = new QualityOfLifeSpecialStep();
+        fragment.setArguments(bundle);
+        addStep(fragment);
     }
 
     /**

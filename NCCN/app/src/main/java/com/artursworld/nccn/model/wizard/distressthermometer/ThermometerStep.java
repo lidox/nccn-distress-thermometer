@@ -24,20 +24,6 @@ public class ThermometerStep extends AbstractStep {
         View v = inflater.inflate(R.layout.thermometer_step, container, false);
         //button = (Button) v.findViewById(R.id.button);
 
-        if (savedInstanceState != null)
-            i = savedInstanceState.getInt(CLICK, 0);
-
-       // button.setText(Html.fromHtml("Tap <b>" + i + "</b>"));
-
-       /* button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((Button) view).setText(Html.fromHtml("Tap <b>" + (++i) + "</b>"));
-                mStepper.getExtras().putInt(CLICK, i);
-            }
-        });
-        */
-
         return v;
     }
 

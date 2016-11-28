@@ -458,7 +458,10 @@
     </string-array>
     <string-array name="question50_quality_of_life">
         <item>@string/did_you_have_trouble_controlling_your_bladder</item>
-        <item>@array/answers_quality_of_life</item>
+        <item>@string/not_at_all</item>
+        <item>@string/a_little</item>
+        <item>@string/moderate</item>
+        <item>@string/very</item>
     </string-array>
 
     <string-array name="answers_quality_of_life">
@@ -521,30 +524,4 @@
         <item>@array/question49_quality_of_life</item>
         <item>@array/question50_quality_of_life</item>
     </string-array>
-
-    <string name="physical_condition_or_your_medical_treatment_your_family_life_impaired">Hat Ihr körperlicher Zustand oder Ihre medizinische Behandlung Ihr Familienleben beeinträchtigt?</string>
-    <string name="physical_condition_or_medical_treatment_compromised_your_cohabitation_with_other_people">Hat Ihr körperlicher Zustand oder Ihre medizinische Behandlung Ihr Zusammensein oder Ihre gemeinsamen Unternehmungen mit anderen Menschen beeinträchtigt?</string>
-    <string name="physical_condition_or_your_medical_treatment_financial_difficulties">Hat Ihr körperlicher Zustand oder Ihre medizinische Behandlung für Sie finanzielle Schwierigkeiten mit sich gebracht?</string>
-    <string name="how_would_you_rate_your_overall_health_over_the_past_week">Wie würden Sie insgesamt Ihren Gesundheitszustand während der letzten Woche einschätzen?</string>
-    <string name="how_would_you_rate_your_overall_quality_of_life_during_the_last_week">Wie würden Sie insgesamt Ihre Lebensqualität während der letzten Woche einschätzen?</string>
-    <string name="did_you_feel_unsure_about_the_future">Fühlten Sie sich unsicher in Bezug auf die Zukunft?</string>
-    <string name="did_you_feel_that_you_suffered_health_setbacks">Hatten Sie das Gefühl, gesundheitliche Rückschläge erlitten zu haben?</string>
-    <string name="were_you_concerned_that_your_famaly_life_could_be_disturbed">Waren Sie besorgt, dass Ihr Familienleben gestört werden könnte?</string>
-    <string name="did_you_have_a_headache">Hatten Sie Kopfschmerzen?</string>
-    <string name="has_your_attitude_towards_the_future_deteriorated">Hat sich Ihre Einstellung zur Zukunft verschlechtert?</string>
-    <string name="have_you_seen_double">Haben Sie doppelt gesehen?</string>
-    <string name="have_you_seen_blurry">Haben Sie verschwommen gesehen?</string>
-    <string name="did_you_have_trouble_reading">Hatten Sie Schwierigkeiten beim Lesen?</string>
-    <string name="did_you_have_seizures">Hatten Sie Anfälle?</string>
-    <string name="did_you_have_a_feeling_of_weakness_on_a_body_side">Hatten Sie ein Schwächegefühl auf einer Körperseite?</string>
-    <string name="was_it_hard_to_find_the_right_words_to_express_yourself">Bereitete es Ihnen Mühe, die richtigen Worte zu finden, um sich auszudrücken?</string>
-    <string name="did_you_have_difficulty_speaking">Hatten Sie Schwierigkeiten beim Sprechen?</string>
-    <string name="was_it_hard_for_you_to_share_your_thoughts_with_others">Bereitete es Ihnen Mühe, anderen Ihre Gedanken mitzuteilen?</string>
-    <string name="did_you_feel_sleepy_during_the_day">Fühlten Sie sich tagsüber schläfrig?</string>
-    <string name="did_you_have_any_coordination_problems">Hatten Sie Koordinationsprobleme?</string>
-    <string name="do_you_care_about_your_hair_loss">Machte Ihnen Haarverlust zu schaffen?</string>
-    <string name="did_your_skin_hurt">Machte Ihnen Hautjucken zu schaffen?</string>
-    <string name="did_you_have_a_feeling_of_weakness_in_both_legs">Hatten Sie ein Schwächegefühl in beiden Beinen?</string>
-    <string name="did_you_feel_uncomfortable">Fühlten Sie sich unsicher auf den Beinen?</string>
-    <string name="did_you_have_trouble_controlling_your_bladder">Hatten Sie Mühe Ihre Blase zu kontrollieren?</string>
 </resources>
