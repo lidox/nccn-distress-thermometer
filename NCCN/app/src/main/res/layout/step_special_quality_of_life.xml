@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/question_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:paddingTop="20dp"
+            android:textColor="#5C5C5C"
+            android:text=""
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <TextView
+            android:id="@+id/place_holder"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/question_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/place_holder"
+            android:layout_margin="5dp"
+            android:text="1"
+            android:textSize="@dimen/textAppearanceLabel" />
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/thermometer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/place_holder"
+            app:dsb_allowTrackClickToDrag="false"
+            app:dsb_indicatorColor="@color/colorPrimaryDark"
+            app:dsb_indicatorFormatter="%d"
+            app:dsb_max="7"
+            app:dsb_min="1"
+            app:dsb_value="5"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:dsb_progressColor="@color/colorAccent"
+            app:dsb_rippleColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/seven"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/place_holder"
+            android:layout_margin="5dp"
+            android:text="7"
+            android:textSize="@dimen/textAppearanceLabel" />
+
+        <TextView
+            android:id="@+id/description_left_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/thermometer"
+            android:layout_margin="5dp"
+            android:text="@string/very_bad"
+            android:textSize="@dimen/textAppearanceLabel" />
+
+        <TextView
+            android:id="@+id/description_right_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:text="@string/very_good"
+            android:layout_below="@+id/thermometer"
+            android:textSize="@dimen/textAppearanceLabel" />
+
+    </RelativeLayout>
+
+</ScrollView>

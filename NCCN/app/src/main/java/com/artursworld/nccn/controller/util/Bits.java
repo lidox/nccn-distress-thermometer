@@ -3,19 +3,32 @@ package com.artursworld.nccn.controller.util;
 import android.util.Log;
 
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class Bits {
 
-    public static byte[] getByteByString(String byteString){
-        if(byteString.length() % 8 == 1){
-            Log.e(HADSDQuestionnaire.class.getSimpleName(), "the byteString % 8 = 0 must be fulfilled");
-            return null;
+    /**
+     * Get an byte array by binary string
+     * @param binaryString the string representing a byte
+     * @return an byte array
+     */
+    public static byte[] getByteByString(String binaryString){
+        Iterable iterable = Splitter.fixedLength(8).split(binaryString);
+        byte[] ret = new byte[Iterables.size(iterable) ];
+        Iterator iterator = iterable.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            Integer byteAsInt = Integer.parseInt(iterator.next().toString(), 2);
+            ret[i] = byteAsInt.byteValue();
+            i++;
         }
-
-        return new BigInteger(byteString, 2).toByteArray();
+        return ret;
     }
 
     public static String getStringByByte(byte[] bytes){
@@ -25,6 +38,7 @@ public class Bits {
                 ret.append(Integer.toBinaryString(b & 255 | 256).substring(1));
             }
         }
+
         return ret.toString();
     }
 
@@ -41,6 +55,16 @@ public class Bits {
         StringBuilder bits = new StringBuilder(Bits.getStringByByte(new byte[answerByte.length]));
         bits.setCharAt( (bits.length() - index - 1), Character.forDigit(bit, 10));
         return  Bits.getByteByString(bits.toString());
+    }
+
+    public static String getNewBinaryStringByRadioBtn(boolean checked, int index, String oldBinaryString, boolean needReset) {
+        if(needReset)
+            oldBinaryString = oldBinaryString.replace("1", "0");
+
+        int bit = checked ? 1 : 0;
+        StringBuilder bits = new StringBuilder(oldBinaryString);
+        bits.setCharAt( (bits.length() - index - 1), Character.forDigit(bit, 10));
+        return  bits.toString();
     }
 
 }

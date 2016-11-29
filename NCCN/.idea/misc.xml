@@ -34,7 +34,7 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" default="true" assert-keyword="true" jdk-15="true">
+  <component name="ProjectRootManager" version="2">>>>>>> a5daac116a7111bb98c6a9215d8f7378603beddb
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
