@@ -1,17 +1,13 @@
 package com.artursworld.nccn.model.entity;
 
+
 import android.util.Log;
 
 import com.artursworld.nccn.controller.util.Bits;
-import com.artursworld.nccn.controller.util.Questionnairy;
 
 import java.util.Date;
-import java.util.Map;
 
-/**
- * Represents the Quality Of Life (Qol) Questionnaire
- */
-public class QolQuestionnaire {
+public class DistressThermometerQuestionnaire {
 
     private Date creationDate_PK;
     private String userNameId_FK;
@@ -19,33 +15,30 @@ public class QolQuestionnaire {
     private byte[] answersToQuestionsBytes;
 
     // configuration
-    private int questionByteCount = 26;
-    public static String defaultByte = "00010001";
-    public static String exceptionalByte = "00000001";
+    private int questionByteCount = 6; // [10+5+2+6+2+21+(2)]/8= 6 bytes a 8 Bits
+    private String CLASS_NAME = DistressThermometerQuestionnaire.class.getSimpleName();
 
-    public QolQuestionnaire(String userNameId){
+    public DistressThermometerQuestionnaire(String userNameId){
         this.userNameId_FK = userNameId;
         this.creationDate_PK = new Date();
         this.updateDate = new Date();
 
-        // init answer bytes
+        // initialize default answer bytes
         answersToQuestionsBytes = new byte[questionByteCount];
-        int index = 0;
-        for(; index < 14 ; index++){
-            answersToQuestionsBytes[index] = Bits.getByteByString(defaultByte)[0];
-        }
-        answersToQuestionsBytes[index++] = Bits.getByteByString(exceptionalByte)[0];
-        answersToQuestionsBytes[index++] = Bits.getByteByString(exceptionalByte)[0];
-        for(; index < 26 ; index++){
-            answersToQuestionsBytes[index] = Bits.getByteByString(defaultByte)[0];
-        }
+        byte defaultByte = Bits.getByteByString("00000000")[0];
+        answersToQuestionsBytes[0] = defaultByte;
+        answersToQuestionsBytes[1] = Bits.getByteByString("1000000")[0];
+        answersToQuestionsBytes[2] = defaultByte;
+        answersToQuestionsBytes[3] = defaultByte;
+        answersToQuestionsBytes[4] = defaultByte;
+        answersToQuestionsBytes[5] = defaultByte;
     }
 
     public String getBitsByQuestionNr(int questionNr){
         if (validateQuestionNr(questionNr)) return null;
-        StringBuilder result = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));
+        StringBuilder currentBinaryAnswerString = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));
         int[] startEndIndices = getStartEndIndexByQuestionNr(questionNr);
-        return result.substring(startEndIndices[0], startEndIndices[1]);
+        return currentBinaryAnswerString.substring(startEndIndices[0], startEndIndices[1]);
     }
 
     /**
@@ -89,13 +82,13 @@ public class QolQuestionnaire {
     }
 
     /**
-     * Accepts only question number between 1 and 50
+     * Accepts only question number between 1 and 6
      * @param questionNr the question number to validate
      * @return True if validation fails, otherwise false
      */
     private boolean validateQuestionNr(int questionNr) {
-        if(questionNr < 1 || questionNr > 50){
-            Log.e(QolQuestionnaire.class.getSimpleName(), "getBitsByQuestionNr accepts only numbers between [1 - 50]");
+        if(questionNr < 1 || questionNr > 6){
+            Log.e(CLASS_NAME, "validateQuestionNr accepts only numbers between [1 - 6]");
             return true;
         }
         return false;
@@ -111,24 +104,30 @@ public class QolQuestionnaire {
         int [] indexStartEnd = new int[2];
         int beginningIndex = 0;
         int endingIndex = 0;
-        if(questionNr < 29){
-            questionNr = questionNr -1;
-            beginningIndex = (questionNr * 4);
-            endingIndex = beginningIndex + 4;
+
+        if(questionNr == 1){
+            beginningIndex = 0;
+            endingIndex = 9;
         }
-        else if( questionNr == 29){
-            beginningIndex = (28 * 4);
-            endingIndex = beginningIndex + 8;
+        else if( questionNr == 2){
+            beginningIndex = 10;
+            endingIndex =  14;
         }
-        else if( questionNr == 30){
-            beginningIndex = (28 * 4) + 8;
-            endingIndex = beginningIndex + 8;
+        else if( questionNr == 3){
+            beginningIndex = 15;
+            endingIndex = 16;
         }
-        else if(questionNr > 30){
-            questionNr = questionNr -1;
-            int restIndex = ((questionNr - 28) * 4) -  8;
-            beginningIndex = (28 * 4) + (2 * 8) + restIndex;
-            endingIndex = beginningIndex + 4;
+        else if(questionNr == 4){
+            beginningIndex = 17;
+            endingIndex = 22;
+        }
+        else if( questionNr == 5){
+            beginningIndex = 23;
+            endingIndex =  24;
+        }
+        else if( questionNr == 6){
+            beginningIndex = 25;
+            endingIndex =  45;
         }
         indexStartEnd[0] = beginningIndex;
         indexStartEnd[1] = endingIndex;
