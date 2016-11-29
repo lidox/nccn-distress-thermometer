@@ -37,8 +37,8 @@ public class Launcher extends AppCompatActivity {
 
         UserManager m = new UserManager();
         m.insertUser(new User("Artur Schaefer"));
-        //QualityOfLifeManager qm = new QualityOfLifeManager();
-        //qm.insertQuestionnaire(new QolQuestionnaire("Artur Schaefer"));
+        QualityOfLifeManager qm = new QualityOfLifeManager();
+        qm.insertQuestionnaire(new QolQuestionnaire("Artur Schaefer"));
         //HADSDQuestionnaireManager qm = new HADSDQuestionnaireManager();
         //qm.insertQuestionnaire(new HADSDQuestionnaire("Artur Schaefer"));
         /**/

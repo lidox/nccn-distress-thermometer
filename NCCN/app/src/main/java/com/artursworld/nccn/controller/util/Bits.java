@@ -67,4 +67,10 @@ public class Bits {
         return  bits.toString();
     }
 
+    public static String getNewBinaryStringByIndex(int newValueIndex, String oldBinaryString) {
+        oldBinaryString = oldBinaryString.replace("1", "0");
+        StringBuilder bits = new StringBuilder(oldBinaryString);
+        bits.setCharAt( (bits.length() - newValueIndex - 1), Character.forDigit(1, 10));
+        return  bits.toString();
+    }
 }
