@@ -27,7 +27,7 @@ public class DistressThermometerQuestionnaire {
         answersToQuestionsBytes = new byte[questionByteCount];
         byte defaultByte = Bits.getByteByString("00000000")[0];
         answersToQuestionsBytes[0] = defaultByte;
-        answersToQuestionsBytes[1] = Bits.getByteByString("1000000")[0];
+        answersToQuestionsBytes[1] = Bits.getByteByString("00100000")[0];
         answersToQuestionsBytes[2] = defaultByte;
         answersToQuestionsBytes[3] = defaultByte;
         answersToQuestionsBytes[4] = defaultByte;
@@ -68,7 +68,7 @@ public class DistressThermometerQuestionnaire {
     private boolean validateInput(int questionNr, String newBits) {
         if (validateQuestionNr(questionNr)) return true;
 
-        if (isValidLength(questionNr, newBits, 1, 10))
+        if (isValidLength(questionNr, newBits, 1, 11))
             return true;
 
         else if(isValidLength(questionNr, newBits, 2, 5))
@@ -124,27 +124,27 @@ public class DistressThermometerQuestionnaire {
 
         if(questionNr == 1){
             beginningIndex = 0;
-            endingIndex = 10;
+            endingIndex = 11;
         }
         else if( questionNr == 2){
-            beginningIndex = 10;
-            endingIndex =  15;
+            beginningIndex = 11;
+            endingIndex =  16;
         }
         else if( questionNr == 3){
-            beginningIndex = 15;
-            endingIndex = 17;
+            beginningIndex = 16;
+            endingIndex = 18;
         }
         else if(questionNr == 4){
-            beginningIndex = 17;
-            endingIndex = 23;
+            beginningIndex = 18;
+            endingIndex = 24;
         }
         else if( questionNr == 5){
-            beginningIndex = 23;
-            endingIndex =  25;
+            beginningIndex = 24;
+            endingIndex =  26;
         }
         else if( questionNr == 6){
-            beginningIndex = 25;
-            endingIndex =  46;
+            beginningIndex = 26;
+            endingIndex =  47;
         }
         indexStartEnd[0] = beginningIndex;
         indexStartEnd[1] = endingIndex;

@@ -2,37 +2,133 @@ package com.artursworld.nccn.model.wizard.distressthermometer;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
+import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.QolQuestionnaire;
+import com.artursworld.nccn.model.entity.User;
+import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
 public class PracticalProblemsStep extends AbstractStep {
 
-    private int currentIndex = 1;
-    private String simpleClassName = PracticalProblemsStep.class.getSimpleName();
-    private final static String CLICK = Strings.getStringByRId(R.string.click);
+    private String CLASS_NAME = PracticalProblemsStep.class.getSimpleName();
+
+    // UI
+    private CheckBox answerA_btn;
+    private CheckBox answerB_btn;
+    private CheckBox answerC_btn;
+    private CheckBox answerD_btn;
+    private CheckBox answerE_btn;
+
+    // CONTROLLER
+    private User selectedUser = null;
+    private DistressThermometerQuestionnaire questionnaire = null;
+    private int currentQuestionNumber = 2;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.step_practical_problems, container, false);
-
-        if (savedInstanceState != null)
-            currentIndex = savedInstanceState.getInt(CLICK, 0);
-
+        View v = getView(inflater, container);
+        initBundledData();
+        setUIValuesByDB();
+        addCheckboxChangeListener();
         return v;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle state) {
-        super.onSaveInstanceState(state);
-        state.putInt(CLICK, currentIndex);
+    private void addCheckboxChangeListener() {
+        answerA_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changeBitByIndex(isChecked, 0);
+            }
+        });
+        answerB_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changeBitByIndex(isChecked, 1);
+            }
+        });
+        answerC_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changeBitByIndex(isChecked, 2);
+            }
+        });
+        answerD_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changeBitByIndex(isChecked, 3);
+            }
+        });
+        answerE_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                changeBitByIndex(isChecked, 4);
+            }
+        });
     }
+
+    private void changeBitByIndex(boolean isChecked, int indexOfCheckBox) {
+        char bit = ((isChecked? 1 : 0) + "").charAt(0);
+        StringBuilder binaryString = new StringBuilder(questionnaire.getBitsByQuestionNr(currentQuestionNumber));
+        binaryString.setCharAt(indexOfCheckBox, bit);
+        questionnaire.setBitsByQuestionNr(currentQuestionNumber, binaryString.toString());
+        Log.i(CLASS_NAME, "changed bits to: " + binaryString.toString() + " for questionNr:" + currentQuestionNumber);
+        new DistressThermometerQuestionnaireManager().update(questionnaire);
+    }
+
+    private void setUIValuesByDB() {
+        String binaryStringByQuestionNr = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
+        Log.i(CLASS_NAME, "answer bits loaded: " + binaryStringByQuestionNr + " for questionNr:" + currentQuestionNumber);
+        StringBuilder bits = new StringBuilder(binaryStringByQuestionNr).reverse();
+
+        checkBoxByNameAndNr(bits, answerA_btn, 4);
+        checkBoxByNameAndNr(bits, answerB_btn, 3);
+        checkBoxByNameAndNr(bits, answerC_btn, 2);
+        checkBoxByNameAndNr(bits, answerD_btn, 1);
+        checkBoxByNameAndNr(bits, answerE_btn, 0);
+    }
+
+    private void checkBoxByNameAndNr(StringBuilder bits, CheckBox chechBox, int checkBoxNumber) {
+        boolean isChecked = bits.charAt(checkBoxNumber) == '1' ? true : false;
+        if(chechBox != null){
+            Log.i(CLASS_NAME, "check first checkbox = " + isChecked);
+            chechBox.setChecked(isChecked);
+        }
+    }
+
+    private void initBundledData() {
+        Bundle bundle = getArguments();
+        selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
+        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByUserName(selectedUser.getName());
+    }
+
+    @NonNull
+    private View getView(LayoutInflater inflater, ViewGroup container) {
+        View v = inflater.inflate(R.layout.step_practical_problems, container, false);
+        answerA_btn = (CheckBox) v.findViewById(R.id.housing_situation);
+        answerB_btn = (CheckBox) v.findViewById(R.id.insurance);
+        answerC_btn = (CheckBox) v.findViewById(R.id.work_or_school);
+        answerD_btn = (CheckBox) v.findViewById(R.id.transport);
+        answerE_btn = (CheckBox) v.findViewById(R.id.childcare);
+        return v;
+    }
+
 
     @Override
     public String name() {
@@ -46,17 +142,17 @@ public class PracticalProblemsStep extends AbstractStep {
 
     @Override
     public void onStepVisible() {
-        Log.i(simpleClassName, "onStepVisible");
+        Log.i(CLASS_NAME, "onStepVisible");
     }
 
     @Override
     public void onNext() {
-        Log.i(simpleClassName, "onNext");
+        Log.i(CLASS_NAME, "onNext");
     }
 
     @Override
     public void onPrevious() {
-        Log.i(simpleClassName, "onPrevious");
+        Log.i(CLASS_NAME, "onPrevious");
     }
 
     @Override
@@ -68,10 +164,4 @@ public class PracticalProblemsStep extends AbstractStep {
     public String error() {
         return "<b>You must click!</b> <small>this is the condition!</small>";
     }
-
-    @Override
-    public boolean nextIf() {
-        return currentIndex > 1;
-    }
-
 }

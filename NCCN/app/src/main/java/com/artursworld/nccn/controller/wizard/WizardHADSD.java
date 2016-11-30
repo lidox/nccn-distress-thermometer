@@ -27,7 +27,6 @@ public class WizardHADSD extends TextStepper {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         // TODO: changes this to real selected user. Maybe this should not be transmitted to fragment. instead get it in fragment
         selectedUser = new UserManager().getAllUsers().get(0);
 

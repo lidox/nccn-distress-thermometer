@@ -32,23 +32,25 @@ public class DistressThermometerQuestionnaireManagerTest extends Instrumentation
     public void testConstructor(){
         DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire("Artur");
         StringBuilder expect = new StringBuilder();
-        expect.append("0000000001"); // 10 bits first question
+        expect.append("00000000001"); // 11 bits first question
         expect.append("00000"); // 5 bits second question
         expect.append("00"); // 2 bits third question
         expect.append("000000"); // 6 bits fourth question
         expect.append("00"); // 2 bits fifth question
         expect.append("000000000000000000000"); // 21 bits sixt question
-        expect.append("00"); // 2 bits missing to full fill 6 full bytes
-
-        assertEquals(expect.toString(), questionnaire.getAnswersToQuestionsAsString());
-        assertEquals("8 bits per byte arrays * 6 arrays", 8 * 6, questionnaire.getAnswersToQuestionsAsString().length());
+        expect.append("0"); // 1 bits missing to full fill 6 full bytes
+ 
+        String expected1 = expect.toString();
+        String expected2 = questionnaire.getAnswersToQuestionsAsString();
+        assertEquals(expected1, expected2);
+        assertEquals("8 bits per byte arrays * 6 arrays", 8 * 6, expected2.length());
     }
 
     @Test
     public void testSetAndGetBitsByQuestionNr(){
         DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire("Franziska");
 
-        String questionBits = "1111111101";
+        String questionBits = "11111111011";
         int questionNr = 1;
         questionnaire.setBitsByQuestionNr(questionNr, questionBits);
         String questionResult = questionnaire.getBitsByQuestionNr(questionNr);
@@ -64,7 +66,7 @@ public class DistressThermometerQuestionnaireManagerTest extends Instrumentation
     @Test
     public void testSetAndGetBitsByQuestionNr2(){
         DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire("Patrizia");
-        String questionBits = "0000000000";
+        String questionBits = "00000000000";
         int questionNr = 1;
         questionnaire.setBitsByQuestionNr(questionNr, questionBits);
         String questionResult = questionnaire.getBitsByQuestionNr(questionNr);
@@ -170,7 +172,7 @@ public class DistressThermometerQuestionnaireManagerTest extends Instrumentation
 
         // create questionnaire with question by binary strings
         DistressThermometerQuestionnaire q = new DistressThermometerQuestionnaire(user.getName());
-        q.setBitsByQuestionNr(1, "1010101010");
+        q.setBitsByQuestionNr(1, "10101010101");
         q.setBitsByQuestionNr(2,"10001");
         q.setBitsByQuestionNr(3,"00");
         q.setBitsByQuestionNr(4,"101100");
@@ -180,7 +182,7 @@ public class DistressThermometerQuestionnaireManagerTest extends Instrumentation
 
         // check if created
         DistressThermometerQuestionnaire result = db.getDistressThermometerQuestionnaireByUserName(user.getName());
-        assertEquals("1010101010", result.getBitsByQuestionNr(1));
+        assertEquals("10101010101", result.getBitsByQuestionNr(1));
         assertEquals("10001", result.getBitsByQuestionNr(2));
         assertEquals("00", result.getBitsByQuestionNr(3));
         assertEquals("101100", result.getBitsByQuestionNr(4));
@@ -188,12 +190,12 @@ public class DistressThermometerQuestionnaireManagerTest extends Instrumentation
         assertEquals("111100001111000011110", result.getBitsByQuestionNr(6));
 
         // update question nr. 1
-        result.setBitsByQuestionNr(1, "0101010101");
+        result.setBitsByQuestionNr(1, "01010101010");
         db.update(result);
 
         // check update
         DistressThermometerQuestionnaire updated = db.getDistressThermometerQuestionnaireByUserName(user.getName());
-        assertEquals("0101010101", updated.getBitsByQuestionNr(1));
+        assertEquals("01010101010", updated.getBitsByQuestionNr(1));
 
         // update question nr. 30 because it has 8 bits instead of 4 like the others
         updated.setBitsByQuestionNr(6, "000000100000000110000");

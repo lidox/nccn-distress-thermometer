@@ -130,7 +130,6 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
 
         if(seekBar!= null)
             seekBar.setProgress(indexToCheck);
-
     }
 
     @Override
