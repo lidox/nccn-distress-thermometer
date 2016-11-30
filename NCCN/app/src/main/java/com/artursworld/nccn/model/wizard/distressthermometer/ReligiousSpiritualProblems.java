@@ -97,6 +97,7 @@ public class ReligiousSpiritualProblems extends AbstractStep {
      * @param checkBoxNumber the number of the answer in the UI
      */
     private void checkBoxByNameAndNr(StringBuilder bits, CheckBox chechBox, int checkBoxNumber) {
+        Log.i(CLASS_NAME, "currentQuestionNumber = " + this.currentQuestionNumber + ", " + this.questionnaire);
         try {
             boolean isChecked = bits.charAt(checkBoxNumber) == '1';
             if(chechBox != null){

@@ -34,6 +34,13 @@ public class DistressThermometerQuestionnaire {
         answersToQuestionsBytes[5] = defaultByte;
     }
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Questionnaires user = " + userNameId_FK);
+        sb.append("AnswertBytes = " + getAnswersToQuestionsAsString());
+        return sb.toString();
+    }
+
     public String getBitsByQuestionNr(int questionNr){
         if (validateQuestionNr(questionNr)) return null;
         StringBuilder currentBinaryAnswerString = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));

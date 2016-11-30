@@ -100,6 +100,7 @@ public class EmotionalProblemsStep extends AbstractStep {
      */
     private void checkBoxByNameAndNr(StringBuilder bits, CheckBox chechBox, int checkBoxNumber) {
         try {
+            Log.i(CLASS_NAME, "currentQuestionNumber = " + this.currentQuestionNumber + ", " + this.questionnaire);
             boolean isChecked = bits.charAt(checkBoxNumber) == '1';
             if(chechBox != null){
                 Log.i(CLASS_NAME, "check first checkbox = " + isChecked);
