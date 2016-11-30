@@ -1,6 +1,7 @@
 package com.artursworld.nccn.model.wizard.distressthermometer;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -24,6 +25,9 @@ import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestio
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PracticalProblemsStep extends AbstractStep {
 
     private String CLASS_NAME = PracticalProblemsStep.class.getSimpleName();
@@ -39,6 +43,7 @@ public class PracticalProblemsStep extends AbstractStep {
     private User selectedUser = null;
     private DistressThermometerQuestionnaire questionnaire = null;
     private int currentQuestionNumber = 2;
+    private List<CheckBox> checkBoxList = new ArrayList<>();
 
 
     @Override
@@ -50,53 +55,45 @@ public class PracticalProblemsStep extends AbstractStep {
         return v;
     }
 
+    /**
+     * Adds to all checkBoxes a change listener
+     */
     private void addCheckboxChangeListener() {
-        answerA_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                changeBitByIndex(isChecked, 0);
-            }
-        });
-        answerB_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                changeBitByIndex(isChecked, 1);
-            }
-        });
-        answerC_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                changeBitByIndex(isChecked, 2);
-            }
-        });
-        answerD_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                changeBitByIndex(isChecked, 3);
-            }
-        });
-        answerE_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                changeBitByIndex(isChecked, 4);
-            }
-        });
+        for (int i = 0; i < 5; i++){
+            CheckBox box = checkBoxList.get(i);
+            final int index = i;
+            box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    changeBitByIndex(isChecked,index);
+                }
+            });
+        }
     }
 
-    private void changeBitByIndex(boolean isChecked, int indexOfCheckBox) {
+    private void changeBitByIndex(boolean isChecked, int indexOfCAnswerCheckBox) {
         char bit = ((isChecked? 1 : 0) + "").charAt(0);
         StringBuilder binaryString = new StringBuilder(questionnaire.getBitsByQuestionNr(currentQuestionNumber));
-        binaryString.setCharAt(indexOfCheckBox, bit);
+        binaryString.setCharAt(indexOfCAnswerCheckBox, bit);
         questionnaire.setBitsByQuestionNr(currentQuestionNumber, binaryString.toString());
-        Log.i(CLASS_NAME, "changed bits to: " + binaryString.toString() + " for questionNr:" + currentQuestionNumber);
-        new DistressThermometerQuestionnaireManager().update(questionnaire);
+        Log.i(CLASS_NAME, "try to changed bits to: " + binaryString.toString() + " for questionNr:" + currentQuestionNumber);
+        new AsyncTask<Void, Void, Void>(){
+            @Override
+            protected Void doInBackground(Void... params) {
+                new DistressThermometerQuestionnaireManager().update(questionnaire);
+                return null;
+            }
+        }.execute();
+
     }
 
+    /**
+     * Sets checkbox as checked by database
+     */
     private void setUIValuesByDB() {
         String binaryStringByQuestionNr = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
         Log.i(CLASS_NAME, "answer bits loaded: " + binaryStringByQuestionNr + " for questionNr:" + currentQuestionNumber);
         StringBuilder bits = new StringBuilder(binaryStringByQuestionNr).reverse();
-
         checkBoxByNameAndNr(bits, answerA_btn, 4);
         checkBoxByNameAndNr(bits, answerB_btn, 3);
         checkBoxByNameAndNr(bits, answerC_btn, 2);
@@ -105,10 +102,14 @@ public class PracticalProblemsStep extends AbstractStep {
     }
 
     private void checkBoxByNameAndNr(StringBuilder bits, CheckBox chechBox, int checkBoxNumber) {
-        boolean isChecked = bits.charAt(checkBoxNumber) == '1' ? true : false;
-        if(chechBox != null){
-            Log.i(CLASS_NAME, "check first checkbox = " + isChecked);
-            chechBox.setChecked(isChecked);
+        try {
+            boolean isChecked = bits.charAt(checkBoxNumber) == '1';
+            if(chechBox != null){
+                Log.i(CLASS_NAME, "check first checkbox = " + isChecked);
+                chechBox.setChecked(isChecked);
+            }
+        }catch (Exception e){
+            Log.e(CLASS_NAME, e.getLocalizedMessage());
         }
     }
 
@@ -126,6 +127,11 @@ public class PracticalProblemsStep extends AbstractStep {
         answerC_btn = (CheckBox) v.findViewById(R.id.work_or_school);
         answerD_btn = (CheckBox) v.findViewById(R.id.transport);
         answerE_btn = (CheckBox) v.findViewById(R.id.childcare);
+        checkBoxList.add(answerA_btn);
+        checkBoxList.add(answerB_btn);
+        checkBoxList.add(answerC_btn);
+        checkBoxList.add(answerD_btn);
+        checkBoxList.add(answerE_btn);
         return v;
     }
 
