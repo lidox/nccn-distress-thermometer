@@ -40,6 +40,124 @@ public class DistressThermometerQuestionnaireManagerTest extends Instrumentation
         expect.append("00"); // 2 bits missing to full fill 6 full bytes
 
         assertEquals(expect.toString(), questionnaire.getAnswersToQuestionsAsString());
-        assertEquals("8 bits per byte arrays * 6 arrays",8 * 6, questionnaire.getAnswersToQuestionsAsString().length());
+        assertEquals("8 bits per byte arrays * 6 arrays", 8 * 6, questionnaire.getAnswersToQuestionsAsString().length());
+    }
+
+    @Test
+    public void testSetAndGetBitsByQuestionNr(){
+        DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire("Franziska");
+
+        String questionBits = "1111111101";
+        int questionNr = 1;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        String questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "11111";
+        questionNr = 2;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+    }
+
+    @Test
+    public void testSetAndGetBitsByQuestionNr2(){
+        DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire("Patrizia");
+        String questionBits = "0000000000";
+        int questionNr = 1;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        String questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "11111";
+        questionNr = 2;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+    }
+
+    @Test
+    public void testSetAndGetBitsByQuestionNr3(){
+        DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire("Patrizia");
+        String questionBits = "00000";
+        int questionNr = 2;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        String questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "11";
+        questionNr = 3;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "010";
+        questionNr = 3;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals("Wrong input because of invalid input length, so do not change bits", "11", questionResult);
+    }
+
+    @Test
+    public void testSetAndGetBitsByQuestionNr4(){
+        DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire("Patrizia");
+        String questionBits = "11";
+        int questionNr = 3;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        String questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "110010";
+        questionNr = 4;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "010";
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals("Wrong input because of invalid input length, so do not change bits", "110010", questionResult);
+    }
+
+    @Test
+    public void testSetAndGetBitsByQuestionNr5(){
+        DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire("Patrizia");
+        String questionBits = "000000";
+        int questionNr = 4;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        String questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "11";
+        questionNr = 5;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "010";
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals("Wrong input because of invalid input length, so do not change bits", "11", questionResult);
+    }
+
+    @Test
+    public void testSetAndGetBitsByQuestionNr6(){
+        DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire("Patrizia");
+        String questionBits = "00";
+        int questionNr = 5;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        String questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "111111111111111111111";
+        questionNr = 6;
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals(questionBits, questionResult);
+
+        questionBits = "010";
+        questionnaire.setBitsByQuestionNr(questionNr, questionBits);
+        questionResult = questionnaire.getBitsByQuestionNr(questionNr);
+        assertEquals("Wrong input because of invalid input length, so do not change bits", "111111111111111111111", questionResult);
     }
 }

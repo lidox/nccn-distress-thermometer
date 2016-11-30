@@ -50,7 +50,8 @@ public class DistressThermometerQuestionnaire {
         if (validateInput(questionNr, newBits)) return;
 
         // get current byte string
-        StringBuilder result = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));
+        String binaryString = Bits.getStringByByte(answersToQuestionsBytes);
+        StringBuilder result = new StringBuilder(binaryString);
 
         // get indices of bits pattern to replace
         int[] startEndIndices = getStartEndIndexByQuestionNr(questionNr);
@@ -67,15 +68,31 @@ public class DistressThermometerQuestionnaire {
     private boolean validateInput(int questionNr, String newBits) {
         if (validateQuestionNr(questionNr)) return true;
 
-        if(questionNr == 29 || questionNr == 30)
-            if (newBits.length() != 8){
-                Log.e(QolQuestionnaire.class.getSimpleName(), "setBitsByQuestionNr accepts only bits of length 8 if quesitonNr = 29 or 30");
-                return true;
-            }
+        if (isValidLength(questionNr, newBits, 1, 10))
+            return true;
 
-        if(questionNr != 29 && questionNr !=30)
-            if (newBits.length() !=4){
-                Log.e(QolQuestionnaire.class.getSimpleName(), "setBitsByQuestionNr accepts only bits of length 4 if quesitonNr != 29 or 30");
+        else if(isValidLength(questionNr, newBits, 2, 5))
+            return true;
+
+        else if(isValidLength(questionNr, newBits, 3, 2))
+            return true;
+
+        else if(isValidLength(questionNr, newBits, 4, 6))
+            return true;
+
+        else if(isValidLength(questionNr, newBits, 5, 2))
+            return true;
+
+        else if(isValidLength(questionNr, newBits, 6, 21))
+            return true;
+
+        return false;
+    }
+
+    private boolean isValidLength(int questionNr, String newBits, int selectedQuestionNr, int answerLengthToFullFill) {
+        if (questionNr == selectedQuestionNr)
+            if (newBits.length() != answerLengthToFullFill) {
+                Log.e(CLASS_NAME, "questionNr " + questionNr + " accepts only bits of length " + answerLengthToFullFill);
                 return true;
             }
         return false;
@@ -107,27 +124,27 @@ public class DistressThermometerQuestionnaire {
 
         if(questionNr == 1){
             beginningIndex = 0;
-            endingIndex = 9;
+            endingIndex = 10;
         }
         else if( questionNr == 2){
             beginningIndex = 10;
-            endingIndex =  14;
+            endingIndex =  15;
         }
         else if( questionNr == 3){
             beginningIndex = 15;
-            endingIndex = 16;
+            endingIndex = 17;
         }
         else if(questionNr == 4){
             beginningIndex = 17;
-            endingIndex = 22;
+            endingIndex = 23;
         }
         else if( questionNr == 5){
             beginningIndex = 23;
-            endingIndex =  24;
+            endingIndex =  25;
         }
         else if( questionNr == 6){
             beginningIndex = 25;
-            endingIndex =  45;
+            endingIndex =  46;
         }
         indexStartEnd[0] = beginningIndex;
         indexStartEnd[1] = endingIndex;
