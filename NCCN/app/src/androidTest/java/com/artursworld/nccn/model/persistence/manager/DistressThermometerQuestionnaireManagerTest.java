@@ -5,6 +5,7 @@ import android.test.RenamingDelegatingContext;
 
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
+import com.artursworld.nccn.model.entity.User;
 
 import org.junit.Test;
 
@@ -159,5 +160,47 @@ public class DistressThermometerQuestionnaireManagerTest extends Instrumentation
         questionnaire.setBitsByQuestionNr(questionNr, questionBits);
         questionResult = questionnaire.getBitsByQuestionNr(questionNr);
         assertEquals("Wrong input because of invalid input length, so do not change bits", "111111111111111111111", questionResult);
+    }
+
+    @Test
+    public void testUpdateQuestionnaire() throws Exception {
+        // create user
+        User user = new User("Captian Bluebear");
+        userDB.insertUser(user);
+
+        // create questionnaire with question by binary strings
+        DistressThermometerQuestionnaire q = new DistressThermometerQuestionnaire(user.getName());
+        q.setBitsByQuestionNr(1, "1010101010");
+        q.setBitsByQuestionNr(2,"10001");
+        q.setBitsByQuestionNr(3,"00");
+        q.setBitsByQuestionNr(4,"101100");
+        q.setBitsByQuestionNr(5,"11");
+        q.setBitsByQuestionNr(6,"111100001111000011110");
+        db.insertQuestionnaire(q);
+
+        // check if created
+        DistressThermometerQuestionnaire result = db.getDistressThermometerQuestionnaireByUserName(user.getName());
+        assertEquals("1010101010", result.getBitsByQuestionNr(1));
+        assertEquals("10001", result.getBitsByQuestionNr(2));
+        assertEquals("00", result.getBitsByQuestionNr(3));
+        assertEquals("101100", result.getBitsByQuestionNr(4));
+        assertEquals("11", result.getBitsByQuestionNr(5));
+        assertEquals("111100001111000011110", result.getBitsByQuestionNr(6));
+
+        // update question nr. 1
+        result.setBitsByQuestionNr(1, "0101010101");
+        db.update(result);
+
+        // check update
+        DistressThermometerQuestionnaire updated = db.getDistressThermometerQuestionnaireByUserName(user.getName());
+        assertEquals("0101010101", updated.getBitsByQuestionNr(1));
+
+        // update question nr. 30 because it has 8 bits instead of 4 like the others
+        updated.setBitsByQuestionNr(6, "000000100000000110000");
+        db.update(updated);
+
+        // check the update
+        DistressThermometerQuestionnaire updated30 = db.getDistressThermometerQuestionnaireByUserName(user.getName());
+        assertEquals("000000100000000110000", updated30.getBitsByQuestionNr(6));
     }
 }

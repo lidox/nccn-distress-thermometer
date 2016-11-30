@@ -59,6 +59,14 @@ public class DBContracts {
         public static final String ANSWERS_TO_QUESTIONS = "answers_to_questions";
     }
 
+    public static abstract class DistressThermometerTable {
+        public static final String TABLE_NAME = "distress_thermometer_questionnaire";
+        public static final String NAME_ID_FK = "user_id"; //foreign key
+        public static final String CREATION_DATE_PK = "creation_date";
+        public static final String UPDATE_DATE = "update_date";
+        public static final String ANSWERS_TO_QUESTIONS = "answers_to_questions";
+    }
+
     // Create SQL queries
     public static final String CREATE_USER_TABLE = "CREATE TABLE "
             + UserTable.TABLE_NAME + "("
@@ -100,6 +108,16 @@ public class DBContracts {
             + "FOREIGN KEY(" + QualityOfLifeTable.NAME_ID_FK +") "
             + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";
 
+    public static final String CREATE_DISTRESS_THERMOMETER_TABLE = "CREATE TABLE "
+            + DistressThermometerTable.TABLE_NAME + "("
+            + DistressThermometerTable.CREATION_DATE_PK + DATE_TYPE + COMMA_SEP
+            + DistressThermometerTable.NAME_ID_FK + DATE_TYPE + COMMA_SEP
+            + DistressThermometerTable.UPDATE_DATE + DATE_TYPE + COMMA_SEP
+            + DistressThermometerTable.ANSWERS_TO_QUESTIONS + BLOB_TYPE + COMMA_SEP
+            + " PRIMARY KEY ("+DistressThermometerTable.CREATION_DATE_PK +") "
+            + "FOREIGN KEY(" + DistressThermometerTable.NAME_ID_FK +") "
+            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";
+
     // Helper class manages database creation and version management
     public static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -122,6 +140,7 @@ public class DBContracts {
             db.execSQL(CREATE_USER_TABLE);
             db.execSQL(CREATE_HADSD_TABLE);
             db.execSQL(CREATE_QUALITY_OF_TABLE);
+            db.execSQL(CREATE_DISTRESS_THERMOMETER_TABLE);
         }
 
         @Override

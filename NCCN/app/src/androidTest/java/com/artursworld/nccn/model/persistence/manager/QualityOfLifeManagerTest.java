@@ -169,8 +169,6 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         int questionNr = 1;
         QolQuestionnaire q = new QolQuestionnaire(medUser.getName());
         q.setBitsByQuestionNr(questionNr, "1000");
-        //String s=q.getAnswersToQuestionsA sString();
-        //String s2 = q.getBitsByQuestionNr(questionNr);
         db.insertQuestionnaire(q);
 
         // check if created
