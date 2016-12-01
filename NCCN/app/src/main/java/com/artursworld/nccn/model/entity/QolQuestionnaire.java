@@ -91,7 +91,7 @@ public class QolQuestionnaire {
     /**
      * Accepts only question number between 1 and 50
      * @param questionNr the question number to validate
-     * @return False if validatation fails, otherwise true
+     * @return True if validation fails, otherwise false
      */
     private boolean validateQuestionNr(int questionNr) {
         if(questionNr < 1 || questionNr > 50){

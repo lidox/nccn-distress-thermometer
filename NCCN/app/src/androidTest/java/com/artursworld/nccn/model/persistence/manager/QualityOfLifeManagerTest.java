@@ -40,6 +40,7 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         expect.append("0000000100000001");
         expect.append("00010001000100010001000100010001000100010001000100010001000100010001000100010001"); // 20
         assertEquals(expect.toString(), questionnaire.getAnswersToQuestionsAsString());
+        
         assertEquals("8 bits per byte arrays * 26 arrays",8 * 26, questionnaire.getAnswersToQuestionsAsString().length());
     }
 
@@ -168,8 +169,6 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         int questionNr = 1;
         QolQuestionnaire q = new QolQuestionnaire(medUser.getName());
         q.setBitsByQuestionNr(questionNr, "1000");
-        //String s=q.getAnswersToQuestionsA sString();
-        //String s2 = q.getBitsByQuestionNr(questionNr);
         db.insertQuestionnaire(q);
 
         // check if created
