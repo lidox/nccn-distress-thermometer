@@ -110,4 +110,13 @@
     <string name="did_you_have_trouble_controlling_your_bladder">Hatten Sie Mühe Ihre Blase zu kontrollieren?</string>
     <string name="very_bad">sehr schlecht</string>
     <string name="very_good">ausgezeichnet</string>
+    <string name="title_activity_start_menu">StartMenu</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="user_name">Benutzername</string>
+    <string name="you_already_have">Sie haben bereits</string>
+    <string name="x_questions_answered">% der Fragen beantwortet</string>
 </resources>
