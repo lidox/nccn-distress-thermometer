@@ -125,4 +125,9 @@
     <string name="hadsd_questionnaire">HADS-D Fragebogen</string>
     <string name="nccn_distress_thermometer">Gefühls-Thermometer</string>
     <string name="quality_of_life_questionnaire">Fragebogen zur Lebensqualität</string>
+    <string name="user_statistics">Statistik</string>
+    <string name="user_start_configuration">Startkonfiguration</string>
+    <string name="questionnaire_to_display">Fragebögen, die angezeigt werden sollen</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Abbrechen</string>
 </resources>

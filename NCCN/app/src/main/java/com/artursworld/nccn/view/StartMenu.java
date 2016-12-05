@@ -1,6 +1,7 @@
 package com.artursworld.nccn.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -41,19 +44,23 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-            Log.i(CLASS_NAME, "camera selected");
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_user_start_configuration) {
+            Log.i(CLASS_NAME, "nav_user_start_configuration selected");
+            new MaterialDialog.Builder(this)
+                    .title(R.string.questionnaire_to_display)
+                    .positiveText(R.string.ok)
+                    .negativeText(R.string.cancel)
+                    .customView(R.layout.dialog_select_questionnairies, true)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            Log.i(CLASS_NAME, "ok");
+                        }
+                    })
+                    .show();
+        } else if (id == R.id.nav_user_statistics) {
+            Log.i(CLASS_NAME, "nav_user_statistics selected");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -17,10 +17,6 @@
         <activity android:name=".controller.wizard.WizardNCCN" />
         <activity android:name=".controller.wizard.WizardHADSD" />
         <activity android:name=".controller.wizard.WizardQualityOfLife" />
-        <activity
-            android:name=".view.Launcher"
-            android:label="@string/title_activity_start_menu"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
