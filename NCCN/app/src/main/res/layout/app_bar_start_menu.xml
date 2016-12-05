@@ -85,6 +85,12 @@
 
         </RelativeLayout>
 
+        <fragment
+            android:id="@+id/user_list_fragment"
+            android:name="com.artursworld.nccn.view.questionnaire.QuestionnaireSelectListFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
