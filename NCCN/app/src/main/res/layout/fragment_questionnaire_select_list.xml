@@ -1,13 +1,45 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
     tools:context="com.artursworld.nccn.view.questionnaire.QuestionnaireSelectListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/progress_information_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textAppearanceLabel"
+            android:text="@string/you_already_have" />
+
+        <TextView
+            android:id="@+id/percentage_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/progress_information_text"
+            android:textSize="@dimen/textAppearanceLabel"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/question_answered_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/percentage_text"
+            android:textSize="@dimen/textAppearanceLabel"
+            android:text="@string/x_questions_answered" />
+
+        <ListView
+            android:id="@+id/questionnaire_list_view"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/question_answered_text"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

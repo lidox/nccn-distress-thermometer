@@ -32,7 +32,7 @@
         <RelativeLayout
             android:id="@+id/edit_text_holder"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:background="@color/colorPrimary">
 
             <!-- HERE PUT IN YOUT GUI-->
@@ -40,8 +40,8 @@
                 android:id="@+id/user_name_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_margin="10dp"
-                android:paddingTop="55dp"
                 android:hint="@string/user_name"
                 android:inputType="text"
                 android:textSize="@dimen/textAppearanceLabelLarge"
@@ -53,43 +53,12 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/edit_text_holder"
-            android:layout_margin="10dp">
-
-            <TextView
-                android:id="@+id/progress_information_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/textAppearanceLabel"
-                android:text="@string/you_already_have" />
-
-            <TextView
-                android:id="@+id/percentage_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/progress_information_text"
-                android:textSize="@dimen/textAppearanceLabel"
-                android:text="0" />
-
-            <TextView
-                android:id="@+id/question_answered_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/progress_information_text"
-                android:textSize="@dimen/textAppearanceLabel"
-                android:text="@string/x_questions_answered" />
-
-
-        </RelativeLayout>
-
         <fragment
             android:id="@+id/user_list_fragment"
             android:name="com.artursworld.nccn.view.questionnaire.QuestionnaireSelectListFragment"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@id/edit_text_holder" />
 
     </RelativeLayout>
 
