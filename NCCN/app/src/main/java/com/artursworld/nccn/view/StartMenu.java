@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.BindView;
@@ -46,19 +48,8 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
         if (id == R.id.nav_user_start_configuration) {
             Log.i(CLASS_NAME, "nav_user_start_configuration selected");
-            new MaterialDialog.Builder(this)
-                    .title(R.string.questionnaire_to_display)
-                    .positiveText(R.string.ok)
-                    .negativeText(R.string.cancel)
-                    .customView(R.layout.dialog_select_questionnairies, true)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            Log.i(CLASS_NAME, "ok");
-                        }
-                    })
-                    .show();
+            UserStartConfiguration start = new UserStartConfiguration(App.getAppContext());
+            start.showConfigurationDialog();
         } else if (id == R.id.nav_user_statistics) {
             Log.i(CLASS_NAME, "nav_user_statistics selected");
         }
