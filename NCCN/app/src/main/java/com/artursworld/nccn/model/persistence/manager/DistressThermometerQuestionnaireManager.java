@@ -26,7 +26,7 @@ public class DistressThermometerQuestionnaireManager extends EntityDbManager {
      * This constructor is used for unit tests
      * @param context the database context to use
      */
-    DistressThermometerQuestionnaireManager(Context context) {
+    public DistressThermometerQuestionnaireManager(Context context) {
         super(context);
     }
 

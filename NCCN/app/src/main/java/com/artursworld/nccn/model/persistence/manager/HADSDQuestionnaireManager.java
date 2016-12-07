@@ -24,7 +24,7 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
      * This constructor is used for unit tests
      * @param context the database context to use
      */
-    HADSDQuestionnaireManager(Context context) {
+    public HADSDQuestionnaireManager(Context context) {
         super(context);
     }
 

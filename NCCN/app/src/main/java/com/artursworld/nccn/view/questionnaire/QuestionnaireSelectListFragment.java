@@ -69,6 +69,9 @@ public class QuestionnaireSelectListFragment extends Fragment {
         String selectedUserName = Share.getStringByKey(R.string.c_selected_user_name);
         if(selectedUserName != null){
             //TODO; get questionnaires of user
+            // get selected questionnaire
+            User user = new UserManager().getUserByName(selectedUserName);
+
             //int hadsProgress = ...
         }
 

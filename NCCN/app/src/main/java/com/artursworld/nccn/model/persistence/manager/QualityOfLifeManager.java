@@ -23,7 +23,7 @@ public class QualityOfLifeManager extends EntityDbManager {
      * This constructor is used for unit tests
      * @param context the database context to use
      */
-    QualityOfLifeManager(Context context) {
+    public QualityOfLifeManager(Context context) {
         super(context);
     }
 

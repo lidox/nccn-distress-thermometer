@@ -4,7 +4,6 @@ import android.test.InstrumentationTestCase;
 import android.test.RenamingDelegatingContext;
 
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
-import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 
 import org.junit.Test;
