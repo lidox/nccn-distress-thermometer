@@ -1,5 +1,6 @@
 package com.artursworld.nccn.view;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import butterknife.ButterKnife;
 public class StartMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private String CLASS_NAME = StartMenu.class.getSimpleName();
+    private Activity activity = null;
 
     // UI
     @BindView(R.id.user_name_edit_text) MaterialEditText userName_editText;
@@ -38,6 +40,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_start_menu);
         ButterKnife.bind(this);
         initNavigationAndToolBar();
+        activity = this;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -48,7 +51,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
         if (id == R.id.nav_user_start_configuration) {
             Log.i(CLASS_NAME, "nav_user_start_configuration selected");
-            UserStartConfiguration start = new UserStartConfiguration(App.getAppContext());
+            UserStartConfiguration start = new UserStartConfiguration(activity);
             start.showConfigurationDialog();
         } else if (id == R.id.nav_user_statistics) {
             Log.i(CLASS_NAME, "nav_user_statistics selected");

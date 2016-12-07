@@ -1,276 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true">
-    <!-- go here-->
-    <CheckBox
-        android:id="@+id/questionnaire_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/hadsd_questionnaire"
-        android:textSize="@dimen/textAppearanceLabelLarge" />
 
-    <CheckBox
-        android:id="@+id/questionnaire_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/questionnaire_1"
-        android:layout_margin="10dp"
-        android:text="@string/nccn_distress_thermometer"
-        android:textSize="@dimen/textAppearanceLabelLarge" />
-
-    <CheckBox
-        android:id="@+id/questionnaire_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/questionnaire_2"
-        android:layout_margin="10dp"
-        android:text="@string/quality_of_life_questionnaire"
-        android:textSize="@dimen/textAppearanceLabelLarge" />
-
-    <com.fenjuly.mylibrary.DropDownLayout
+    <RelativeLayout
+        android:id="@+id/relative"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        >
+        android:layout_margin="10dp">
 
-        <com.fenjuly.mylibrary.ToggleExpandLayout
-            android:id="@+id/toogleLayout"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
+        <!-- 1. Title, Subtitle und ToggleBtn -->
+        <include
+            android:id="@+id/toggle_user_layout"
+            layout="@layout/toggle_title_subtitle" />
+
+        <!-- Checkboxes Questionnaires -->
+        <RelativeLayout
+            android:id="@+id/layout_users"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toggle_user_layout"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/place_holder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="PLACEHOLDER"
+                android:textSize="@dimen/textAppearanceLabel" />
+
+        </RelativeLayout>
+
+        <!-- Divider / Trennlinie-->
+        <View
+            android:id="@+id/divide1"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/layout_users"
+            android:layout_margin="10dp"
+            android:background="@color/material_stepper_background" />
+
+        <!-- 2. Title, Subtitle und ToggleBtn-->
+        <include
+            android:id="@+id/questionnaire_layout"
+            layout="@layout/toggle_title_subtitle" />
+        <!--
+        <TextView
+            android:id="@+id/title2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/divide1"
+            android:text="@string/standard_questionnaire"
+            android:textColor="#000000"
+            android:textSize="@dimen/textAppearanceLabel" />
+
+        <Switch
+            android:id="@+id/switch_questionnairies"
             android:layout_width="wrap_content"
+            android:layout_below="@+id/divide1"
             android:layout_height="wrap_content"
-            >
+            android:layout_alignParentRight="true"
+            android:paddingTop="25dp" />
 
-            <LinearLayout
-                android:id="@+id/id3"
-                android:layout_width="300dp"
-                android:layout_height="80dp"
-                android:background="#ffffff"
-                android:elevation="3dp"
-                android:outlineProvider="bounds"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <TextView
-                        android:id="@+id/second_menu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:text="Hier eine Suchleiste mit usern und zeitpunkt muss wählbar sein"
-                        />
-                    <TextView
-                        android:layout_below="@+id/second_menu"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="15:47"
-                        android:textColor="#cccccc"/>
-                </RelativeLayout>
+        <TextView
+            android:id="@+id/subtitle2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/title2"
+            android:text="@string/switch_to_questionnaire_selection"
+            android:textSize="@dimen/textAppearanceSubLabel" />
+        -->
+        <!-- Checkboxes Questionnaires -->
+        <RelativeLayout
+            android:id="@+id/layout_questionnaires"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/questionnaire_layout"
+            android:visibility="gone">
 
-            </LinearLayout>
+            <CheckBox
+                android:id="@+id/questionnaire_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/hadsd_questionnaire"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
 
-            <LinearLayout
-                android:id="@+id/id4"
-                android:layout_width="300dp"
-                android:layout_height="80dp"
-                android:background="#ffffff"
-                android:elevation="4dp"
-                android:outlineProvider="bounds"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <TextView
-                        android:id="@+id/menu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/create_new_user"
-                        />
-                    <TextView
-                        android:layout_below="@+id/menu"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Use network provide time"
-                        android:textColor="#cccccc"/>
-                    <com.kyleduo.switchbutton.SwitchButton
-                        android:id="@+id/switch_button"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        style="@style/MD" />
-                </RelativeLayout>
-            </LinearLayout>
-        </com.fenjuly.mylibrary.ToggleExpandLayout>
+            <CheckBox
+                android:id="@+id/questionnaire_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/questionnaire_1"
+                android:layout_margin="10dp"
+                android:text="@string/nccn_distress_thermometer"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
 
-        <com.fenjuly.mylibrary.ToggleExpandLayout
-            android:id="@+id/toogleLayout2"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
+            <CheckBox
+                android:id="@+id/questionnaire_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/questionnaire_2"
+                android:layout_margin="10dp"
+                android:text="@string/quality_of_life_questionnaire"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
 
-            <LinearLayout
-                android:id="@+id/id6"
-                android:layout_width="300dp"
-                android:layout_height="80dp"
-                android:background="#ffffff"
-                android:elevation="2dp"
-                android:outlineProvider="bounds"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <TextView
-                        android:id="@+id/first_menu2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:text="Hier die Fragebögen"
-                        />
-                </RelativeLayout>
+        </RelativeLayout>
 
-            </LinearLayout>
+    </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/id7"
-                android:layout_width="300dp"
-                android:layout_height="80dp"
-                android:background="#ffffff"
-                android:elevation="3dp"
-                android:outlineProvider="bounds"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <TextView
-                        android:id="@+id/second_menu2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:text="Set Name"
-                        />
-                    <TextView
-                        android:layout_below="@+id/second_menu2"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="[FeN]July"
-                        android:textColor="#cccccc"/>
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/id8"
-                android:layout_width="300dp"
-                android:layout_height="80dp"
-                android:background="#ffffff"
-                android:elevation="4dp"
-                android:outlineProvider="bounds"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <TextView
-                        android:id="@+id/menu2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:text="Stadard Fragebogen"
-                        />
-                    <TextView
-                        android:layout_below="@+id/menu2"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Use the default"
-                        android:textColor="#cccccc"/>
-                    <com.kyleduo.switchbutton.SwitchButton
-                        android:id="@+id/switch_button2"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        style="@style/MD" />
-                </RelativeLayout>
-            </LinearLayout>
-        </com.fenjuly.mylibrary.ToggleExpandLayout>
-
-        <com.fenjuly.mylibrary.ToggleExpandLayout
-            android:id="@+id/toogleLayout3"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-
-
-            <LinearLayout
-                android:id="@+id/id11"
-                android:layout_width="300dp"
-                android:layout_height="80dp"
-                android:background="#ffffff"
-                android:elevation="4dp"
-                android:outlineProvider="bounds"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <TextView
-                        android:id="@+id/menu3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/create_new_user"
-                        />
-                    <TextView
-                        android:layout_below="@+id/menu3"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="toggle_to_select_existing_user"
-                        android:textColor="#cccccc"/>
-                    <com.kyleduo.switchbutton.SwitchButton
-                        android:id="@+id/switch_button3"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        style="@style/MD" />
-                </RelativeLayout>
-            </LinearLayout>
-        </com.fenjuly.mylibrary.ToggleExpandLayout>
-
-    </com.fenjuly.mylibrary.DropDownLayout>
 
 </RelativeLayout>
