@@ -138,4 +138,5 @@
     <string name="switch_to_default_selection">Klick, um die Standard Fragebögen auszuwählen</string>
     <string name="select_existing_user">Existierenden Benutzer auswählen</string>
     <string name="switch_to_new_user">Klick, um einen neuen Benutzer auszuwählen</string>
+    <string name="placeholder">Platzhalter</string>
 </resources>

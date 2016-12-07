@@ -46,62 +46,27 @@ public class UserStartConfiguration {
     }
 
     private void addToggleBtnListener() {
-        /*
-        int switch_id = R.id.switch_questionnairies;
-        final int layout_id = R.id.layout_questionnaires;
-        final int titleID = R.id.title2;
-        final int subtitleId = R.id.subtitle2;
-        final int titleTextId = R.string.configurable_questionnaire;
-        final int subTitleTextId = R.string.switch_to_default_selection;
-        final int invisibleTitleTextId = R.string.standard_questionnaire;
-        final int invisibleSubTitleTextId = R.string.switch_to_questionnaire_selection;
+        //toggleById(R.id.toggle_user_layout, R.string.configurable_questionnaire, R.string.switch_to_default_selection,  R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection);
+        //toggleById(R.id.questionnaire_layout, R.id.layout_questionnaires, R.string.switch_to_default_selection,   R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection);
+        toggleById(R.id.toggle_user_layout, R.id.layout_users, R.string.create_new_user, R.string.switch_to_existing_user,  R.string.select_existing_user, R.string.switch_to_new_user);
+        toggleById(R.id.questionnaire_layout, R.id.layout_questionnaires, R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection,  R.string.configurable_questionnaire, R.string.switch_to_default_selection);
 
-        //toggleByIds(switch_id, layout_id, titleID, subtitleId, titleTextId, subTitleTextId, invisibleTitleTextId, invisibleSubTitleTextId);
-        toggleByIds(R.id.user_layout, R.id.switch_users, R.id.layout_users, R.id.title1, R.id.subtitle1, R.string.select_existing_user, R.string.switch_to_new_user, R.string.create_new_user, R.string.switch_to_existing_user);
-        */
-
-        toggleById(R.id.toggle_user_layout, R.string.configurable_questionnaire, R.string.switch_to_default_selection,  R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection);
     }
 
-    private void toggleById(int toggle_user_layout, final int titleTextId, final int subTitleTextId, final int invisibleTitleTextId, final int invisibleSubTitleTextId){
-        RelativeLayout layout = (RelativeLayout) dialog.getView().findViewById(R.id.relative);
-        final View toggleTitleLayout = layout.findViewById(R.id.toggle_user_layout);
+    private void toggleById(int toggleUserLayout, final int layoutToToggle, final int titleTextId, final int subTitleTextId, final int invisibleTitleTextId, final int invisibleSubTitleTextId){
+        final View toggleTitleLayout =  dialog.getView().findViewById(toggleUserLayout);
         Switch questionnaireSwitch = (Switch) toggleTitleLayout.findViewById(R.id.switcher);
+
+        // init UI
+        final TextView title = (TextView) dialog.getView().findViewById(R.id.title);
+        final TextView subtitle = (TextView) dialog.getView().findViewById(R.id.subtitle);
+        title.setText(Strings.getStringByRId(titleTextId));
+        subtitle.setText(Strings.getStringByRId(subTitleTextId));
+
         questionnaireSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // init UI
-                RelativeLayout layout = (RelativeLayout) toggleTitleLayout.findViewById(R.id.relative);
-                TextView title = (TextView) toggleTitleLayout.findViewById(R.id.title);
-                TextView subtitle = (TextView) toggleTitleLayout.findViewById(R.id.subtitle);
-
-                // show details UI
-                if(isChecked){
-                    layout.setVisibility(View.VISIBLE);
-                    title.setText(Strings.getStringByRId(titleTextId));
-                    subtitle.setText(Strings.getStringByRId(subTitleTextId));
-                }
-                // hide details
-                else{
-                    layout.setVisibility(View.GONE);
-                    title.setText(Strings.getStringByRId(invisibleTitleTextId));
-                    subtitle.setText(Strings.getStringByRId(invisibleSubTitleTextId));
-                }
-            }
-        });
-    }
-
-    private void toggleByIds(final int root_layout_id,int switch_id, final int layout_id, final int titleID, final int subtitleId, final int titleTextId, final int subTitleTextId, final int invisibleTitleTextId, final int invisibleSubTitleTextId) {
-        final View yourLayout = dialog.getView().findViewById(root_layout_id);
-        Switch questionnaireSwitch = (Switch) yourLayout.findViewById(switch_id);
-        questionnaireSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // init UI
-                RelativeLayout layout = (RelativeLayout) yourLayout.findViewById(layout_id);
-                TextView title = (TextView) yourLayout.findViewById(titleID);
-                TextView subtitle = (TextView) yourLayout.findViewById(subtitleId);
-
+                RelativeLayout layout = (RelativeLayout) dialog.getView().findViewById(layoutToToggle);
                 // show details UI
                 if(isChecked){
                     layout.setVisibility(View.VISIBLE);

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:showIn="@layout/dialog_select_questionnairies">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/create_new_user"
+        android:text="@string/placeholder"
         android:textColor="#000000"
         android:textSize="@dimen/textAppearanceLabel" />
 
@@ -22,7 +22,8 @@
         android:id="@+id/subtitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title1"
-        android:text="@string/switch_to_existing_user"
+        android:layout_below="@+id/title"
+        android:text="@string/placeholder"
         android:textSize="@dimen/textAppearanceSubLabel" />
-</merge>
+
+</RelativeLayout>

@@ -47,34 +47,11 @@
         <!-- 2. Title, Subtitle und ToggleBtn-->
         <include
             android:id="@+id/questionnaire_layout"
+            android:layout_below="@+id/divide1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             layout="@layout/toggle_title_subtitle" />
-        <!--
-        <TextView
-            android:id="@+id/title2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/divide1"
-            android:text="@string/standard_questionnaire"
-            android:textColor="#000000"
-            android:textSize="@dimen/textAppearanceLabel" />
 
-        <Switch
-            android:id="@+id/switch_questionnairies"
-            android:layout_width="wrap_content"
-            android:layout_below="@+id/divide1"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingTop="25dp" />
-
-        <TextView
-            android:id="@+id/subtitle2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/title2"
-            android:text="@string/switch_to_questionnaire_selection"
-            android:textSize="@dimen/textAppearanceSubLabel" />
-        -->
-        <!-- Checkboxes Questionnaires -->
         <RelativeLayout
             android:id="@+id/layout_questionnaires"
             android:layout_width="match_parent"
