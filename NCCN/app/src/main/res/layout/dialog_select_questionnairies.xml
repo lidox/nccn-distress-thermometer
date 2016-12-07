@@ -15,8 +15,7 @@
         <!-- 1. Title, Subtitle und ToggleBtn -->
         <include
             android:id="@+id/toggle_user_layout"
-            layout="@layout/toggle_title_subtitle"
-            />
+            layout="@layout/toggle_title_subtitle" />
 
         <!-- Checkboxes Questionnaires -->
         <RelativeLayout
@@ -48,10 +47,10 @@
         <!-- 2. Title, Subtitle und ToggleBtn-->
         <include
             android:id="@+id/included_questionnaire_title"
-            android:layout_below="@+id/divide1"
+            layout="@layout/toggle_title_subtitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            layout="@layout/toggle_title_subtitle" />
+            android:layout_below="@+id/divide1" />
 
         <RelativeLayout
             android:id="@+id/layout_below_included_questionnaire_title"
@@ -65,6 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:checked="true"
                 android:text="@string/hadsd_questionnaire"
                 android:textSize="@dimen/textAppearanceLabelLarge" />
 
@@ -74,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/questionnaire_1"
                 android:layout_margin="10dp"
+                android:checked="true"
                 android:text="@string/nccn_distress_thermometer"
                 android:textSize="@dimen/textAppearanceLabelLarge" />
 
@@ -83,6 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/questionnaire_2"
                 android:layout_margin="10dp"
+                android:checked="true"
                 android:text="@string/quality_of_life_questionnaire"
                 android:textSize="@dimen/textAppearanceLabelLarge" />
 

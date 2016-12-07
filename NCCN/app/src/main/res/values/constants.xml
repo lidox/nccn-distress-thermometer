@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="c_seven_possible">"com.artursworld.SevenPossible"</string>
+    <string name="c_selected_user_name">"com.artursworld.c_selected_user_name"</string>
+    <string name="c_selected_questionnaires">"com.artursworld.c_selected_questionnaires"</string>
 </resources>

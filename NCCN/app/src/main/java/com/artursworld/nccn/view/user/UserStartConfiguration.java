@@ -1,10 +1,12 @@
 package com.artursworld.nccn.view.user;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -13,7 +15,12 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Share;
 import com.artursworld.nccn.controller.util.Strings;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class UserStartConfiguration {
 
@@ -21,14 +28,14 @@ public class UserStartConfiguration {
 
     // Attributes
     private MaterialDialog dialog;
-    private Context cxt = null;
+    private Activity activity = null;
 
-    public UserStartConfiguration(Context context){
-        cxt = context;
+    public UserStartConfiguration(Activity context){
+        activity = context;
     }
 
     public void showConfigurationDialog(){
-        MaterialDialog.Builder b = new MaterialDialog.Builder(cxt)
+        MaterialDialog.Builder b = new MaterialDialog.Builder(activity)
                 .title(R.string.questionnaire_to_display)
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel)
@@ -37,7 +44,33 @@ public class UserStartConfiguration {
 
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        //TODO: get selected user
+                        String selectedUserName = null;
+
                         Log.i(CLASS_NAME, "ok");
+                        CheckBox checkbox1 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_1);
+                        CheckBox checkbox2 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_2);
+                        CheckBox checkbox3 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_3);
+                        Log.i(CLASS_NAME, "questionnaire_1 is checked =" + checkbox1.isChecked());
+                        Log.i(CLASS_NAME, "questionnaire_2 is checked =" + checkbox2.isChecked());
+                        Log.i(CLASS_NAME, "questionnaire_3 is checked =" + checkbox3.isChecked());
+                        Set<String> stringSet = new HashSet<String>();
+                        if(checkbox1.isChecked()){
+                            stringSet.add(Strings.getStringByRId(R.string.hadsd_questionnaire));
+                        }
+                        if(checkbox2.isChecked()){
+                            stringSet.add(Strings.getStringByRId(R.string.nccn_distress_thermometer));
+                        }
+                        if(checkbox3.isChecked()){
+                            stringSet.add(Strings.getStringByRId(R.string.quality_of_life_questionnaire));
+                        }
+                        Share.putStringSet(Strings.getStringByRId(R.string.c_selected_questionnaires), stringSet);
+                        Share.putString(Strings.getStringByRId(R.string.c_selected_user_name), selectedUserName);
+
+                        // refreshfinish();
+                        activity.finish();
+                        activity.startActivity(activity.getIntent());
+                        
                     }
                 });
         dialog = b.show();

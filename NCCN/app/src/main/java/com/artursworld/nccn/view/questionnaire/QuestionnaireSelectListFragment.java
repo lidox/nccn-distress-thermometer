@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Share;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardHADSD;
 import com.artursworld.nccn.controller.wizard.WizardNCCN;
@@ -29,7 +30,9 @@ import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class QuestionnaireSelectListFragment extends Fragment {
 
@@ -60,9 +63,29 @@ public class QuestionnaireSelectListFragment extends Fragment {
     @NonNull
     private List<AbstractQuestionnaire> getQuestionnaireList() {
         List<AbstractQuestionnaire> list = new ArrayList<>();
-        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), 86));
-        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), 23));
-        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), 99));
+        int hadsProgress = 0;
+        int distressProgress = 0;
+        int qualityProgress = 0;
+
+        String selectedUserName = Share.getStringByKey(R.string.c_selected_user_name);
+        if(selectedUserName != null){
+            //TODO; get questionnaires of user
+            //int hadsProgress = ...
+        }
+
+        Set<String> setOfBooleans = Share.getStringSetByKey(R.string.c_selected_questionnaires);
+        if(setOfBooleans != null){
+            if(setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))){
+                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
+            }
+            if(setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))){
+                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
+            }
+            if(setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))){
+                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
+            }
+        }
+
         return list;
     }
 
