@@ -15,7 +15,8 @@
         <!-- 1. Title, Subtitle und ToggleBtn -->
         <include
             android:id="@+id/toggle_user_layout"
-            layout="@layout/toggle_title_subtitle" />
+            layout="@layout/toggle_title_subtitle"
+            />
 
         <!-- Checkboxes Questionnaires -->
         <RelativeLayout
@@ -46,17 +47,17 @@
 
         <!-- 2. Title, Subtitle und ToggleBtn-->
         <include
-            android:id="@+id/questionnaire_layout"
+            android:id="@+id/included_questionnaire_title"
             android:layout_below="@+id/divide1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             layout="@layout/toggle_title_subtitle" />
 
         <RelativeLayout
-            android:id="@+id/layout_questionnaires"
+            android:id="@+id/layout_below_included_questionnaire_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/questionnaire_layout"
+            android:layout_below="@+id/included_questionnaire_title"
             android:visibility="gone">
 
             <CheckBox
