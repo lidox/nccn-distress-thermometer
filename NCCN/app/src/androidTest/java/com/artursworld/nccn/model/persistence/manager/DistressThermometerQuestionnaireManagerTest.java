@@ -205,4 +205,32 @@ public class DistressThermometerQuestionnaireManagerTest extends Instrumentation
         DistressThermometerQuestionnaire updated30 = db.getDistressThermometerQuestionnaireByUserName(user.getName());
         assertEquals("000000100000000110000", updated30.getBitsByQuestionNr(6));
     }
+
+    @Test
+    public void testUpdateQuestionnairesAttributes() throws Exception {
+        // create user
+        User user = new User("Reginas Victory");
+        userDB.insertUser(user);
+
+        // create questionnaire
+        DistressThermometerQuestionnaire q = new DistressThermometerQuestionnaire(user.getName());
+        q.setLastQuestionEditedNr(5);
+        q.setProgressInPercent(100);
+        db.insertQuestionnaire(q);
+
+        // check if created
+        DistressThermometerQuestionnaire result = db.getDistressThermometerQuestionnaireByUserName(user.getName());
+        assertEquals(5, result.getLastQuestionEditedNr());
+        assertEquals(100, result.getProgressInPercent());
+
+        // update
+        result.setLastQuestionEditedNr(1);
+        result.setProgressInPercent(0);
+        db.update(result);
+
+        // check update
+        DistressThermometerQuestionnaire updated = db.getDistressThermometerQuestionnaireByUserName(user.getName());
+        assertEquals(1, result.getLastQuestionEditedNr());
+        assertEquals(0, result.getProgressInPercent());
+    }
 }
