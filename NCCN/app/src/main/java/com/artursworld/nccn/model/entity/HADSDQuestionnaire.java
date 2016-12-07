@@ -20,6 +20,25 @@ public class HADSDQuestionnaire {
     private List<byte[]> answerToQuestionList;
     private int questionCountOfHADSDQuestionnaire = 14;
     private byte[] defaultByte = Bits.getByteByString("00000001");
+    private int progressInPercent;
+    private int lastQuestionEditedNr;
+
+    public int getProgressInPercent() {
+        return progressInPercent;
+    }
+
+    public void setProgressInPercent(int progressInPercent) {
+        this.progressInPercent = progressInPercent;
+    }
+
+    public int getLastQuestionEditedNr() {
+        return lastQuestionEditedNr;
+    }
+
+    public void setLastQuestionEditedNr(int lastQuestionEditedNr) {
+        this.lastQuestionEditedNr = lastQuestionEditedNr;
+    }
+
 
     public HADSDQuestionnaire(String userNameId){
         this.userNameId_FK = userNameId;

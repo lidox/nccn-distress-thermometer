@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.artursworld.nccn.controller.config.App;
-import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.persistence.contracts.DBContracts;
 
@@ -61,6 +60,14 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
 
         if(questionnaire.getUpdateDate() != null)
             values.put(DBContracts.HADSDTable.UPDATE_DATE, EntityDbManager.dateFormat.format(questionnaire.getUpdateDate()));
+
+
+        if(questionnaire.getLastQuestionEditedNr() >= 0)
+            values.put(DBContracts.HADSDTable.LAST_QEUSTION_EDITED_NR, questionnaire.getLastQuestionEditedNr());
+
+        if(questionnaire.getProgressInPercent() >= 0)
+            values.put(DBContracts.HADSDTable.PROGRESS, questionnaire.getProgressInPercent());
+
 
         values = addAnswerToQuestion(questionnaire, values, 0, DBContracts.HADSDTable.ANSWER_TO_QUESTION1);
         values = addAnswerToQuestion(questionnaire, values, 1, DBContracts.HADSDTable.ANSWER_TO_QUESTION2);
@@ -124,6 +131,9 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
             questionnaire.setAnswerByNr(11, cursor.getBlob(14));
             questionnaire.setAnswerByNr(12, cursor.getBlob(15));
             questionnaire.setAnswerByNr(13, cursor.getBlob(16));
+
+            questionnaire.setLastQuestionEditedNr(cursor.getInt(17));
+            questionnaire.setProgressInPercent(cursor.getInt(18));
             medicalUserList.add(questionnaire);
         }
 
@@ -157,7 +167,9 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
                 DBContracts.HADSDTable.ANSWER_TO_QUESTION11,
                 DBContracts.HADSDTable.ANSWER_TO_QUESTION12,
                 DBContracts.HADSDTable.ANSWER_TO_QUESTION13,
-                DBContracts.HADSDTable.ANSWER_TO_QUESTION14
+                DBContracts.HADSDTable.ANSWER_TO_QUESTION14,
+                DBContracts.HADSDTable.LAST_QEUSTION_EDITED_NR,
+                DBContracts.HADSDTable.PROGRESS
         };
     }
 

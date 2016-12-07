@@ -71,6 +71,12 @@ public class DistressThermometerQuestionnaireManager extends EntityDbManager {
         if(questionnaire.getAnswersToQuestionsBytes() != null)
             values.put(DBContracts.DistressThermometerTable.ANSWERS_TO_QUESTIONS, questionnaire.getAnswersToQuestionsBytes());
 
+        if(questionnaire.getLastQuestionEditedNr() >= 0)
+            values.put(DBContracts.DistressThermometerTable.LAST_QEUSTION_EDITED_NR, questionnaire.getLastQuestionEditedNr());
+
+        if(questionnaire.getProgressInPercent() >= 0)
+            values.put(DBContracts.DistressThermometerTable.PROGRESS, questionnaire.getProgressInPercent());
+
         return values;
     }
 
@@ -98,6 +104,8 @@ public class DistressThermometerQuestionnaireManager extends EntityDbManager {
             }
 
             questionnaire.setAnswersToQuestionsBytes(cursor.getBlob(3));
+            questionnaire.setLastQuestionEditedNr(cursor.getInt(4));
+            questionnaire.setProgressInPercent(cursor.getInt(5));
             medicalUserList.add(questionnaire);
         }
 
@@ -118,7 +126,9 @@ public class DistressThermometerQuestionnaireManager extends EntityDbManager {
         return new String[]{DBContracts.DistressThermometerTable.CREATION_DATE_PK,
                 DBContracts.DistressThermometerTable.NAME_ID_FK,
                 DBContracts.DistressThermometerTable.UPDATE_DATE,
-                DBContracts.DistressThermometerTable.ANSWERS_TO_QUESTIONS
+                DBContracts.DistressThermometerTable.ANSWERS_TO_QUESTIONS,
+                DBContracts.DistressThermometerTable.LAST_QEUSTION_EDITED_NR,
+                DBContracts.DistressThermometerTable.PROGRESS
         };
     }
 

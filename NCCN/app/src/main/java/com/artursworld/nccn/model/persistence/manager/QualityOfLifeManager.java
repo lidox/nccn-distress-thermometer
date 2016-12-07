@@ -68,6 +68,12 @@ public class QualityOfLifeManager extends EntityDbManager {
         if(questionnaire.getAnswersToQuestionsBytes() != null)
             values.put(DBContracts.QualityOfLifeTable.ANSWERS_TO_QUESTIONS, questionnaire.getAnswersToQuestionsBytes());
 
+        if(questionnaire.getLastQuestionEditedNr() >= 0)
+            values.put(DBContracts.QualityOfLifeTable.LAST_QEUSTION_EDITED_NR, questionnaire.getLastQuestionEditedNr());
+
+        if(questionnaire.getProgressInPercent() >= 0)
+            values.put(DBContracts.QualityOfLifeTable.PROGRESS, questionnaire.getProgressInPercent());
+
         return values;
     }
 
@@ -95,6 +101,8 @@ public class QualityOfLifeManager extends EntityDbManager {
             }
 
             questionnaire.setAnswersToQuestionsBytes(cursor.getBlob(3));
+            questionnaire.setLastQuestionEditedNr(cursor.getInt(4));
+            questionnaire.setProgressInPercent(cursor.getInt(5));
             medicalUserList.add(questionnaire);
         }
 
@@ -115,7 +123,9 @@ public class QualityOfLifeManager extends EntityDbManager {
         return new String[]{DBContracts.QualityOfLifeTable.CREATION_DATE_PK,
                 DBContracts.QualityOfLifeTable.NAME_ID_FK,
                 DBContracts.QualityOfLifeTable.UPDATE_DATE,
-                DBContracts.QualityOfLifeTable.ANSWERS_TO_QUESTIONS
+                DBContracts.QualityOfLifeTable.ANSWERS_TO_QUESTIONS,
+                DBContracts.QualityOfLifeTable.LAST_QEUSTION_EDITED_NR,
+                DBContracts.QualityOfLifeTable.PROGRESS
         };
     }
 

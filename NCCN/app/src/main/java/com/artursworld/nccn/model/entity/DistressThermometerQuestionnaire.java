@@ -14,6 +14,24 @@ public class DistressThermometerQuestionnaire {
     private String userNameId_FK;
     private Date updateDate;
     private byte[] answersToQuestionsBytes;
+    private int progressInPercent;
+    private int lastQuestionEditedNr;
+
+    public int getProgressInPercent() {
+        return progressInPercent;
+    }
+
+    public void setProgressInPercent(int progressInPercent) {
+        this.progressInPercent = progressInPercent;
+    }
+
+    public int getLastQuestionEditedNr() {
+        return lastQuestionEditedNr;
+    }
+
+    public void setLastQuestionEditedNr(int lastQuestionEditedNr) {
+        this.lastQuestionEditedNr = lastQuestionEditedNr;
+    }
 
     // configuration
     private int questionCount = 6; // [10+5+2+6+2+21+(2)]/8= 6 bytes a 8 Bits

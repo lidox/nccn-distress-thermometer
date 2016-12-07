@@ -12,6 +12,7 @@ public class DBContracts {
     private static final String TEXT_TYPE = " TEXT";
     private static final String DATE_TYPE = " DATE";
     private static final String BLOB_TYPE = " BLOB";
+    private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
 
     private DBContracts(){}
@@ -33,6 +34,8 @@ public class DBContracts {
         public static final String NAME_ID_FK = "user_id"; //foreign key
         public static final String CREATION_DATE_PK = "creation_date";
         public static final String UPDATE_DATE = "update_date";
+        public static final String PROGRESS = "progress_of_questionnaire";
+        public static final String LAST_QEUSTION_EDITED_NR = "nr_of_last_question_edited";
 
         // questions
         public static final String ANSWER_TO_QUESTION1 = "ANSWER_TO_QUESTION1";
@@ -57,6 +60,8 @@ public class DBContracts {
         public static final String CREATION_DATE_PK = "creation_date";
         public static final String UPDATE_DATE = "update_date";
         public static final String ANSWERS_TO_QUESTIONS = "answers_to_questions";
+        public static final String PROGRESS = "progress_of_questionnaire";
+        public static final String LAST_QEUSTION_EDITED_NR = "nr_of_last_question_edited";
     }
 
     public static abstract class DistressThermometerTable {
@@ -65,6 +70,8 @@ public class DBContracts {
         public static final String CREATION_DATE_PK = "creation_date";
         public static final String UPDATE_DATE = "update_date";
         public static final String ANSWERS_TO_QUESTIONS = "answers_to_questions";
+        public static final String PROGRESS = "progress_of_questionnaire";
+        public static final String LAST_QEUSTION_EDITED_NR = "nr_of_last_question_edited";
     }
 
     // Create SQL queries
@@ -94,6 +101,8 @@ public class DBContracts {
             + HADSDTable.ANSWER_TO_QUESTION12 + BLOB_TYPE + COMMA_SEP
             + HADSDTable.ANSWER_TO_QUESTION13 + BLOB_TYPE + COMMA_SEP
             + HADSDTable.ANSWER_TO_QUESTION14 + BLOB_TYPE + COMMA_SEP
+            + HADSDTable.LAST_QEUSTION_EDITED_NR + INTEGER_TYPE + COMMA_SEP
+            + HADSDTable.PROGRESS + INTEGER_TYPE + COMMA_SEP
             + " PRIMARY KEY ("+HADSDTable.CREATION_DATE_PK +") "
             + "FOREIGN KEY(" + HADSDTable.NAME_ID_FK +") "
             + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";
@@ -104,6 +113,8 @@ public class DBContracts {
             + QualityOfLifeTable.NAME_ID_FK + DATE_TYPE + COMMA_SEP
             + QualityOfLifeTable.UPDATE_DATE + DATE_TYPE + COMMA_SEP
             + QualityOfLifeTable.ANSWERS_TO_QUESTIONS + BLOB_TYPE + COMMA_SEP
+            + QualityOfLifeTable.LAST_QEUSTION_EDITED_NR + INTEGER_TYPE + COMMA_SEP
+            + QualityOfLifeTable.PROGRESS + INTEGER_TYPE + COMMA_SEP
             + " PRIMARY KEY ("+QualityOfLifeTable.CREATION_DATE_PK +") "
             + "FOREIGN KEY(" + QualityOfLifeTable.NAME_ID_FK +") "
             + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";
@@ -114,6 +125,8 @@ public class DBContracts {
             + DistressThermometerTable.NAME_ID_FK + DATE_TYPE + COMMA_SEP
             + DistressThermometerTable.UPDATE_DATE + DATE_TYPE + COMMA_SEP
             + DistressThermometerTable.ANSWERS_TO_QUESTIONS + BLOB_TYPE + COMMA_SEP
+            + DistressThermometerTable.LAST_QEUSTION_EDITED_NR + INTEGER_TYPE + COMMA_SEP
+            + DistressThermometerTable.PROGRESS + INTEGER_TYPE + COMMA_SEP
             + " PRIMARY KEY ("+DistressThermometerTable.CREATION_DATE_PK +") "
             + "FOREIGN KEY(" + DistressThermometerTable.NAME_ID_FK +") "
             + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";

@@ -3,10 +3,8 @@ package com.artursworld.nccn.model.entity;
 import android.util.Log;
 
 import com.artursworld.nccn.controller.util.Bits;
-import com.artursworld.nccn.controller.util.Questionnairy;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * Represents the Quality Of Life (Qol) Questionnaire
@@ -17,11 +15,31 @@ public class QolQuestionnaire {
     private String userNameId_FK;
     private Date updateDate;
     private byte[] answersToQuestionsBytes;
+    private int progressInPercent;
+    private int lastQuestionEditedNr;
+
+    public int getProgressInPercent() {
+        return progressInPercent;
+    }
+
+    public void setProgressInPercent(int progressInPercent) {
+        this.progressInPercent = progressInPercent;
+    }
+
+    public int getLastQuestionEditedNr() {
+        return lastQuestionEditedNr;
+    }
+
+    public void setLastQuestionEditedNr(int lastQuestionEditedNr) {
+        this.lastQuestionEditedNr = lastQuestionEditedNr;
+    }
 
     // configuration
     private int questionByteCount = 26;
-    public static String defaultByte = "00010001";
-    public static String exceptionalByte = "00000001";
+    private static String defaultByte = "00010001";
+    private static String exceptionalByte = "00000001";
+
+
 
     public QolQuestionnaire(String userNameId){
         this.userNameId_FK = userNameId;

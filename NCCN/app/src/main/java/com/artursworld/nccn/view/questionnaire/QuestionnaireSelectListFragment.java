@@ -30,7 +30,6 @@ import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -84,6 +83,12 @@ public class QuestionnaireSelectListFragment extends Fragment {
             if(setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))){
                 list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
             }
+        }
+        else{
+            Log.i(CLASS_NAME, "No configuration to display questionnaires has been found, so display the defaults");
+            list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
+            list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
+            list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
         }
 
         return list;
