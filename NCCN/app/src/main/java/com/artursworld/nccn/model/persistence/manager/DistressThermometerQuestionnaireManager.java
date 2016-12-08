@@ -9,9 +9,12 @@ import android.util.Log;
 
 import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.persistence.contracts.DBContracts;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DistressThermometerQuestionnaireManager extends EntityDbManager {
@@ -87,6 +90,18 @@ public class DistressThermometerQuestionnaireManager extends EntityDbManager {
      * @return returns the Questionnaire by users name
      */
     public DistressThermometerQuestionnaire getDistressThermometerQuestionnaireByUserName(String name) {
+        List<DistressThermometerQuestionnaire> medicalUserList = getDistressThermometerQuestionnaireList(name);
+
+        if (medicalUserList.size() > 0) {
+            return medicalUserList.get(0);
+        } else {
+            Log.e(CLASS_NAME,"Exception! Could not find DistressThermometerQuestionnaire by name(" + name + ") in database");
+            return null;
+        }
+    }
+
+    @NonNull
+    private List<DistressThermometerQuestionnaire> getDistressThermometerQuestionnaireList(String name) {
         List<DistressThermometerQuestionnaire> medicalUserList = new ArrayList<>();
         Cursor cursor = database.query(DBContracts.DistressThermometerTable.TABLE_NAME,
                 getColumns(),
@@ -112,13 +127,7 @@ public class DistressThermometerQuestionnaireManager extends EntityDbManager {
         if (!cursor.isClosed()) {
             cursor.close();
         }
-
-        if (medicalUserList.size() > 0) {
-            return medicalUserList.get(0);
-        } else {
-            Log.e(CLASS_NAME,"Exception! Could not find DistressThermometerQuestionnaire by name(" + name + ") in database");
-            return null;
-        }
+        return medicalUserList;
     }
 
     @NonNull
@@ -148,5 +157,22 @@ public class DistressThermometerQuestionnaireManager extends EntityDbManager {
         } catch (Exception e) {
             Log.e(CLASS_NAME,"Exception! Could not update the questionnaire(" + questionnaire + ") " + " " + e.getLocalizedMessage());
         }
+    }
+
+    /**
+     * Get questionnaire by username and creation date
+     * @param userName the users name
+     * @param date the questionnaires creation date
+     * @return the  Distress Thermometer questionnaire by username and creation date
+     */
+    public DistressThermometerQuestionnaire getDistressThermometerQuestionnaireByDate(String userName, Date date) {
+        List<DistressThermometerQuestionnaire> questionnaireList = getDistressThermometerQuestionnaireList(userName);
+        SimpleDateFormat format = EntityDbManager.dateFormat;
+        for (DistressThermometerQuestionnaire item: questionnaireList){
+            if(format.format(item.getCreationDate_PK()).equals(format.format(date))) {
+                return item;
+            }
+        }
+        return null;
     }
 }

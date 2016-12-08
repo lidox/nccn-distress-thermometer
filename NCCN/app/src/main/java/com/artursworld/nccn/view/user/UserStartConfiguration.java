@@ -17,7 +17,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Share;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -50,8 +52,9 @@ public class UserStartConfiguration {
 
                         // set shared preferences
                         setQestionnairesToBeDisplayedOnStartScreen(dialog);
+                        setSelectedQuestionnaireDate();
 
-                        // refreshfinish();
+                        // refresh and finish();
                         activity.finish();
                         activity.startActivity(activity.getIntent());
                         
@@ -61,6 +64,15 @@ public class UserStartConfiguration {
         toggleById(R.id.toggle_user_layout, R.id.layout_users, R.string.select_existing_user, R.string.switch_to_new_user,  R.string.create_new_user, R.string.switch_to_existing_user);
         toggleById(R.id.included_questionnaire_title, R.id.layout_below_included_questionnaire_title, R.string.configurable_questionnaire, R.string.switch_to_default_selection,R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection);
         }
+
+    private void setSelectedQuestionnaireDate() {
+        //TODO: setSelectedQuestionnaireDate();
+        Date newCreationDate = null; // get it from UI
+        if(newCreationDate == null){
+            newCreationDate = new Date();
+        }
+        Share.putString(Strings.getStringByRId(R.string.c_selected_questionnaire_creation_date), EntityDbManager.dateFormat.format(newCreationDate));
+    }
 
     /**
      * Sets the quesitonnares to be displayed on start screen via shared preferences

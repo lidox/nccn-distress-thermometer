@@ -7,10 +7,13 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.persistence.contracts.DBContracts;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class QualityOfLifeManager extends EntityDbManager {
@@ -84,6 +87,18 @@ public class QualityOfLifeManager extends EntityDbManager {
      * @return returns the Questionnaire by users name
      */
     public QolQuestionnaire getQolQuestionnaireByUserName(String name) {
+        List<QolQuestionnaire> qolQuestionnaireList = getQolQuestionnaireList(name);
+
+        if (qolQuestionnaireList.size() > 0) {
+            return qolQuestionnaireList.get(0);
+        } else {
+            Log.e(QualityOfLifeManager.class.getSimpleName(),"Exception! Could not find QolQuestionnaire by name(" + name + ") in database");
+            return null;
+        }
+    }
+
+    @NonNull
+    private List<QolQuestionnaire> getQolQuestionnaireList(String name) {
         List<QolQuestionnaire> medicalUserList = new ArrayList<>();
         Cursor cursor = database.query(DBContracts.QualityOfLifeTable.TABLE_NAME,
                 getColumns(),
@@ -109,13 +124,7 @@ public class QualityOfLifeManager extends EntityDbManager {
         if (!cursor.isClosed()) {
             cursor.close();
         }
-
-        if (medicalUserList.size() > 0) {
-            return medicalUserList.get(0);
-        } else {
-            Log.e(QualityOfLifeManager.class.getSimpleName(),"Exception! Could not find QolQuestionnaire by name(" + name + ") in database");
-            return null;
-        }
+        return medicalUserList;
     }
 
     @NonNull
@@ -147,4 +156,20 @@ public class QualityOfLifeManager extends EntityDbManager {
         }
     }
 
+    /**
+     * Get questionnaire by username and creation date
+     * @param userName the users userName
+     * @param date the questionnaires creation date
+     * @return the  Distress Thermometer questionnaire by username and creation date
+     */
+    public QolQuestionnaire getQolQuestionnaireByDate(String userName, Date date) {
+        List<QolQuestionnaire> qolQuestionnaireList = getQolQuestionnaireList(userName);
+        SimpleDateFormat format = EntityDbManager.dateFormat;
+        for (QolQuestionnaire item: qolQuestionnaireList){
+            if(format.format(item.getCreationDate_PK()).equals(format.format(date))) {
+                return item;
+            }
+        }
+        return null;
+    }
 }

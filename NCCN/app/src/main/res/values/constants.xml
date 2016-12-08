@@ -3,4 +3,5 @@
     <string name="c_seven_possible">"com.artursworld.SevenPossible"</string>
     <string name="c_selected_user_name">"com.artursworld.c_selected_user_name"</string>
     <string name="c_selected_questionnaires">"com.artursworld.c_selected_questionnaires"</string>
+    <string name="c_selected_questionnaire_creation_date">"com.artursworld.c_selected_questionnaire_creation_date"</string>
 </resources>

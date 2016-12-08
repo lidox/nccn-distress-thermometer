@@ -11,7 +11,9 @@ import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.persistence.contracts.DBContracts;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HADSDQuestionnaireManager extends EntityDbManager {
@@ -102,6 +104,35 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
      * @return returns the Questionnaire by users name
      */
     public HADSDQuestionnaire getHADSDQuestionnaireByUserName(String name) {
+        List<HADSDQuestionnaire> medicalUserList = getHadsdQuestionnaireListByUserName(name);
+
+        if (medicalUserList.size() > 0) {
+            return medicalUserList.get(0);
+        } else {
+            Log.e(HADSDQuestionnaireManager.class.getSimpleName(),"Exception! Could not find HADSDQuestionnaire by name(" + name + ") in database");
+            return null;
+        }
+    }
+
+    /**
+     * Get questionnaire by username and creation date
+     * @param userName the users name
+     * @param date the questionnaires creation date
+     * @return the HADSD questionnaire by username and creation date
+     */
+    public HADSDQuestionnaire getHADSDQuestionnaireByDate_PK(String userName, Date date){
+        List<HADSDQuestionnaire> questionnaireList = getHadsdQuestionnaireListByUserName(userName);
+        SimpleDateFormat format = EntityDbManager.dateFormat;
+        for (HADSDQuestionnaire item: questionnaireList){
+            if(format.format(item.getCreationDate_PK()).equals(format.format(date))) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @NonNull
+    private List<HADSDQuestionnaire> getHadsdQuestionnaireListByUserName(String name) {
         List<HADSDQuestionnaire> medicalUserList = new ArrayList<>();
         Cursor cursor = database.query(DBContracts.HADSDTable.TABLE_NAME,
                 getColumns(),
@@ -140,13 +171,7 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
         if (!cursor.isClosed()) {
             cursor.close();
         }
-
-        if (medicalUserList.size() > 0) {
-            return medicalUserList.get(0);
-        } else {
-            Log.e(HADSDQuestionnaireManager.class.getSimpleName(),"Exception! Could not find HADSDQuestionnaire by name(" + name + ") in database");
-            return null;
-        }
+        return medicalUserList;
     }
 
     @NonNull

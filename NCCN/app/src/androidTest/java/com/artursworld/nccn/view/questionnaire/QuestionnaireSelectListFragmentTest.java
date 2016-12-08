@@ -14,6 +14,8 @@ import com.artursworld.nccn.model.persistence.manager.UserManager;
 
 import org.junit.Test;
 
+import java.util.Date;
+
 public class QuestionnaireSelectListFragmentTest extends InstrumentationTestCase {
 
     private UserManager userDB;
@@ -35,25 +37,29 @@ public class QuestionnaireSelectListFragmentTest extends InstrumentationTestCase
 
     @Test
     public void testGetProgressOfQuestionnaireById(){
-        //TODO; get questionnaires of user
-
-        // setup
+        // Date as primkey for an context and user name
+        Date dateKey = new Date();
         String userName = "Regina for president";
+
+
         User user = new User(userName);
         userDB.insertUser(user);
 
         //add questionnaires
         HADSDQuestionnaire q1 = new HADSDQuestionnaire(userName);
+        q1.setCreationDate_PK(dateKey);
         q1.setLastQuestionEditedNr(4);
         q1.setProgressInPercent(99);
         new HADSDQuestionnaireManager(context).insertQuestionnaire(q1);
 
         DistressThermometerQuestionnaire q2 = new DistressThermometerQuestionnaire(userName);
+        q2.setCreationDate_PK(dateKey);
         q2.setLastQuestionEditedNr(2);
         q2.setProgressInPercent(77);
         new DistressThermometerQuestionnaireManager(context).insertQuestionnaire(q2);
 
         QolQuestionnaire q3 = new QolQuestionnaire(userName);
+        q3.setCreationDate_PK(dateKey);
         q3.setLastQuestionEditedNr(0);
         q3.setProgressInPercent(33);
         new QualityOfLifeManager(context).insertQuestionnaire(q3);
@@ -61,8 +67,13 @@ public class QuestionnaireSelectListFragmentTest extends InstrumentationTestCase
         // get selected questionnaire
         user = userDB.getUserByName(userName);
 
-        //int hadsProgress = ..
-        //assertEquals("8 bits per byte arrays * 6 arrays", 8 * 6, expected2.length());
+        int hadsProgress = new HADSDQuestionnaireManager(context).getHADSDQuestionnaireByDate_PK(user.getName(), dateKey).getProgressInPercent();
+        int distressProgress = new DistressThermometerQuestionnaireManager(context).getDistressThermometerQuestionnaireByDate(user.getName(), dateKey).getProgressInPercent();
+        int qualityProgress = new QualityOfLifeManager(context).getQolQuestionnaireByDate(user.getName(), dateKey).getProgressInPercent();
+
+        assertEquals(99, hadsProgress);
+        assertEquals(77, distressProgress);
+        assertEquals(33, qualityProgress);
     }
 
 }
