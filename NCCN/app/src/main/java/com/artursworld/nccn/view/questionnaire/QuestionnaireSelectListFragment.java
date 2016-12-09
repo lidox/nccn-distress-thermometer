@@ -65,36 +65,56 @@ public class QuestionnaireSelectListFragment extends Fragment {
     @NonNull
     private List<AbstractQuestionnaire> getQuestionnaireList() {
         List<AbstractQuestionnaire> list = new ArrayList<>();
-        try {
-            String selectedUserName = Share.getStringByKey(R.string.c_selected_user_name);
-            Date selectedQuestionnaireDate = EntityDbManager.dateFormat.parse(Share.getStringByKey(R.string.c_selected_questionnaire_creation_date));
 
-            if (selectedUserName != null) {
-                User user = new UserManager().getUserByName(selectedUserName);
-                if (selectedQuestionnaireDate != null) {
-                    fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user);
-                }
-            }
-            else{
-                //TODO: if null create new user
+        // set new Date for questionnaires, for the case that a new user need to be created
+        Date selectedQuestionnaireDate = null;
+        String selectedUserName = Share.getStringByKey(R.string.c_selected_user_name);
 
-            }
-
-
-        } catch (ParseException e) {
-            Log.e(CLASS_NAME, "Exception! " + e.getLocalizedMessage());
-        } finally {
-            return list;
+        // check if flag is set e.g. in UserStartConfiguration.class
+        boolean hasToCreateNewUser = selectedUserName.equals(Strings.getStringByRId(R.string.c_new_user_flag));
+        if (hasToCreateNewUser) {
+            User user = new User(selectedUserName);
+            new UserManager().insertUser(user);
+            fillQuestionnaireListByUserNameAndCreationDate(list, new Date(), user);
         }
+        // a user has been selected
+        else {
+            User user = new UserManager().getUserByName(selectedUserName);
+            selectedQuestionnaireDate = getSelectedQuestionnaireDate(selectedQuestionnaireDate);
+            if (selectedQuestionnaireDate != null) {
+                fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user);
+            }
+        }
+
+        return list;
     }
 
+    private Date getSelectedQuestionnaireDate(Date selectedQuestionnaireDate) {
+        try {
+            selectedQuestionnaireDate = EntityDbManager.dateFormat.parse(Share.getStringByKey(R.string.c_selected_questionnaire_creation_date));
+        } catch (ParseException e) {
+            Log.e(CLASS_NAME, "Exception! " + e.getLocalizedMessage());
+        }
+        return selectedQuestionnaireDate;
+    }
+
+    /**
+     * Fills a questionnaire list which is displayed on start screen
+     * If user name equals 'create user flag' the default questionnaires will be displayed
+     * and puts the progress values into list by questionnaire type
+     *
+     * @param list                      the list to fill
+     * @param selectedQuestionnaireDate the date to use for the questionnaires
+     * @param user                      the selected user
+     */
     private void fillQuestionnaireListByUserNameAndCreationDate(List<AbstractQuestionnaire> list, Date selectedQuestionnaireDate, User user) {
         int hadsProgress = 0;
         int distressProgress = 0;
         int qualityProgress = 0;
 
         Set<String> setOfBooleans = Share.getStringSetByKey(R.string.c_selected_questionnaires);
-        if (setOfBooleans != null) {
+        boolean hasToCreateNewUser = user.getName().equals(Strings.getStringByRId(R.string.c_new_user_flag));
+        if (setOfBooleans != null && !hasToCreateNewUser && user != null) {
             if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
                 hadsProgress = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
                 list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
