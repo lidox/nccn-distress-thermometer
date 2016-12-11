@@ -15,9 +15,14 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Share;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.model.entity.AbstractQuestionnaire;
+import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
+import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -48,7 +53,8 @@ public class UserStartConfiguration {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         //TODO: get selected user
                         String selectedUserName = null;
-                        Share.putString(Strings.getStringByRId(R.string.c_selected_user_name), selectedUserName);
+                        Global.setSelectedUserName(selectedUserName);
+
 
                         // set shared preferences
                         setQestionnairesToBeDisplayedOnStartScreen(dialog);
@@ -60,10 +66,28 @@ public class UserStartConfiguration {
                         
                     }
                 });
-        dialog = b.show();
+        dialog = b.build();
+        setSelectedQestionnairesAsCheckedBeforeDialogShowUp(dialog);
         toggleById(R.id.toggle_user_layout, R.id.layout_users, R.string.select_existing_user, R.string.switch_to_new_user,  R.string.create_new_user, R.string.switch_to_existing_user);
         toggleById(R.id.included_questionnaire_title, R.id.layout_below_included_questionnaire_title, R.string.configurable_questionnaire, R.string.switch_to_default_selection,R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection);
+        dialog = b.show();
+    }
+
+    private void setSelectedQestionnairesAsCheckedBeforeDialogShowUp(MaterialDialog dialog) {
+        CheckBox checkbox1 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_1);
+        CheckBox checkbox2 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_2);
+        CheckBox checkbox3 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_3);
+        Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
+        if (!setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
+           checkbox1.setChecked(false);
         }
+        if (!setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
+            checkbox2.setChecked(false);
+        }
+        if (!setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
+           checkbox3.setChecked(false);
+        }
+    }
 
     private void setSelectedQuestionnaireDate() {
         //TODO: setSelectedQuestionnaireDate();
@@ -71,7 +95,7 @@ public class UserStartConfiguration {
         if(newCreationDate == null){
             newCreationDate = new Date();
         }
-        Share.putString(Strings.getStringByRId(R.string.c_selected_questionnaire_creation_date), EntityDbManager.dateFormat.format(newCreationDate));
+        Global.setSelectedQuestionnaireDate(newCreationDate);
     }
 
     /**

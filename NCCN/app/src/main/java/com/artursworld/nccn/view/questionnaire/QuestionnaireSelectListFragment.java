@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Share;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardHADSD;
@@ -68,34 +69,25 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
         // set new Date for questionnaires, for the case that a new user need to be created
         Date selectedQuestionnaireDate = null;
-        String selectedUserName = Share.getStringByKey(R.string.c_selected_user_name);
+        String selectedUserName = Global.getSelectedUser();
 
         // check if flag is set e.g. in UserStartConfiguration.class
-        boolean hasToCreateNewUser = selectedUserName.equals(Strings.getStringByRId(R.string.c_new_user_flag));
+        boolean hasToCreateNewUser = Strings.getStringByRId(R.string.c_new_user_flag).equals(selectedUserName) || selectedUserName == null;
         if (hasToCreateNewUser) {
             User user = new User(selectedUserName);
             new UserManager().insertUser(user);
-            fillQuestionnaireListByUserNameAndCreationDate(list, new Date(), user);
+            fillQuestionnaireListByUserNameAndCreationDate(list, new Date(), user, hasToCreateNewUser);
         }
         // a user has been selected
         else {
             User user = new UserManager().getUserByName(selectedUserName);
-            selectedQuestionnaireDate = getSelectedQuestionnaireDate(selectedQuestionnaireDate);
+            selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
             if (selectedQuestionnaireDate != null) {
-                fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user);
+                fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user, hasToCreateNewUser);
             }
         }
 
         return list;
-    }
-
-    private Date getSelectedQuestionnaireDate(Date selectedQuestionnaireDate) {
-        try {
-            selectedQuestionnaireDate = EntityDbManager.dateFormat.parse(Share.getStringByKey(R.string.c_selected_questionnaire_creation_date));
-        } catch (ParseException e) {
-            Log.e(CLASS_NAME, "Exception! " + e.getLocalizedMessage());
-        }
-        return selectedQuestionnaireDate;
     }
 
     /**
@@ -107,24 +99,27 @@ public class QuestionnaireSelectListFragment extends Fragment {
      * @param selectedQuestionnaireDate the date to use for the questionnaires
      * @param user                      the selected user
      */
-    private void fillQuestionnaireListByUserNameAndCreationDate(List<AbstractQuestionnaire> list, Date selectedQuestionnaireDate, User user) {
+    private void fillQuestionnaireListByUserNameAndCreationDate(List<AbstractQuestionnaire> list, Date selectedQuestionnaireDate, User user, boolean hasToCreateNewUser) {
         int hadsProgress = 0;
         int distressProgress = 0;
         int qualityProgress = 0;
 
-        Set<String> setOfBooleans = Share.getStringSetByKey(R.string.c_selected_questionnaires);
-        boolean hasToCreateNewUser = user.getName().equals(Strings.getStringByRId(R.string.c_new_user_flag));
-        if (setOfBooleans != null && !hasToCreateNewUser && user != null) {
+        Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
+        if (setOfBooleans != null) {
+            boolean hasToGetProgress = !hasToCreateNewUser && user != null;
             if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
-                hadsProgress = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
+                if(hasToGetProgress)
+                    hadsProgress = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
                 list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
             }
             if (setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
-                distressProgress = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
+                if(hasToGetProgress)
+                    distressProgress = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
                 list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
             }
             if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
-                qualityProgress = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
+                if(hasToGetProgress)
+                    qualityProgress = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
                 list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
             }
         } else {
