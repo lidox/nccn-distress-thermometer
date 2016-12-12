@@ -37,11 +37,11 @@ public class UserStartConfiguration {
     private MaterialDialog dialog;
     private Activity activity = null;
 
-    public UserStartConfiguration(Activity context){
+    public UserStartConfiguration(Activity context) {
         activity = context;
     }
 
-    public void showConfigurationDialog(){
+    public void showConfigurationDialog() {
         MaterialDialog.Builder b = new MaterialDialog.Builder(activity)
                 .title(R.string.questionnaire_to_display)
                 .positiveText(R.string.ok)
@@ -63,13 +63,13 @@ public class UserStartConfiguration {
                         // refresh and finish();
                         activity.finish();
                         activity.startActivity(activity.getIntent());
-                        
+
                     }
                 });
         dialog = b.build();
         setSelectedQestionnairesAsCheckedBeforeDialogShowUp(dialog);
-        toggleById(R.id.toggle_user_layout, R.id.layout_users, R.string.select_existing_user, R.string.switch_to_new_user,  R.string.create_new_user, R.string.switch_to_existing_user);
-        toggleById(R.id.included_questionnaire_title, R.id.layout_below_included_questionnaire_title, R.string.configurable_questionnaire, R.string.switch_to_default_selection,R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection);
+        toggleById(R.id.toggle_user_layout, R.id.layout_users, R.string.select_existing_user, R.string.switch_to_new_user, R.string.create_new_user, R.string.switch_to_existing_user);
+        toggleById(R.id.included_questionnaire_title, R.id.layout_below_included_questionnaire_title, R.string.configurable_questionnaire, R.string.switch_to_default_selection, R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection);
         dialog = b.show();
     }
 
@@ -78,21 +78,23 @@ public class UserStartConfiguration {
         CheckBox checkbox2 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_2);
         CheckBox checkbox3 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_3);
         Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
-        if (!setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
-           checkbox1.setChecked(false);
-        }
-        if (!setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
-            checkbox2.setChecked(false);
-        }
-        if (!setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
-           checkbox3.setChecked(false);
+        if (setOfBooleans != null) {
+            if (!setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
+                checkbox1.setChecked(false);
+            }
+            if (!setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
+                checkbox2.setChecked(false);
+            }
+            if (!setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
+                checkbox3.setChecked(false);
+            }
         }
     }
 
     private void setSelectedQuestionnaireDate() {
         //TODO: setSelectedQuestionnaireDate();
         Date newCreationDate = null; // get it from UI
-        if(newCreationDate == null){
+        if (newCreationDate == null) {
             newCreationDate = new Date();
         }
         Global.setSelectedQuestionnaireDate(newCreationDate);
@@ -100,6 +102,7 @@ public class UserStartConfiguration {
 
     /**
      * Sets the quesitonnares to be displayed on start screen via shared preferences
+     *
      * @param dialog the dialog displaying the UI
      */
     private void setQestionnairesToBeDisplayedOnStartScreen(@NonNull MaterialDialog dialog) {
@@ -107,13 +110,13 @@ public class UserStartConfiguration {
         CheckBox checkbox2 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_2);
         CheckBox checkbox3 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_3);
         Set<String> selectedQuestionnairesSet = new HashSet<String>();
-        if(checkbox1.isChecked()){
+        if (checkbox1.isChecked()) {
             selectedQuestionnairesSet.add(Strings.getStringByRId(R.string.hadsd_questionnaire));
         }
-        if(checkbox2.isChecked()){
+        if (checkbox2.isChecked()) {
             selectedQuestionnairesSet.add(Strings.getStringByRId(R.string.nccn_distress_thermometer));
         }
-        if(checkbox3.isChecked()){
+        if (checkbox3.isChecked()) {
             selectedQuestionnairesSet.add(Strings.getStringByRId(R.string.quality_of_life_questionnaire));
         }
         Log.i(CLASS_NAME, "Following questionnaires are selected to be displayed on start screen=" + selectedQuestionnairesSet);
@@ -123,15 +126,16 @@ public class UserStartConfiguration {
     /**
      * Adds toggle mechanism to a expandable title view with subtitle and toggle button
      * and sets the displayed texts of the titles
-     * @param barToggleLayoutId the id of included title, subtitle and switcher layout
-     * @param layoutIdBelowBarToggleLayout  the id of layout below included title, subtitle and switcher layout
-     * @param titleTextId the title displayed if toggle button is checked
-     * @param subTitleTextId the subtitle displayed if toggle button is checked
-     * @param invisibleTitleTextId the title displayed if toggle button is unchecked
-     * @param invisibleSubTitleTextId the subtitle displayed if toggle button is unchecked
+     *
+     * @param barToggleLayoutId            the id of included title, subtitle and switcher layout
+     * @param layoutIdBelowBarToggleLayout the id of layout below included title, subtitle and switcher layout
+     * @param titleTextId                  the title displayed if toggle button is checked
+     * @param subTitleTextId               the subtitle displayed if toggle button is checked
+     * @param invisibleTitleTextId         the title displayed if toggle button is unchecked
+     * @param invisibleSubTitleTextId      the subtitle displayed if toggle button is unchecked
      */
-    private void toggleById(int barToggleLayoutId, final int layoutIdBelowBarToggleLayout, final int titleTextId, final int subTitleTextId, final int invisibleTitleTextId, final int invisibleSubTitleTextId){
-        final View toggleTitleLayout =  dialog.getView().findViewById(barToggleLayoutId);
+    private void toggleById(int barToggleLayoutId, final int layoutIdBelowBarToggleLayout, final int titleTextId, final int subTitleTextId, final int invisibleTitleTextId, final int invisibleSubTitleTextId) {
+        final View toggleTitleLayout = dialog.getView().findViewById(barToggleLayoutId);
         Switch questionnaireSwitch = (Switch) toggleTitleLayout.findViewById(R.id.switcher);
 
         // init UI
@@ -146,14 +150,14 @@ public class UserStartConfiguration {
                 RelativeLayout layout = (RelativeLayout) dialog.getView().findViewById(layoutIdBelowBarToggleLayout);
 
                 // show details UI
-                if(isChecked){
+                if (isChecked) {
                     layout.setVisibility(View.VISIBLE);
                     title.setText(Strings.getStringByRId(titleTextId));
                     subtitle.setText(Strings.getStringByRId(subTitleTextId));
                     onToggleIsChecked();
                 }
                 // hide details
-                else{
+                else {
                     layout.setVisibility(View.GONE);
                     title.setText(Strings.getStringByRId(invisibleTitleTextId));
                     subtitle.setText(Strings.getStringByRId(invisibleSubTitleTextId));

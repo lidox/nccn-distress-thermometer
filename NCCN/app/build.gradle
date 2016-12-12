@@ -49,5 +49,6 @@ dependencies {
     // material dialogs
     compile 'com.afollestad.material-dialogs:core:0.9.0.1'
 
-
+    // expandable list
+    compile 'com.github.aakira:expandable-layout:1.6.0@aar'
 }

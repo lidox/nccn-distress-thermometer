@@ -1,6 +1,8 @@
 package com.artursworld.nccn.model.entity;
 
 
+import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
+
 import java.util.Date;
 
 public class User {
@@ -14,7 +16,10 @@ public class User {
     }
 
     public String toString(){
-        return this.name;
+        StringBuilder ret = new StringBuilder();
+        ret.append(name + ", ");
+        ret.append(EntityDbManager.dateFormat.format(creationDate));
+        return ret.toString();
     }
 
     public Date getCreationDate() {

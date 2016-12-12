@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
-import com.artursworld.nccn.controller.util.Share;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardHADSD;
 import com.artursworld.nccn.controller.wizard.WizardNCCN;
@@ -26,12 +25,10 @@ import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
-import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
