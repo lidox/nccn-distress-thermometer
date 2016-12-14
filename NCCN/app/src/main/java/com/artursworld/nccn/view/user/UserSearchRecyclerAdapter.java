@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.model.entity.User;
 
 import java.util.List;
@@ -34,7 +35,9 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Log.i(CLASS_NAME, "upsi :) clicked");
+                User selectedUser = data.get(position);
+                Log.i(CLASS_NAME, "clicked on: " + selectedUser);
+                Global.setSelectedUserName(selectedUser.getName());
             }
         });
     }

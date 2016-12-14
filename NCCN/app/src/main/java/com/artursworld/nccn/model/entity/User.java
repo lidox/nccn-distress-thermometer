@@ -7,8 +7,8 @@ import java.util.Date;
 
 public class User {
 
-    private String name;
-    private Date creationDate;
+    private String name = null;
+    private Date creationDate = null;
 
     public User(String name){
         this.name = name;
@@ -17,7 +17,7 @@ public class User {
 
     public String toString(){
         StringBuilder ret = new StringBuilder();
-        ret.append(name + ", ");
+        ret.append(this.getName() + ", ");
         ret.append(EntityDbManager.dateFormat.format(creationDate));
         return ret.toString();
     }
@@ -31,7 +31,7 @@ public class User {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {

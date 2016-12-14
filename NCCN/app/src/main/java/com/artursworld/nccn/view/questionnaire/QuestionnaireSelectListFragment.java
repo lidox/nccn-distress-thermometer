@@ -71,7 +71,8 @@ public class QuestionnaireSelectListFragment extends Fragment {
         // check if flag is set e.g. in UserStartConfiguration.class
         boolean hasToCreateNewUser = Strings.getStringByRId(R.string.c_new_user_flag).equals(selectedUserName) || selectedUserName == null;
         if (hasToCreateNewUser) {
-            User user = new User(selectedUserName);
+            //TODO: check
+            User user = new User(Strings.getStringByRId(R.string.user_name));
             new UserManager().insertUser(user);
             fillQuestionnaireListByUserNameAndCreationDate(list, new Date(), user, hasToCreateNewUser);
         }
@@ -133,28 +134,31 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Log.i(CLASS_NAME, "selected medicament=" + abstractQuestionnairesList.get(position) + " at position: " + position);
-
-                    //TODO: stuff to delete and manage
-                    UserManager m = new UserManager();
-                    String userName = "Ahmet";
-                    m.insertUser(new User(userName));
-                    DistressThermometerQuestionnaireManager qm = new DistressThermometerQuestionnaireManager();
-                    qm.insertQuestionnaire(new DistressThermometerQuestionnaire(userName));
-                    QualityOfLifeManager qm1 = new QualityOfLifeManager();
-                    qm1.insertQuestionnaire(new QolQuestionnaire(userName));
-                    HADSDQuestionnaireManager qm2 = new HADSDQuestionnaireManager();
-                    qm2.insertQuestionnaire(new HADSDQuestionnaire(userName));
-
-
-                    if (position == 0) {
-                        startActivityForResult(new Intent(getContext(), WizardHADSD.class), 2);
-                    } else if (position == 1) {
-                        startActivityForResult(new Intent(getContext(), WizardNCCN.class), 1);
-                    } else if (position == 2) {
-                        startActivityForResult(new Intent(getContext(), WizardQualityOfLife.class), 3);
-                    }
+                    onStartQuestionnaire(position);
                 }
             });
+        }
+    }
+
+    private void onStartQuestionnaire(int position) {
+        String selectedUser = Global.getSelectedUser();
+        Date selectedDate = Global.getSelectedQuestionnaireDate();
+
+        //TODO: stuff to delete and manage
+        //DistressThermometerQuestionnaireManager qm = new DistressThermometerQuestionnaireManager();
+        //qm.insertQuestionnaire(new DistressThermometerQuestionnaire(userName));
+        // QualityOfLifeManager qm1 = new QualityOfLifeManager();
+        //qm1.insertQuestionnaire(new QolQuestionnaire(userName));
+        //HADSDQuestionnaireManager qm2 = new HADSDQuestionnaireManager();
+        // qm2.insertQuestionnaire(new HADSDQuestionnaire(userName));
+
+
+        if (position == 0) {
+            startActivityForResult(new Intent(getContext(), WizardHADSD.class), 2);
+        } else if (position == 1) {
+            startActivityForResult(new Intent(getContext(), WizardNCCN.class), 1);
+        } else if (position == 2) {
+            startActivityForResult(new Intent(getContext(), WizardQualityOfLife.class), 3);
         }
     }
 

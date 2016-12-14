@@ -1,6 +1,7 @@
 package com.artursworld.nccn.view.user;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.model.entity.User;
@@ -32,7 +31,9 @@ public class UserExpandableListFragment extends Fragment implements View.OnClick
     private Button expandButton;
     private ExpandableRelativeLayout expandLayout;
     private View rootView = null;
-    RecyclerView recyclerView = null;
+    private RecyclerView recyclerView = null;
+    private List<User> filteredUsers = new ArrayList<>();
+    private UserSearchRecyclerAdapter adapter = null;
 
     public UserExpandableListFragment() {
         // Required empty public constructor
@@ -52,37 +53,50 @@ public class UserExpandableListFragment extends Fragment implements View.OnClick
         expandButton = (Button) view.findViewById(R.id.expandButton);
         expandLayout = (ExpandableRelativeLayout) view.findViewById(R.id.expandableLayout);
         expandButton.setOnClickListener(this);
+        expandLayout.expand();
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        filteredUsers.add(new User("need this dummy"));
+        adapter = new UserSearchRecyclerAdapter(filteredUsers);
+        recyclerView.setAdapter(adapter);
+
+
         this.rootView = view;
         return view;
     }
 
-    private void fillUserList(View view) {
+    private void fillUserList(View view, List<User> allUsers) {
         EditText searchEditText = (EditText) view.findViewById(R.id.search_edit_text);
-
-        // filter search results
-        final List<User> allUsers = new UserManager().getAllUsers();
-        final List<User> filteredUsers = new ArrayList<>();
+        filteredUsers.clear();
         String searchedText = searchEditText.getText().toString();
-        //Pattern.compile(strptrn, Pattern.CASE_INSENSITIVE + Pattern.LITERAL).matcher(str1).find();
         for (User user : allUsers) {
             if (user.getName() != null) {
-                boolean contains = Pattern.compile(searchedText, Pattern.CASE_INSENSITIVE + Pattern.LITERAL).matcher(user.toString()).find();
-                if (contains) {
+                boolean containsSearchText = Pattern.compile(searchedText, Pattern.CASE_INSENSITIVE + Pattern.LITERAL).matcher(user.toString()).find();
+                if (containsSearchText) {
                     filteredUsers.add(user);
                 }
             }
         }
+        //Log.i(CLASS_NAME, "need to show list with this content: " + this.filteredUsers.toString());
+        adapter.notifyDataSetChanged();
+    }
 
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                recyclerView.setAdapter(new UserSearchRecyclerAdapter(filteredUsers));
-                recyclerView.getAdapter().notifyDataSetChanged();
+    private void getAllUsersAsyncAndFillUserList() {
+        new AsyncTask<Void, Void, List<User>>(){
+
+            @Override
+            protected List<User> doInBackground(Void... voids) {
+                return new UserManager().getAllUsers();
             }
-        });
+
+            @Override
+            protected void onPostExecute(List<User> users) {
+                super.onPostExecute(users);
+                fillUserList(rootView,users);
+            }
+        }.execute();
     }
 
     @Override
@@ -95,7 +109,7 @@ public class UserExpandableListFragment extends Fragment implements View.OnClick
     public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.expandButton:
-                fillUserList(rootView);
+                getAllUsersAsyncAndFillUserList();
                 expandLayout.expand();
                 break;
         }
