@@ -98,7 +98,7 @@ public class QualityOfLifeManager extends EntityDbManager {
     }
 
     @NonNull
-    private List<QolQuestionnaire> getQolQuestionnaireList(String name) {
+    public List<QolQuestionnaire> getQolQuestionnaireList(String name) {
         List<QolQuestionnaire> medicalUserList = new ArrayList<>();
         Cursor cursor = database.query(DBContracts.QualityOfLifeTable.TABLE_NAME,
                 getColumns(),

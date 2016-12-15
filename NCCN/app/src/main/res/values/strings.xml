@@ -140,4 +140,6 @@
     <string name="switch_to_new_user">Klick, um einen neuen Benutzer auszuwählen</string>
     <string name="placeholder">Platzhalter</string>
     <string name="configuration">Konfiguration</string>
+    <string name="select_qustionnaire_date">Wählen Sie das Umfragedatum</string>
+    <string name="create_new_questionnaire_date">neue Umfrage erstellen</string>
 </resources>

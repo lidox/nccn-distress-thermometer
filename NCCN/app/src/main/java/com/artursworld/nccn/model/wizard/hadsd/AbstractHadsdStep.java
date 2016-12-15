@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardHADSD;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
@@ -95,7 +96,7 @@ public class AbstractHadsdStep extends AbstractStep {
 
         // load current answers again
         HADSDQuestionnaireManager m = new HADSDQuestionnaireManager();
-        questionnaire = m.getHADSDQuestionnaireByUserName(selectedUser.getName());
+        questionnaire = m.getHADSDQuestionnaireByDate_PK(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
 
         // display old and new byte
         byte[] oldByte = questionnaire.getAnswerByNr(currentQuestionNumber);
@@ -126,7 +127,7 @@ public class AbstractHadsdStep extends AbstractStep {
 
         currentQuestionNumber = bundle.getInt(WizardHADSD.QUESTION_NUMBER) - 1;
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardHADSD.SELECTED_USER));
-        questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByUserName(selectedUser.getName());
+        questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
         checkRadioButtonByBits();
         addAnswerChangeListener();
     }

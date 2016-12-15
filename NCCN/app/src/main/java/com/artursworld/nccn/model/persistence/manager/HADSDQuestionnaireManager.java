@@ -132,7 +132,7 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
     }
 
     @NonNull
-    private List<HADSDQuestionnaire> getHadsdQuestionnaireListByUserName(String name) {
+    public List<HADSDQuestionnaire> getHadsdQuestionnaireListByUserName(String name) {
         List<HADSDQuestionnaire> medicalUserList = new ArrayList<>();
         Cursor cursor = database.query(DBContracts.HADSDTable.TABLE_NAME,
                 getColumns(),

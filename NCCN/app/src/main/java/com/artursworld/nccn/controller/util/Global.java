@@ -71,4 +71,12 @@ public class Global {
     public static boolean hasToUseDefaultQuestionnaire() {
         return Share.getBooleanByKey(R.string.c_has_to_create_default_questionnaire);
     }
+
+    public static boolean hasToCreateNewQuestionnaire() {
+        return Share.getBooleanByKey(R.string.c_has_to_create_new_questionnaire);
+    }
+
+    public static void setHasToCreateNewQuestionnaire(boolean setHasToCreateNewQuestionnaire) {
+        Share.putBoolean(Strings.getStringByRId(R.string.c_has_to_create_new_questionnaire), setHasToCreateNewQuestionnaire);
+    }
 }

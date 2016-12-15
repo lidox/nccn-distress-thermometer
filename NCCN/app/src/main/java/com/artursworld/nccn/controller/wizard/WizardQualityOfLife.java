@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
@@ -29,9 +30,9 @@ public class WizardQualityOfLife extends TextStepper {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // TODO: changes this to real selected user. Maybe this should not be transmitted to fragment. instead get it in fragment
-        selectedUser = new UserManager().getAllUsers().get(0);
-
+        String userName = Global.getSelectedUser();
+        selectedUser = new UserManager().getUserByName(userName);
+        //TODO: check selected questionnaire date
         // laod questionnaire into fragments
         putAllQuestionAndAnswersToNewFragments();
 

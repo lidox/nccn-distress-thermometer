@@ -8,6 +8,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
+import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.contracts.DBContracts;
 
@@ -123,5 +126,35 @@ public class UserManager extends EntityDbManager {
         }
 
         return user;
+    }
+
+    public List<String> getQuestionnaireDatesByUserName(String userName) {
+        List<QolQuestionnaire> listA = new QualityOfLifeManager().getQolQuestionnaireList(userName);
+        List<HADSDQuestionnaire> listB = new HADSDQuestionnaireManager().getHadsdQuestionnaireListByUserName(userName);
+        List<DistressThermometerQuestionnaire> listC = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireList(userName);
+
+        List<String> dateList = new ArrayList<>();
+        for (QolQuestionnaire item: listA){
+            String questionnaireDate = EntityDbManager.dateFormat.format(item.getCreationDate_PK());
+            if(!dateList.contains(questionnaireDate)){
+                dateList.add(questionnaireDate);
+            }
+        }
+
+        for (HADSDQuestionnaire item: listB){
+            String questionnaireDate = EntityDbManager.dateFormat.format(item.getCreationDate_PK());
+            if(!dateList.contains(questionnaireDate)){
+                dateList.add(questionnaireDate);
+            }
+        }
+
+        for (DistressThermometerQuestionnaire item: listC){
+            String questionnaireDate = EntityDbManager.dateFormat.format(item.getCreationDate_PK());
+            if(!dateList.contains(questionnaireDate)){
+                dateList.add(questionnaireDate);
+            }
+        }
+
+        return  dateList;
     }
 }

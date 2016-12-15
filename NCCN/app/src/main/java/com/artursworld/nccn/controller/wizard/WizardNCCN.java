@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.model.wizard.distressthermometer.BodyProblemsStep;
@@ -41,9 +42,9 @@ public class WizardNCCN extends TextStepper {
     private AbstractStep createFragment(AbstractStep fragment) {
         Bundle bundle = new Bundle();
         bundle.putInt(WizardQualityOfLife.QUESTION_NUMBER, currentWizardPosition ++);
-        // TODO: change this to real selected user
-        String selectedUserName = new UserManager().getAllUsers().get(0).getName();
+        String selectedUserName = Global.getSelectedUser();
         bundle.putString(WizardQualityOfLife.SELECTED_USER, selectedUserName);
+        //TODO: check selected questionnaire date
         fragment.setArguments(bundle);
         return fragment;
     }

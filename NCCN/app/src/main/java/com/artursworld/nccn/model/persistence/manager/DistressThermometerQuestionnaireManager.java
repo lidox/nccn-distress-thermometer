@@ -101,7 +101,7 @@ public class DistressThermometerQuestionnaireManager extends EntityDbManager {
     }
 
     @NonNull
-    private List<DistressThermometerQuestionnaire> getDistressThermometerQuestionnaireList(String name) {
+    public List<DistressThermometerQuestionnaire> getDistressThermometerQuestionnaireList(String name) {
         List<DistressThermometerQuestionnaire> medicalUserList = new ArrayList<>();
         Cursor cursor = database.query(DBContracts.DistressThermometerTable.TABLE_NAME,
                 getColumns(),
