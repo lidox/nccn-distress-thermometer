@@ -69,10 +69,9 @@ public class QuestionnaireSelectListFragment extends Fragment {
         String selectedUserName = Global.getSelectedUser();
 
         // check if flag is set e.g. in UserStartConfiguration.class
-        boolean hasToCreateNewUser = Strings.getStringByRId(R.string.c_new_user_flag).equals(selectedUserName) || selectedUserName == null;
-        /*
+        boolean hasToCreateNewUser = Global.hasToCreateNewUser();
+
         if (hasToCreateNewUser) {
-            //TODO: check
             User user = new User(Strings.getStringByRId(R.string.user_name));
             new UserManager().insertUser(user);
             fillQuestionnaireListByUserNameAndCreationDate(list, new Date(), user, hasToCreateNewUser);
@@ -85,7 +84,6 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user, hasToCreateNewUser);
             }
         }
-        */
 
         return list;
     }
