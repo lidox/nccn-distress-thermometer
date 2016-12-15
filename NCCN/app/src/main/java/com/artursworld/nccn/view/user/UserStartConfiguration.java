@@ -92,7 +92,7 @@ public class UserStartConfiguration {
     }
 
     private void setSelectedQuestionnaireDate() {
-        //TODO: setSelectedQuestionnaireDate();
+        //TODO: get date from UI
         Date newCreationDate = null; // get it from UI
         if (newCreationDate == null) {
             newCreationDate = new Date();
@@ -134,9 +134,11 @@ public class UserStartConfiguration {
      * @param invisibleTitleTextId         the title displayed if toggle button is unchecked
      * @param invisibleSubTitleTextId      the subtitle displayed if toggle button is unchecked
      */
-    private void toggleById(int barToggleLayoutId, final int layoutIdBelowBarToggleLayout, final int titleTextId, final int subTitleTextId, final int invisibleTitleTextId, final int invisibleSubTitleTextId) {
+    private void toggleById(final int barToggleLayoutId, final int layoutIdBelowBarToggleLayout, final int titleTextId, final int subTitleTextId, final int invisibleTitleTextId, final int invisibleSubTitleTextId) {
         final View toggleTitleLayout = dialog.getView().findViewById(barToggleLayoutId);
         Switch questionnaireSwitch = (Switch) toggleTitleLayout.findViewById(R.id.switcher);
+
+        setSwitcherCheckedByRessourceId(barToggleLayoutId, questionnaireSwitch);
 
         // init UI
         final TextView title = (TextView) toggleTitleLayout.findViewById(R.id.title);
@@ -144,34 +146,72 @@ public class UserStartConfiguration {
         title.setText(Strings.getStringByRId(invisibleTitleTextId));
         subtitle.setText(Strings.getStringByRId(invisibleSubTitleTextId));
 
+        final RelativeLayout layout = (RelativeLayout) dialog.getView().findViewById(layoutIdBelowBarToggleLayout);
+        setUITextByCheckedSwitches(questionnaireSwitch.isChecked(), layout, title, titleTextId, subtitle, subTitleTextId, barToggleLayoutId, invisibleTitleTextId, invisibleSubTitleTextId);
+
         questionnaireSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                RelativeLayout layout = (RelativeLayout) dialog.getView().findViewById(layoutIdBelowBarToggleLayout);
-
-                // show details UI
-                if (isChecked) {
-                    layout.setVisibility(View.VISIBLE);
-                    title.setText(Strings.getStringByRId(titleTextId));
-                    subtitle.setText(Strings.getStringByRId(subTitleTextId));
-                    onToggleIsChecked();
-                }
-                // hide details
-                else {
-                    layout.setVisibility(View.GONE);
-                    title.setText(Strings.getStringByRId(invisibleTitleTextId));
-                    subtitle.setText(Strings.getStringByRId(invisibleSubTitleTextId));
-                    onToggleIsUnchecked();
-                }
+                setUITextByCheckedSwitches(isChecked, layout, title, titleTextId, subtitle, subTitleTextId, barToggleLayoutId, invisibleTitleTextId, invisibleSubTitleTextId);
             }
         });
     }
 
-    private void onToggleIsUnchecked() {
-        Log.i(CLASS_NAME, "on toggle is unchecked");
+    private void setUITextByCheckedSwitches(boolean isChecked, RelativeLayout layout, TextView title, int titleTextId, TextView subtitle, int subTitleTextId, int barToggleLayoutId, int invisibleTitleTextId, int invisibleSubTitleTextId) {
+        // show details UI
+        if (isChecked) {
+            layout.setVisibility(View.VISIBLE);
+            title.setText(Strings.getStringByRId(titleTextId));
+            subtitle.setText(Strings.getStringByRId(subTitleTextId));
+            onToggleIsChecked(barToggleLayoutId);
+        }
+        // hide details
+        else {
+            layout.setVisibility(View.GONE);
+            title.setText(Strings.getStringByRId(invisibleTitleTextId));
+            subtitle.setText(Strings.getStringByRId(invisibleSubTitleTextId));
+            onToggleIsUnchecked(barToggleLayoutId);
+        }
     }
 
-    private void onToggleIsChecked() {
-        Log.i(CLASS_NAME, "on toggle is checked");
+    /**
+     * Set the switcher as checked by global db value. It checks if a user has to be created and
+     * if the default questionnaires need to be displayed by the layout id
+     * @param barToggleLayoutId the layout id of the UI element
+     * @param switcher the switcher to be checked or not
+     */
+    private void setSwitcherCheckedByRessourceId(int barToggleLayoutId, Switch switcher) {
+        if(barToggleLayoutId == R.id.toggle_user_layout){
+            switcher.setChecked(!Global.hasToCreateNewUser());
+        }
+        else if(barToggleLayoutId == R.id.included_questionnaire_title){
+            switcher.setChecked(!Global.hasToUseDefaultQuestionnaire());
+        }
+    }
+
+    private void onToggleIsUnchecked(int resourceId) {
+        String resource = "";
+        if(resourceId == R.id.toggle_user_layout){
+            Global.setHasToCreateNewUser(true);
+            resource = "setHasToCreateNewUser(true)";
+        }
+        else if(resourceId == R.id.included_questionnaire_title){
+            Global.setHasToUseDefaultQuestionnaire(true);
+            resource = "setHasToUseDefaultQuestionnaire(true)";
+        }
+        Log.i(CLASS_NAME, resource + " .on toggle is unchecked");
+    }
+
+    private void onToggleIsChecked(int resourceId) {
+        String resource = "";
+        if(resourceId == R.id.toggle_user_layout){
+            Global.setHasToCreateNewUser(false);
+            resource = "setHasToCreateNewUser(false)";
+        }
+        else if(resourceId == R.id.included_questionnaire_title){
+            Global.setHasToUseDefaultQuestionnaire(false);
+            resource = "setHasToUseDefaultQuestionnaire(false)";
+        }
+        Log.i(CLASS_NAME, resource + " .on toggle is checked");
     }
 }

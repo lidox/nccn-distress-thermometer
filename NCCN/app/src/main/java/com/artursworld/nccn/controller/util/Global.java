@@ -55,4 +55,20 @@ public class Global {
     public static Set<String> getSelectedQuestionnairesForStartScreen() {
         return Share.getStringSetByKey(R.string.c_selected_questionnaires);
     }
+
+    public static void setHasToCreateNewUser(boolean hasToCreateNewUser) {
+        Share.putBoolean(Strings.getStringByRId(R.string.c_create_new_user), hasToCreateNewUser);
+    }
+
+    public static boolean hasToCreateNewUser() {
+        return Share.getBooleanByKey(R.string.c_create_new_user);
+    }
+
+    public static void setHasToUseDefaultQuestionnaire(boolean hasToUseDefaultQuestionnaire) {
+        Share.putBoolean(Strings.getStringByRId(R.string.c_has_to_create_default_questionnaire), hasToUseDefaultQuestionnaire);
+    }
+
+    public static boolean hasToUseDefaultQuestionnaire() {
+        return Share.getBooleanByKey(R.string.c_has_to_create_default_questionnaire);
+    }
 }

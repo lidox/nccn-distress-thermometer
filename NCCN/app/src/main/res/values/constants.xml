@@ -5,4 +5,6 @@
     <string name="c_new_user_flag">"name"</string>
     <string name="c_selected_questionnaires">"com.artursworld.c_selected_questionnaires"</string>
     <string name="c_selected_questionnaire_creation_date">"com.artursworld.c_selected_questionnaire_creation_date"</string>
+    <string name="c_create_new_user">com.artursworld.c_create_new_user</string>
+    <string name="c_has_to_create_default_questionnaire">com.artursworld.c_has_to_create_default_questionnaire</string>
 </resources>

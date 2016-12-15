@@ -94,6 +94,37 @@ public class Share {
      * @param key
      * @param value
      */
+    public static void putBoolean(final String key, final boolean value) {
+        AsyncTask a = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... unusedParams) {
+                SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).edit();
+                if (key != null) {
+                    prefs.putBoolean(key, value);
+                    prefs.commit();
+                    prefs.apply();
+                    String logMessage = "set global value(key=" + key + ", value=" + value + ")";
+                    Log.i(CLASS_NAME, logMessage);
+                }
+                return null;
+            }
+        }.execute();
+
+        try {
+            a.get();
+        }
+        catch (Exception e){
+            String logMessage = "could not set global value(key=" + key + ", value=" + value + ") ";
+            Log.e(CLASS_NAME, logMessage + e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Writes value into shared preferences
+     *
+     * @param key
+     * @param value
+     */
     public static void putStringSet(final String key, final Set<String> value) {
         AsyncTask a = new AsyncTask<Void, Void, Void>() {
             @Override
@@ -117,5 +148,14 @@ public class Share {
             String logMessage = "could not set global value(key=" + key + ", value=" + value + ") ";
             Log.e(CLASS_NAME, logMessage + e.getLocalizedMessage());
         }
+    }
+
+    public static boolean getBooleanByKey(int keyId) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        String key = App.getAppContext().getResources().getString(keyId);
+        boolean retBool = prefs.getBoolean(key, true);
+        String logMessage = "get global value by keyId(=" + key + ", value=" + retBool + ")";
+        Log.i(CLASS_NAME, logMessage);
+        return retBool;
     }
 }
