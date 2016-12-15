@@ -30,6 +30,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
     private String CLASS_NAME = StartMenu.class.getSimpleName();
     private Activity activity = null;
+    private UserStartConfiguration configurationDialog = null;
 
     // UI
     @BindView(R.id.user_name_edit_text) MaterialEditText userName_editText;
@@ -50,8 +51,9 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
         if (id == R.id.nav_user_start_configuration) {
             Log.i(CLASS_NAME, "nav_user_start_configuration selected");
-            UserStartConfiguration start = new UserStartConfiguration(activity);
-            start.showConfigurationDialog();
+            if(configurationDialog == null)
+                configurationDialog = new UserStartConfiguration(activity);
+            configurationDialog.showConfigurationDialog();
         } else if (id == R.id.nav_user_statistics) {
             Log.i(CLASS_NAME, "nav_user_statistics selected");
         }

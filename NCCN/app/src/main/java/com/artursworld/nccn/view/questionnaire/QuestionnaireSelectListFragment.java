@@ -104,20 +104,29 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
         Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
         if (setOfBooleans != null) {
-            boolean hasToGetProgress = !hasToCreateNewUser && user != null;
+            boolean hasToGetProgress = !Global.hasToCreateNewUser() && user!= null;
             if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
-                if(hasToGetProgress)
-                    hadsProgress = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
+                if(hasToGetProgress) {
+                    HADSDQuestionnaire hadsdQuestionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate);
+                    if(hadsdQuestionnaire != null)
+                        hadsProgress = hadsdQuestionnaire.getProgressInPercent();
+                }
                 list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
             }
             if (setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
-                if(hasToGetProgress)
-                    distressProgress = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
+                if(hasToGetProgress) {
+                    DistressThermometerQuestionnaire distressThermometerQuestionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
+                    if(distressThermometerQuestionnaire!=null)
+                        distressProgress = distressThermometerQuestionnaire.getProgressInPercent();
+                }
                 list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
             }
             if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
-                if(hasToGetProgress)
-                    qualityProgress = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), selectedQuestionnaireDate).getProgressInPercent();
+                if(hasToGetProgress) {
+                    QolQuestionnaire qolQuestionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
+                    if(qolQuestionnaire!=null)
+                        qualityProgress = qolQuestionnaire.getProgressInPercent();
+                }
                 list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
             }
         } else {

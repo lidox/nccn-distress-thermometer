@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -42,35 +43,48 @@ public class UserStartConfiguration {
     }
 
     public void showConfigurationDialog() {
-        MaterialDialog.Builder b = new MaterialDialog.Builder(activity)
-                .title(R.string.questionnaire_to_display)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .customView(R.layout.dialog_select_questionnairies, true)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        if(dialog == null) {
+            MaterialDialog.Builder b = new MaterialDialog.Builder(activity)
+                    .title(R.string.configuration)
+                    .positiveText(R.string.ok)
+                    .negativeText(R.string.cancel)
+                    .customView(R.layout.dialog_select_questionnairies, true)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        //TODO: get selected user
-                        String selectedUserName = null;
-                        Global.setSelectedUserName(selectedUserName);
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            //TODO: get selected user
+                            String selectedUserName = null;
+                            Global.setSelectedUserName(selectedUserName);
 
 
-                        // set shared preferences
-                        setQestionnairesToBeDisplayedOnStartScreen(dialog);
-                        setSelectedQuestionnaireDate();
+                            // set shared preferences
+                            setQestionnairesToBeDisplayedOnStartScreen(dialog);
+                            setSelectedQuestionnaireDate();
 
-                        // refresh and finish();
-                        activity.finish();
-                        activity.startActivity(activity.getIntent());
+                            // refresh and finish();
+                            activity.finish();
+                            activity.startActivity(activity.getIntent());
 
-                    }
-                });
-        dialog = b.build();
-        setSelectedQestionnairesAsCheckedBeforeDialogShowUp(dialog);
-        toggleById(R.id.toggle_user_layout, R.id.layout_users, R.string.select_existing_user, R.string.switch_to_new_user, R.string.create_new_user, R.string.switch_to_existing_user);
-        toggleById(R.id.included_questionnaire_title, R.id.layout_below_included_questionnaire_title, R.string.configurable_questionnaire, R.string.switch_to_default_selection, R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection);
-        dialog = b.show();
+                        }
+                    });
+            dialog = b.build();
+            MaterialDialog d = setCustomTextSize(25);
+            setSelectedQestionnairesAsCheckedBeforeDialogShowUp(d);
+            toggleById(R.id.toggle_user_layout, R.id.layout_users, R.string.select_existing_user, R.string.switch_to_new_user, R.string.create_new_user, R.string.switch_to_existing_user);
+            toggleById(R.id.included_questionnaire_title, R.id.layout_below_included_questionnaire_title, R.string.configurable_questionnaire, R.string.switch_to_default_selection, R.string.standard_questionnaire, R.string.switch_to_questionnaire_selection);
+            dialog = d;
+        }
+        dialog.show();
+    }
+
+    @NonNull
+    private MaterialDialog setCustomTextSize(int textSize) {
+        MaterialDialog d = dialog;
+        d.getTitleView().setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize+ 5);
+        d.getActionButton(DialogAction.POSITIVE).setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+        d.getActionButton(DialogAction.NEGATIVE).setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+        return d;
     }
 
     private void setSelectedQestionnairesAsCheckedBeforeDialogShowUp(MaterialDialog dialog) {
