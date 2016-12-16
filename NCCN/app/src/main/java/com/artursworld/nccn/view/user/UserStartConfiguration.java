@@ -207,6 +207,8 @@ public class UserStartConfiguration {
         String resource = "";
         if(resourceId == R.id.toggle_user_layout){
             Global.setHasToCreateNewUser(true);
+            Global.setHasToCreateNewQuestionnaire(true);
+            Global.setSelectedQuestionnaireDate(new Date());
             resource = "setHasToCreateNewUser(true)";
         }
         else if(resourceId == R.id.included_questionnaire_title){
@@ -220,6 +222,7 @@ public class UserStartConfiguration {
         String resource = "";
         if(resourceId == R.id.toggle_user_layout){
             Global.setHasToCreateNewUser(false);
+            Global.setHasToCreateNewQuestionnaire(false);
             resource = "setHasToCreateNewUser(false)";
         }
         else if(resourceId == R.id.included_questionnaire_title){

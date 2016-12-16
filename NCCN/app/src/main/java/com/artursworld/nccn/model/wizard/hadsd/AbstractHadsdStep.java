@@ -21,8 +21,11 @@ import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
+import java.util.Date;
+
 public class AbstractHadsdStep extends AbstractStep {
 
+    private static final String CLASS_NAME = AbstractHadsdStep.class.getSimpleName();
     // View
     private TextView questionLabel;
     private RadioButton answerA_btn;
@@ -127,7 +130,10 @@ public class AbstractHadsdStep extends AbstractStep {
 
         currentQuestionNumber = bundle.getInt(WizardHADSD.QUESTION_NUMBER) - 1;
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardHADSD.SELECTED_USER));
-        questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
+        Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
+        Log.i(CLASS_NAME, "2. selectedQuestionnaireDate= " + selectedQuestionnaireDate);
+        questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(selectedUser.getName(), selectedQuestionnaireDate);
+        Log.i(CLASS_NAME, "AbstractHADSD-Step. selected user="+ selectedUser.getName() + ", selected quesitonnaire=" + questionnaire);
         checkRadioButtonByBits();
         addAnswerChangeListener();
     }
