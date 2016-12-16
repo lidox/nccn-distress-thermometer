@@ -19,6 +19,7 @@ import java.util.List;
 
 public class WizardHADSD extends TextStepper {
 
+    public static final String CLASS_NAME = WizardHADSD.class.getSimpleName();
     public static final String QUESTION_DATA = "WizardHADSD-question-data";
     public static final String QUESTION_NUMBER = "WizardHADSD-QUESTION_NUMBER";
     public static final String SELECTED_USER = "WizardHADSD-SELECTED_USER";
@@ -30,6 +31,7 @@ public class WizardHADSD extends TextStepper {
     protected void onCreate(Bundle savedInstanceState) {
         String userName = Global.getSelectedUser();
         selectedUser = new UserManager().getUserByName(userName);
+        Log.i(CLASS_NAME, "WizardHADSD: selected user=" + selectedUser);
 
         // laod questionnairy into fragments
         putAllQuestionAndAnswersToNewFragments();

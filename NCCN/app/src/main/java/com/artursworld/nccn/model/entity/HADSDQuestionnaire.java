@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.artursworld.nccn.view.user.UserStartConfiguration.CLASS_NAME;
+
 public class HADSDQuestionnaire {
 
     private Date creationDate_PK;
@@ -99,7 +101,13 @@ public class HADSDQuestionnaire {
     }
 
     public String getCreationTimeStamp(){
-        return EntityDbManager.dateFormat.format(this.getCreationDate_PK());
+        try {
+            return EntityDbManager.dateFormat.format(this.getCreationDate_PK());
+        }
+        catch (Exception e){
+            Log.e(CLASS_NAME, "could not parse date("+this.getCreationDate_PK()+")=" + e.getLocalizedMessage());
+        }
+        return null;
     }
 
     public String toString(){

@@ -152,27 +152,35 @@ public class QuestionnaireSelectListFragment extends Fragment {
     private void onStartQuestionnaire(int position) {
         String userName = Global.getSelectedUser();
         Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
-        Date selectedDate = selectedQuestionnaireDate;
         Global.setHasToCreateNewQuestionnaire(false);
-        Log.i(CLASS_NAME, "onStartQuestionnaire with userName="+ userName +", selectedDate=" + selectedDate);
+        Log.i(CLASS_NAME, "onStartQuestionnaire with userName="+ userName +", selectedDate=" + selectedQuestionnaireDate);
+
+        if(Global.hasToCreateNewUser() && userName== null){
+            User user = new User(Strings.getStringByRId(R.string.user_name));
+            new UserManager().insertUser(user);
+            Global.setSelectedUserName(user.getName());
+        }
 
         if (position == 0) {
             if(Global.hasToCreateNewUser()){
                 HADSDQuestionnaire questionnaire = new HADSDQuestionnaire(Global.getSelectedUser());
                 questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
-                Log.i(CLASS_NAME, "2. selectedQuestionnaireDate= " + selectedQuestionnaireDate);
                 new HADSDQuestionnaireManager().insertQuestionnaire(questionnaire);
             }
-            Log.i(CLASS_NAME, "2. selectedQuestionnaireDate= " + selectedQuestionnaireDate);
+            Log.i(CLASS_NAME, "1. selectedQuestionnaireDate= " + selectedQuestionnaireDate);
             startActivityForResult(new Intent(getContext(), WizardHADSD.class), 2);
         } else if (position == 1) {
             if(Global.hasToCreateNewUser()){
-                new DistressThermometerQuestionnaireManager().insertQuestionnaire(new DistressThermometerQuestionnaire(Global.getSelectedUser()));
+                DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire(Global.getSelectedUser());
+                questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
+                new DistressThermometerQuestionnaireManager().insertQuestionnaire(questionnaire);
             }
             startActivityForResult(new Intent(getContext(), WizardNCCN.class), 1);
         } else if (position == 2) {
             if(Global.hasToCreateNewUser()){
-                new QualityOfLifeManager().insertQuestionnaire(new QolQuestionnaire(Global.getSelectedUser()));
+                QolQuestionnaire questionnaire = new QolQuestionnaire(Global.getSelectedUser());
+                questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
+                new QualityOfLifeManager().insertQuestionnaire(questionnaire);
             }
             startActivityForResult(new Intent(getContext(), WizardQualityOfLife.class), 3);
         }
