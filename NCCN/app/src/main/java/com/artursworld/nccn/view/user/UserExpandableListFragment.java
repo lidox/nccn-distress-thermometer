@@ -64,7 +64,7 @@ public class UserExpandableListFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //TODO: dummy name?
-        filteredUsers.add(new User("need this dummy"));
+        filteredUsers.add(new User(" "));
         adapter = new UserSearchRecyclerAdapter(filteredUsers, getActivity());
         recyclerView.setAdapter(adapter);
         this.rootView = view;

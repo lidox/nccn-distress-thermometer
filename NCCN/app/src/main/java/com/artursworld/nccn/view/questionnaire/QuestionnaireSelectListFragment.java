@@ -151,6 +151,8 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
     private void onStartQuestionnaire(int position) {
         String userName = Global.getSelectedUser();
+
+
         Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
         Global.setHasToCreateNewQuestionnaire(false);
         Log.i(CLASS_NAME, "onStartQuestionnaire with userName="+ userName +", selectedDate=" + selectedQuestionnaireDate);
@@ -167,7 +169,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
                 new HADSDQuestionnaireManager().insertQuestionnaire(questionnaire);
             }
-            Log.i(CLASS_NAME, "1. selectedQuestionnaireDate= " + selectedQuestionnaireDate);
+            Log.i(CLASS_NAME, "selectedQuestionnaireDate= " + selectedQuestionnaireDate);
             startActivityForResult(new Intent(getContext(), WizardHADSD.class), 2);
         } else if (position == 1) {
             if(Global.hasToCreateNewUser()){

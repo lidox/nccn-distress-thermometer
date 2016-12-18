@@ -11,7 +11,7 @@ public class User {
     private Date creationDate = null;
 
     public User(String name){
-        this.name = name;
+        setName(name);
         this.creationDate = new Date();
     }
 
@@ -35,6 +35,8 @@ public class User {
     }
 
     public void setName(String name) {
+        if(name != null)
+            name = name.trim();
         this.name = name;
     }
 }

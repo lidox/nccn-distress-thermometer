@@ -1,10 +1,13 @@
 package com.artursworld.nccn.view;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -21,6 +24,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.controller.util.Global;
+import com.artursworld.nccn.model.entity.User;
+import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -32,6 +37,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     private String CLASS_NAME = StartMenu.class.getSimpleName();
     private Activity activity = null;
     private UserStartConfiguration configurationDialog = null;
+    private User selectedUser = null;
 
     // UI
     @BindView(R.id.user_name_edit_text) MaterialEditText userNameEditText;
@@ -43,6 +49,34 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         ButterKnife.bind(this);
         initNavigationAndToolBar();
         activity = this;
+        addOnUserNameTextChangeListener();
+    }
+
+
+    /**
+     * Rename user by name
+     */
+    private void addOnUserNameTextChangeListener() {
+        userNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    Log.i(CLASS_NAME, "focus out");
+                    if (selectedUser == null)
+                        selectedUser = new UserManager().getUserByName(Global.getSelectedUser());
+
+                    if(selectedUser!= null){
+                        String newName = userNameEditText.getText().toString();
+                        Log.i(CLASS_NAME, "rename user from '" + selectedUser.getName() + "' to '" + newName+"'");
+                        selectedUser.setName(newName);
+                        Log.i(CLASS_NAME, "user: " + selectedUser);
+                        long result = new UserManager().update(selectedUser);
+                        if(result != 0)
+                            Global.setSelectedUserName(newName);
+                    }
+                }
+            }
+        });
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -87,8 +121,10 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     protected void onResume() {
         super.onResume();
         String userName = Global.getSelectedUser();
-        if(userName != null)
+        if(userName != null){
             userNameEditText.setText(userName);
+            selectedUser = new UserManager().getUserByName(userName);
+        }
 
         Log.i(CLASS_NAME, "Display selected user: " + userName);
     }
