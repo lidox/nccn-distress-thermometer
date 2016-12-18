@@ -23,7 +23,7 @@ public class Share {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
         String restoredText = prefs.getString(key, null);
         String logMessage = "get global value by key(key=" + key + ", value=" + restoredText + ")";
-        Log.i(CLASS_NAME, logMessage);
+        //Log.i(CLASS_NAME, logMessage);
         return restoredText;
     }
 
@@ -38,7 +38,7 @@ public class Share {
         String key = App.getAppContext().getResources().getString(keyId);
         String restoredText = prefs.getString(key, null);
         String logMessage = "get global value by keyId(=" + key + ", value=" + restoredText + ")";
-        Log.i(CLASS_NAME, logMessage);
+        //Log.i(CLASS_NAME, logMessage);
         return restoredText;
     }
 
@@ -53,7 +53,7 @@ public class Share {
         String key = App.getAppContext().getResources().getString(keyId);
         Set<String> restoredText = prefs.getStringSet(key, null);
         String logMessage = "get global value by keyId(=" + key + ", value=" + restoredText + ")";
-        Log.i(CLASS_NAME, logMessage);
+        //Log.i(CLASS_NAME, logMessage);
         return restoredText;
     }
 
@@ -72,8 +72,8 @@ public class Share {
                     prefs.putString(key, value);
                     prefs.commit();
                     prefs.apply();
-                    String logMessage = "set global value(key=" + key + ", value=" + value + ")";
-                    Log.i(CLASS_NAME, logMessage);
+                    //String logMessage = "set global value(key=" + key + ", value=" + value + ")";
+                    //Log.i(CLASS_NAME, logMessage);
                 }
                 return null;
             }
@@ -103,8 +103,8 @@ public class Share {
                     prefs.putBoolean(key, value);
                     prefs.commit();
                     prefs.apply();
-                    String logMessage = "set global value(key=" + key + ", value=" + value + ")";
-                    Log.i(CLASS_NAME, logMessage);
+                    //String logMessage = "set global value(key=" + key + ", value=" + value + ")";
+                    //Log.i(CLASS_NAME, logMessage);
                 }
                 return null;
             }
@@ -134,8 +134,8 @@ public class Share {
                     prefs.putStringSet(key, value);
                     prefs.commit();
                     prefs.apply();
-                    String logMessage = "set global value(key=" + key + ", value=" + value + ")";
-                    Log.i(CLASS_NAME, logMessage);
+                    //String logMessage = "set global value(key=" + key + ", value=" + value + ")";
+                    //Log.i(CLASS_NAME, logMessage);
                 }
                 return null;
             }
@@ -154,8 +154,8 @@ public class Share {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
         String key = App.getAppContext().getResources().getString(keyId);
         boolean retBool = prefs.getBoolean(key, true);
-        String logMessage = "get global value by keyId(=" + key + ", value=" + retBool + ")";
-        Log.i(CLASS_NAME, logMessage);
+        //String logMessage = "get global value by keyId(=" + key + ", value=" + retBool + ")";
+        //Log.i(CLASS_NAME, logMessage);
         return retBool;
     }
 }
