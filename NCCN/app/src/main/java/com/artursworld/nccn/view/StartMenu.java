@@ -20,6 +20,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -33,7 +34,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     private UserStartConfiguration configurationDialog = null;
 
     // UI
-    @BindView(R.id.user_name_edit_text) MaterialEditText userName_editText;
+    @BindView(R.id.user_name_edit_text) MaterialEditText userNameEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,5 +81,15 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String userName = Global.getSelectedUser();
+        if(userName != null)
+            userNameEditText.setText(userName);
+
+        Log.i(CLASS_NAME, "Display selected user: " + userName);
     }
 }

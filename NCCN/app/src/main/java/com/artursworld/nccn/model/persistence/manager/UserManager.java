@@ -19,6 +19,8 @@ import java.util.List;
 
 public class UserManager extends EntityDbManager {
 
+    private String CLASS_NAME = UserManager.class.getSimpleName();
+
     public UserManager() {
         super(App.getAppContext());
     }
@@ -156,5 +158,28 @@ public class UserManager extends EntityDbManager {
         }
 
         return  dateList;
+    }
+
+
+    /*
+    * updates a user in database
+    */
+    public long update(User user) {
+        try {
+            String WHERE_CREATION_DATE_EQUALS = DBContracts.UserTable.CREATION_DATE + " =?";
+            ContentValues values = getUserContentValues(user);
+            String creationDate = EntityDbManager.dateFormat.format(user.getCreationDate());
+            long i = database.update(DBContracts.UserTable.TABLE_NAME, values, WHERE_CREATION_DATE_EQUALS, new String[]{creationDate});
+            if (i > 0) {
+                Log.i(CLASS_NAME,"Updated user:" + user.toString());
+                return 1;  // 1 for successful
+            } else {
+                Log.w(CLASS_NAME,"Failed to update user" + user.toString());
+                return 0;  // 0 for unsuccessful
+            }
+        } catch (Exception e) {
+            Log.e(CLASS_NAME,"Exception! Could not update user" + user.toString() + "! " + e.getLocalizedMessage());
+            return 0;
+        }
     }
 }
