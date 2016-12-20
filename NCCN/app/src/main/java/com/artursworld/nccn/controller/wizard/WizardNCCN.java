@@ -54,6 +54,7 @@ public class WizardNCCN extends TextStepper {
     public void onComplete() {
         super.onComplete();
         Log.i(WizardNCCN.class.getSimpleName(), "completed Wizard NCCN");
+        finish();
     }
 
 }

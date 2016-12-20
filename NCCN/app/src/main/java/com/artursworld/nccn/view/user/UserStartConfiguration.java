@@ -53,10 +53,6 @@ public class UserStartConfiguration {
 
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            //TODO: get selected user
-                            String selectedUserName = null;
-                            Global.setSelectedUserName(selectedUserName);
-
 
                             // set shared preferences
                             setQestionnairesToBeDisplayedOnStartScreen(dialog);
@@ -152,7 +148,7 @@ public class UserStartConfiguration {
         final View toggleTitleLayout = dialog.getView().findViewById(barToggleLayoutId);
         Switch questionnaireSwitch = (Switch) toggleTitleLayout.findViewById(R.id.switcher);
 
-        setSwitcherCheckedByRessourceId(barToggleLayoutId, questionnaireSwitch);
+        setSwitcherCheckedByResourceId(barToggleLayoutId, questionnaireSwitch);
 
         // init UI
         final TextView title = (TextView) toggleTitleLayout.findViewById(R.id.title);
@@ -194,7 +190,7 @@ public class UserStartConfiguration {
      * @param barToggleLayoutId the layout id of the UI element
      * @param switcher the switcher to be checked or not
      */
-    private void setSwitcherCheckedByRessourceId(int barToggleLayoutId, Switch switcher) {
+    private void setSwitcherCheckedByResourceId(int barToggleLayoutId, Switch switcher) {
         if(barToggleLayoutId == R.id.toggle_user_layout){
             switcher.setChecked(!Global.hasToCreateNewUser());
         }

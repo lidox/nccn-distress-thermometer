@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.CircularArray;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import javax.microedition.khronos.opengles.GL;
 
 public class QuestionnaireSelectListFragment extends Fragment {
 
@@ -102,38 +105,42 @@ public class QuestionnaireSelectListFragment extends Fragment {
         int distressProgress = 0;
         int qualityProgress = 0;
 
-        Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
-        if (setOfBooleans != null) {
-            boolean hasToGetProgress = !Global.hasToCreateNewUser() && user!= null;
-            if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
-                if(hasToGetProgress) {
-                    HADSDQuestionnaire hadsdQuestionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate);
-                    if(hadsdQuestionnaire != null)
-                        hadsProgress = hadsdQuestionnaire.getProgressInPercent();
-                }
-                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
-            }
-            if (setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
-                if(hasToGetProgress) {
-                    DistressThermometerQuestionnaire distressThermometerQuestionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
-                    if(distressThermometerQuestionnaire!=null)
-                        distressProgress = distressThermometerQuestionnaire.getProgressInPercent();
-                }
-                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
-            }
-            if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
-                if(hasToGetProgress) {
-                    QolQuestionnaire qolQuestionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
-                    if(qolQuestionnaire!=null)
-                        qualityProgress = qolQuestionnaire.getProgressInPercent();
-                }
-                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
-            }
-        } else {
+        boolean hasToUseDefaultQuestionnaire = Global.hasToUseDefaultQuestionnaire();
+        if (hasToUseDefaultQuestionnaire) {
             Log.i(CLASS_NAME, "No configuration to display questionnaires has been found, so display the defaults");
             list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
             list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
             list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
+        } else {
+
+            Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
+            if (setOfBooleans != null) {
+                boolean hasToGetProgress = !Global.hasToCreateNewUser() && user != null;
+                if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
+                    if (hasToGetProgress) {
+                        HADSDQuestionnaire hadsdQuestionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate);
+                        if (hadsdQuestionnaire != null)
+                            hadsProgress = hadsdQuestionnaire.getProgressInPercent();
+                    }
+                    list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
+                }
+                if (setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
+                    if (hasToGetProgress) {
+                        DistressThermometerQuestionnaire distressThermometerQuestionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
+                        if (distressThermometerQuestionnaire != null)
+                            distressProgress = distressThermometerQuestionnaire.getProgressInPercent();
+                    }
+                    list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
+                }
+                if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
+                    if (hasToGetProgress) {
+                        QolQuestionnaire qolQuestionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
+                        if (qolQuestionnaire != null)
+                            qualityProgress = qolQuestionnaire.getProgressInPercent();
+                    }
+                    list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
+                }
+            }
         }
     }
 
@@ -142,28 +149,28 @@ public class QuestionnaireSelectListFragment extends Fragment {
             questionnaireListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.i(CLASS_NAME, "selected medicament=" + abstractQuestionnairesList.get(position) + " at position: " + position);
-                    onStartQuestionnaire(position);
+                    String questionnaireName = abstractQuestionnairesList.get(position).getName();
+                    Log.i(CLASS_NAME, "selected questionnaire=" + questionnaireName + " at position: " + position);
+                    onStartQuestionnaire(questionnaireName);
                 }
             });
         }
     }
 
-    private void onStartQuestionnaire(int position) {
+    private void onStartQuestionnaire(String questionnaireName) {
         String userName = Global.getSelectedUser();
         Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
-        Log.i(CLASS_NAME, "onStartQuestionnaire with userName="+ userName +", selectedDate=" + selectedQuestionnaireDate);
+        Log.i(CLASS_NAME, "onStartQuestionnaire with userName=" + userName + ", selectedDate=" + selectedQuestionnaireDate);
 
-        if(Global.hasToCreateNewUser() && userName== null){
+        if (Global.hasToCreateNewUser() && userName == null) {
             User user = new User(Strings.getStringByRId(R.string.user_name));
             new UserManager().insertUser(user);
             Global.setSelectedUserName(user.getName());
             Global.setHasToCreateNewUser(false);
         }
 
-        //TODO: position bad choise because its modular
-        if (position == 0) {
-            if(Global.hasToCreateNewQuestionnaire()){
+        if (questionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
+            if (Global.hasToCreateNewQuestionnaire()) {
                 HADSDQuestionnaire questionnaire = new HADSDQuestionnaire(Global.getSelectedUser());
                 questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
                 new HADSDQuestionnaireManager().insertQuestionnaire(questionnaire);
@@ -172,8 +179,8 @@ public class QuestionnaireSelectListFragment extends Fragment {
             }
             Log.i(CLASS_NAME, "selectedQuestionnaireDate= " + selectedQuestionnaireDate);
             startActivityForResult(new Intent(getContext(), WizardHADSD.class), 2);
-        } else if (position == 1) {
-            if(Global.hasToCreateNewQuestionnaire()){
+        } else if (questionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
+            if (Global.hasToCreateNewQuestionnaire()) {
                 DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire(Global.getSelectedUser());
                 questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
                 new DistressThermometerQuestionnaireManager().insertQuestionnaire(questionnaire);
@@ -181,8 +188,8 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 switchToSelectedQuestionnaire(selectedQuestionnaireDate);
             }
             startActivityForResult(new Intent(getContext(), WizardNCCN.class), 1);
-        } else if (position == 2) {
-            if(Global.hasToCreateNewQuestionnaire()){
+        } else if (questionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
+            if (Global.hasToCreateNewQuestionnaire()) {
                 QolQuestionnaire questionnaire = new QolQuestionnaire(Global.getSelectedUser());
                 questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
                 new QualityOfLifeManager().insertQuestionnaire(questionnaire);
@@ -194,6 +201,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
     }
 
     private void switchToSelectedQuestionnaire(Date selectedQuestionnaireDate) {
+        Global.setHasToCreateNewUser(false);
         Global.setHasToCreateNewQuestionnaire(false);
         Global.setSelectedQuestionnaireDate(selectedQuestionnaireDate);
     }
@@ -204,7 +212,6 @@ public class QuestionnaireSelectListFragment extends Fragment {
         super.onResume();
         Log.i(CLASS_NAME, "onResume()");
         fillQuestionnaireListViewByItems();
-
     }
 
     private void fillQuestionnaireListViewByItems() {

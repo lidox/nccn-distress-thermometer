@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
@@ -38,22 +39,25 @@ public class ThermometerStep extends AbstractStep {
     }
 
     private void setUIValuesByDB() {
-        String binaryStringByQuestionNr = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
-        byte[] answerByte = Bits.getByteByString(binaryStringByQuestionNr);
-        Log.i(CLASS_NAME, "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr:" +(currentQuestionNumber));
-        StringBuilder bits = new StringBuilder(binaryStringByQuestionNr).reverse();
-        int indexToCheck = bits.indexOf("1");
+        if(questionnaire != null){
+            String binaryStringByQuestionNr = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
+            byte[] answerByte = Bits.getByteByString(binaryStringByQuestionNr);
+            Log.i(CLASS_NAME, "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr:" +(currentQuestionNumber));
+            StringBuilder bits = new StringBuilder(binaryStringByQuestionNr).reverse();
+            int indexToCheck = bits.indexOf("1");
 
-        if(thermometer!= null){
-            Log.i(CLASS_NAME, "New thermometer index =" + indexToCheck);
-            thermometer.setProgress(indexToCheck);
+            if(thermometer!= null){
+                Log.i(CLASS_NAME, "New thermometer index =" + indexToCheck);
+                thermometer.setProgress(indexToCheck);
+            }
         }
     }
 
     private void initBundledData() {
         Bundle bundle = getArguments();
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
-        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByUserName(selectedUser.getName());
+        //questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByUserName(selectedUser.getName());
+        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
     }
 
     @NonNull

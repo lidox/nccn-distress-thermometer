@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -64,6 +65,7 @@ public class UserExpandableListFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //TODO: dummy name?
+        filteredUsers.add(new User(" "));
         filteredUsers.add(new User(" "));
         adapter = new UserSearchRecyclerAdapter(filteredUsers, getActivity());
         recyclerView.setAdapter(adapter);
@@ -122,5 +124,10 @@ public class UserExpandableListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(CLASS_NAME, "onResume()");
+
+        if(searchEditText != null)
+            if(Global.getSelectedUser() != null)
+                searchEditText.setText(Global.getSelectedUser());
+
     }
 }

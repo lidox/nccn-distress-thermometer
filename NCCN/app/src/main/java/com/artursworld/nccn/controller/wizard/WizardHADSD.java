@@ -80,6 +80,7 @@ public class WizardHADSD extends TextStepper {
     public void onComplete() {
         super.onComplete();
         Log.i(WizardHADSD.class.getSimpleName(), "completed WizardHADSD");
+        finish();
     }
 
 }

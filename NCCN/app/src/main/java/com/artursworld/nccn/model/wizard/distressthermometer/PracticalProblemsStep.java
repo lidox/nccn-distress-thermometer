@@ -91,14 +91,16 @@ public class PracticalProblemsStep extends AbstractStep {
      * Sets checkbox as checked by database
      */
     private void setUIValuesByDB() {
-        String binaryStringByQuestionNr = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
-        Log.i(CLASS_NAME, "answer bits loaded: " + binaryStringByQuestionNr + " for questionNr:" + currentQuestionNumber);
-        StringBuilder bits = new StringBuilder(binaryStringByQuestionNr).reverse();
-        checkBoxByNameAndNr(bits, answerA_btn, 4);
-        checkBoxByNameAndNr(bits, answerB_btn, 3);
-        checkBoxByNameAndNr(bits, answerC_btn, 2);
-        checkBoxByNameAndNr(bits, answerD_btn, 1);
-        checkBoxByNameAndNr(bits, answerE_btn, 0);
+        if(questionnaire != null) {
+            String binaryStringByQuestionNr = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
+            Log.i(CLASS_NAME, "answer bits loaded: " + binaryStringByQuestionNr + " for questionNr:" + currentQuestionNumber);
+            StringBuilder bits = new StringBuilder(binaryStringByQuestionNr).reverse();
+            checkBoxByNameAndNr(bits, answerA_btn, 4);
+            checkBoxByNameAndNr(bits, answerB_btn, 3);
+            checkBoxByNameAndNr(bits, answerC_btn, 2);
+            checkBoxByNameAndNr(bits, answerD_btn, 1);
+            checkBoxByNameAndNr(bits, answerE_btn, 0);
+        }
     }
 
     private void checkBoxByNameAndNr(StringBuilder bits, CheckBox chechBox, int checkBoxNumber) {

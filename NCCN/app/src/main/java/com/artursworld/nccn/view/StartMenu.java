@@ -24,6 +24,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.controller.util.Global;
+import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.view.user.UserStartConfiguration;
@@ -122,7 +123,12 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         super.onResume();
         String userName = Global.getSelectedUser();
         if(userName != null){
-            userNameEditText.setText(userName);
+            if(Global.hasToCreateNewUser()){
+                userNameEditText.setText("");
+            }
+            else{
+                userNameEditText.setText(userName);
+            }
             selectedUser = new UserManager().getUserByName(userName);
         }
 
