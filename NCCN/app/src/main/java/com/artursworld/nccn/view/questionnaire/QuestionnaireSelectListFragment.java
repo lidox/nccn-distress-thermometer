@@ -107,7 +107,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
         boolean hasToUseDefaultQuestionnaire = Global.hasToUseDefaultQuestionnaire();
         if (hasToUseDefaultQuestionnaire) {
-            Log.i(CLASS_NAME, "No configuration to display questionnaires has been found, so display the defaults");
+            Log.i(CLASS_NAME, "Display default questionnaires");
             list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
             list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
             list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
@@ -149,58 +149,87 @@ public class QuestionnaireSelectListFragment extends Fragment {
             questionnaireListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String questionnaireName = abstractQuestionnairesList.get(position).getName();
-                    Log.i(CLASS_NAME, "selected questionnaire=" + questionnaireName + " at position: " + position);
-                    onStartQuestionnaire(questionnaireName);
+                    String selectedQuestionnaireName = abstractQuestionnairesList.get(position).getName();
+                    Log.i(CLASS_NAME, "selected questionnaire = " + selectedQuestionnaireName + " at position: " + position);
+                    onStartQuestionnaire(selectedQuestionnaireName, abstractQuestionnairesList);
                 }
             });
         }
     }
 
-    private void onStartQuestionnaire(String questionnaireName) {
-        String userName = Global.getSelectedUser();
+    private void onStartQuestionnaire(String selectedQuestionnaireName, List<AbstractQuestionnaire> questionnairesList) {
+        String selectedUserName = Global.getSelectedUser();
         Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
-        Log.i(CLASS_NAME, "onStartQuestionnaire with userName=" + userName + ", selectedDate=" + selectedQuestionnaireDate);
+        Log.i(CLASS_NAME, "onStartQuestionnaire with selected user name = " + selectedUserName + ", selected date=" + selectedQuestionnaireDate);
 
-        if (Global.hasToCreateNewUser() && userName == null) {
+        createNewUserIfNotExisting();
+
+        insertQuestionnaireIntoDB(questionnairesList);
+
+        Class selectedClass = getWizardClassByQuestionnaireName(selectedQuestionnaireName);
+
+        changeSelectedGlobalValues(selectedQuestionnaireDate);
+
+        startActivityForResult(new Intent(getContext(), selectedClass), 0);
+    }
+
+    private void createNewUserIfNotExisting() {
+        String userName = Global.getSelectedUser();
+        if (Global.hasToCreateNewUser() || userName == null) {
             User user = new User(Strings.getStringByRId(R.string.user_name));
             new UserManager().insertUser(user);
             Global.setSelectedUserName(user.getName());
             Global.setHasToCreateNewUser(false);
         }
+    }
 
-        if (questionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
-            if (Global.hasToCreateNewQuestionnaire()) {
-                HADSDQuestionnaire questionnaire = new HADSDQuestionnaire(Global.getSelectedUser());
-                questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
-                new HADSDQuestionnaireManager().insertQuestionnaire(questionnaire);
-                Log.i(CLASS_NAME, "Inserting new HADSD by creation date = " + selectedQuestionnaireDate);
-                switchToSelectedQuestionnaire(selectedQuestionnaireDate);
+    private Class getWizardClassByQuestionnaireName(String selectedQuestionnaireName) {
+        Class ret = null;
+        boolean isHadsdQuestionnaire = selectedQuestionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.hadsd_questionnaire));
+        if (isHadsdQuestionnaire) {
+            ret = WizardHADSD.class;
+        }
+        boolean isDistressThermometerQuestionnaire = selectedQuestionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.nccn_distress_thermometer));
+        if (isDistressThermometerQuestionnaire) {
+            ret = WizardNCCN.class;
+        }
+        boolean isQualityOfLifeQuestionnaire = selectedQuestionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.quality_of_life_questionnaire));
+        if (isQualityOfLifeQuestionnaire) {
+            ret = WizardQualityOfLife.class;
+        }
+        return ret;
+    }
+
+    private void insertQuestionnaireIntoDB(List<AbstractQuestionnaire> questionnairesList) {
+        if(Global.hasToCreateNewQuestionnaire()) {
+            for (AbstractQuestionnaire item : questionnairesList) {
+                Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
+                boolean isHadsdQuestionnaire = item.getName().equalsIgnoreCase(Strings.getStringByRId(R.string.hadsd_questionnaire));
+                if (isHadsdQuestionnaire) {
+                    HADSDQuestionnaire questionnaire = new HADSDQuestionnaire(Global.getSelectedUser());
+                    questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
+                    new HADSDQuestionnaireManager().insertQuestionnaire(questionnaire);
+                    Log.i(CLASS_NAME, "Inserting new HADSD by creation date = " + selectedQuestionnaireDate);
+                }
+                boolean isDistressThermometerQuestionnaire = item.getName().equalsIgnoreCase(Strings.getStringByRId(R.string.nccn_distress_thermometer));
+                if (isDistressThermometerQuestionnaire) {
+                    DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire(Global.getSelectedUser());
+                    questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
+                    new DistressThermometerQuestionnaireManager().insertQuestionnaire(questionnaire);
+                    Log.i(CLASS_NAME, "Inserting new Distress Thermomether by creation date = " + selectedQuestionnaireDate);
+                }
+                boolean isQualityOfLifeQuestionnaire = item.getName().equalsIgnoreCase(Strings.getStringByRId(R.string.quality_of_life_questionnaire));
+                if (isQualityOfLifeQuestionnaire) {
+                    QolQuestionnaire questionnaire = new QolQuestionnaire(Global.getSelectedUser());
+                    questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
+                    new QualityOfLifeManager().insertQuestionnaire(questionnaire);
+                    Log.i(CLASS_NAME, "Inserting new Quality Of Life by creation date = " + selectedQuestionnaireDate);
+                }
             }
-            Log.i(CLASS_NAME, "selectedQuestionnaireDate= " + selectedQuestionnaireDate);
-            startActivityForResult(new Intent(getContext(), WizardHADSD.class), 2);
-        } else if (questionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
-            if (Global.hasToCreateNewQuestionnaire()) {
-                DistressThermometerQuestionnaire questionnaire = new DistressThermometerQuestionnaire(Global.getSelectedUser());
-                questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
-                new DistressThermometerQuestionnaireManager().insertQuestionnaire(questionnaire);
-                Log.i(CLASS_NAME, "Inserting new Distress Thermomether by creation date = " + selectedQuestionnaireDate);
-                switchToSelectedQuestionnaire(selectedQuestionnaireDate);
-            }
-            startActivityForResult(new Intent(getContext(), WizardNCCN.class), 1);
-        } else if (questionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
-            if (Global.hasToCreateNewQuestionnaire()) {
-                QolQuestionnaire questionnaire = new QolQuestionnaire(Global.getSelectedUser());
-                questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
-                new QualityOfLifeManager().insertQuestionnaire(questionnaire);
-                Log.i(CLASS_NAME, "Inserting new Quality Of Life by creation date = " + selectedQuestionnaireDate);
-                switchToSelectedQuestionnaire(selectedQuestionnaireDate);
-            }
-            startActivityForResult(new Intent(getContext(), WizardQualityOfLife.class), 3);
         }
     }
 
-    private void switchToSelectedQuestionnaire(Date selectedQuestionnaireDate) {
+    private void changeSelectedGlobalValues(Date selectedQuestionnaireDate) {
         Global.setHasToCreateNewUser(false);
         Global.setHasToCreateNewQuestionnaire(false);
         Global.setSelectedQuestionnaireDate(selectedQuestionnaireDate);

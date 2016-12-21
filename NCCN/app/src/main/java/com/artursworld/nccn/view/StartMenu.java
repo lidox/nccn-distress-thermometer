@@ -63,21 +63,37 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     Log.i(CLASS_NAME, "focus out");
-                    if (selectedUser == null)
-                        selectedUser = new UserManager().getUserByName(Global.getSelectedUser());
-
-                    if(selectedUser!= null){
-                        String newName = userNameEditText.getText().toString();
-                        Log.i(CLASS_NAME, "rename user from '" + selectedUser.getName() + "' to '" + newName+"'");
-                        selectedUser.setName(newName);
-                        Log.i(CLASS_NAME, "user: " + selectedUser);
-                        long result = new UserManager().update(selectedUser);
-                        if(result != 0)
-                            Global.setSelectedUserName(newName);
-                    }
+                    updateUserByEditText();
                 }
             }
         });
+        userNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateUserByEditText();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void updateUserByEditText() {
+        if (selectedUser == null)
+            selectedUser = new UserManager().getUserByName(Global.getSelectedUser());
+
+        if(selectedUser!= null){
+            String newName = userNameEditText.getText().toString();
+            Log.i(CLASS_NAME, "rename user from '" + selectedUser.getName() + "' to '" + newName+"'");
+            selectedUser.setName(newName);
+            Log.i(CLASS_NAME, "user: " + selectedUser);
+            long result = new UserManager().update(selectedUser);
+            if(result != 0)
+                Global.setSelectedUserName(newName);
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

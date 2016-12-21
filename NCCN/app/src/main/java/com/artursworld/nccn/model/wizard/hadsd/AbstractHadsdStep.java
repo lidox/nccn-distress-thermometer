@@ -127,13 +127,12 @@ public class AbstractHadsdStep extends AbstractStep {
             answerC_btn.setText(questionData[3]);
             answerD_btn.setText(questionData[4]);
         }
-
         currentQuestionNumber = bundle.getInt(WizardHADSD.QUESTION_NUMBER) - 1;
+        Log.i(CLASS_NAME, "loading data for question number = " + currentQuestionNumber + " ...");
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardHADSD.SELECTED_USER));
         Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
-        Log.i(CLASS_NAME, "2. selectedQuestionnaireDate= " + selectedQuestionnaireDate);
         questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(selectedUser.getName(), selectedQuestionnaireDate);
-        Log.i(CLASS_NAME, "AbstractHADSD-Step. selected user="+ selectedUser.getName() + ", selected quesitonnaire=" + questionnaire);
+        Log.i(CLASS_NAME, "user = "+ selectedUser.getName() + ", questionnaire date = " + selectedQuestionnaireDate + " selected questionnaire = " + questionnaire);
         checkRadioButtonByBits();
         addAnswerChangeListener();
     }
@@ -143,7 +142,7 @@ public class AbstractHadsdStep extends AbstractStep {
      */
     private void checkRadioButtonByBits() {
         byte[] answerByte = questionnaire.getAnswerByNr(currentQuestionNumber);
-        Log.i(AbstractHadsdStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr:" +(currentQuestionNumber+1) + "(index:"+currentQuestionNumber+")");
+        Log.i(AbstractHadsdStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr: " +(currentQuestionNumber+1) + "(index:"+currentQuestionNumber+")");
         StringBuilder bits = new StringBuilder(Bits.getStringByByte(answerByte)).reverse();
         int indexToCheck = bits.indexOf("1");
         RadioButton buttonToCheck = ((RadioButton)answersGroup.getChildAt(indexToCheck));

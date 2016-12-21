@@ -31,7 +31,7 @@ public class WizardHADSD extends TextStepper {
     protected void onCreate(Bundle savedInstanceState) {
         String userName = Global.getSelectedUser();
         selectedUser = new UserManager().getUserByName(userName);
-        Log.i(CLASS_NAME, "WizardHADSD: selected user=" + selectedUser);
+        Log.i(CLASS_NAME, "WizardHADSD: selected user = " + selectedUser);
 
         // laod questionnairy into fragments
         putAllQuestionAndAnswersToNewFragments();
