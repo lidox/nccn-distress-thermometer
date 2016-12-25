@@ -156,7 +156,7 @@ public class UserManager extends EntityDbManager {
                 dateList.add(questionnaireDate);
             }
         }
-
+        Log.i(CLASS_NAME, "Questionnaire Dates found: " + dateList.toString());
         return  dateList;
     }
 

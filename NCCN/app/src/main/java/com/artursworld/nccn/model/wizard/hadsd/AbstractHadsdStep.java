@@ -132,9 +132,14 @@ public class AbstractHadsdStep extends AbstractStep {
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardHADSD.SELECTED_USER));
         Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
         questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(selectedUser.getName(), selectedQuestionnaireDate);
-        Log.i(CLASS_NAME, "user = "+ selectedUser.getName() + ", questionnaire date = " + selectedQuestionnaireDate + " selected questionnaire = " + questionnaire);
-        checkRadioButtonByBits();
-        addAnswerChangeListener();
+
+        if(questionnaire == null)
+            getActivity().finish();
+        else {
+            Log.i(CLASS_NAME, "user = " + selectedUser.getName() + ", questionnaire date = " + selectedQuestionnaireDate + " selected questionnaire = " + questionnaire);
+            checkRadioButtonByBits();
+            addAnswerChangeListener();
+        }
     }
 
     /**

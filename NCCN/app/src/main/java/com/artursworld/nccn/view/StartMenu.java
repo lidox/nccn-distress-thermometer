@@ -49,6 +49,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_menu);
         ButterKnife.bind(this);
+        createUserIfNull();
         initNavigationAndToolBar();
         activity = this;
     }
@@ -83,15 +84,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void updateUserByEditText() {
-        if(Global.getSelectedUser() == null){
-            String defaultUserName = Strings.getStringByRId(R.string.user_name);
-            new UserManager().insertUser(new User(defaultUserName));
-            selectedUser = new UserManager().getUserByName(defaultUserName);
-            if(selectedUser != null){
-                Global.setSelectedUserName(defaultUserName);
-                Global.setHasToCreateNewUser(false);
-            }
-        }
+        createUserIfNull();
 
         if (selectedUser == null)
             selectedUser = new UserManager().getUserByName(Global.getSelectedUser());
@@ -111,6 +104,18 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                     return null;
                 }
             }.execute();
+        }
+    }
+
+    private void createUserIfNull() {
+        if(Global.getSelectedUser() == null){
+            String defaultUserName = Strings.getStringByRId(R.string.user_name);
+            new UserManager().insertUser(new User(defaultUserName));
+            selectedUser = new UserManager().getUserByName(defaultUserName);
+            if(selectedUser != null){
+                Global.setSelectedUserName(defaultUserName);
+                Global.setHasToCreateNewUser(false);
+            }
         }
     }
 

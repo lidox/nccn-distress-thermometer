@@ -49,7 +49,15 @@ public class Global {
     }
 
     public static void setSelectedQuestionnaireDate(Date newCreationDate) {
-        Share.putString(Strings.getStringByRId(R.string.c_selected_questionnaire_creation_date), EntityDbManager.dateFormat.format(newCreationDate));
+        try {
+            String stringId = Strings.getStringByRId(R.string.c_selected_questionnaire_creation_date);
+            String dateAsString = EntityDbManager.dateFormat.format(newCreationDate);
+            Log.i(CLASS_NAME, "CHANGE Q-DATE from: " + getSelectedQuestionnaireDate() + " to: " + dateAsString);
+            Share.putString(stringId, dateAsString);
+        }
+        catch (Exception e){
+            Log.e(CLASS_NAME, e.getLocalizedMessage());
+        }
     }
 
     public static Set<String> getSelectedQuestionnairesForStartScreen() {

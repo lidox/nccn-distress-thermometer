@@ -57,6 +57,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(CLASS_NAME, " onCreateView()");
+        createNewUserIfNotExisting();
         View view = inflater.inflate(R.layout.fragment_questionnaire_select_list, container, false);
         questionnaireListView = (ListView) view.findViewById(R.id.questionnaire_list_view);
         percentageAll = (TextView) view.findViewById(R.id.percentage_text);
@@ -82,13 +83,28 @@ public class QuestionnaireSelectListFragment extends Fragment {
         // a user has been selected
         else {
             User user = new UserManager().getUserByName(selectedUserName);
-            selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
-            if (selectedQuestionnaireDate != null) {
-                fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user, hasToCreateNewUser);
+            if(user == null){
+                createNewUser();
+                user = new UserManager().getUserByName(Global.getSelectedUser());
             }
+            Log.i(CLASS_NAME, "loading selected user, in order to show questionniares: User = " + user);
+            selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
+            selectedQuestionnaireDate = getNewDateIfNull(selectedQuestionnaireDate, selectedUserName);
+            Log.i(CLASS_NAME, "display qestionnaires by user("+user.getName()+") and date " + selectedQuestionnaireDate);
+            fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user, hasToCreateNewUser);
         }
 
         return list;
+    }
+
+    @NonNull
+    private Date getNewDateIfNull(Date selectedQuestionnaireDate, String selectedUserName) {
+        if(selectedQuestionnaireDate == null){
+            selectedQuestionnaireDate = new Date();
+            Log.i(CLASS_NAME, "create new questionnaire creationDate = " + selectedUserName);
+            Global.setSelectedQuestionnaireDate(selectedQuestionnaireDate);
+        }
+        return selectedQuestionnaireDate;
     }
 
     /**
@@ -176,11 +192,15 @@ public class QuestionnaireSelectListFragment extends Fragment {
     private void createNewUserIfNotExisting() {
         String userName = Global.getSelectedUser();
         if (Global.hasToCreateNewUser() || userName == null) {
-            User user = new User(Strings.getStringByRId(R.string.user_name));
-            new UserManager().insertUser(user);
-            Global.setSelectedUserName(user.getName());
-            Global.setHasToCreateNewUser(false);
+            createNewUser();
         }
+    }
+
+    private void createNewUser() {
+        User user = new User(Strings.getStringByRId(R.string.user_name));
+        new UserManager().insertUser(user);
+        Global.setSelectedUserName(user.getName());
+        Global.setHasToCreateNewUser(false);
     }
 
     private Class getWizardClassByQuestionnaireName(String selectedQuestionnaireName) {

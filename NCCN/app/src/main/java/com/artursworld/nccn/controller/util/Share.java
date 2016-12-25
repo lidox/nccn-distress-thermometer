@@ -64,28 +64,11 @@ public class Share {
      * @param value
      */
     public static void putString(final String key, final String value) {
-        AsyncTask a = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... unusedParams) {
                 SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).edit();
                 if (key != null && value != null) {
                     prefs.putString(key, value);
                     prefs.commit();
-                    prefs.apply();
-                    //String logMessage = "set global value(key=" + key + ", value=" + value + ")";
-                    //Log.i(CLASS_NAME, logMessage);
                 }
-                return null;
-            }
-        }.execute();
-
-        try {
-            a.get();
-        }
-        catch (Exception e){
-            String logMessage = "could not set global value(key=" + key + ", value=" + value + ") ";
-            Log.e(CLASS_NAME, logMessage + e.getLocalizedMessage());
-        }
     }
 
     /**

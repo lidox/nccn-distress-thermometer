@@ -55,8 +55,7 @@ public class UserStartConfiguration {
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
                             // set shared preferences
-                            setQestionnairesToBeDisplayedOnStartScreen(dialog);
-                            setSelectedQuestionnaireDate();
+                            setQuestionnairesToBeDisplayedOnStartScreen(dialog);
 
                             // refresh and finish();
                             activity.finish();
@@ -101,21 +100,12 @@ public class UserStartConfiguration {
         }
     }
 
-    private void setSelectedQuestionnaireDate() {
-        //TODO: get date from UI
-        Date newCreationDate = null; // get it from UI
-        if (newCreationDate == null) {
-            newCreationDate = new Date();
-        }
-        Global.setSelectedQuestionnaireDate(newCreationDate);
-    }
-
     /**
      * Sets the quesitonnares to be displayed on start screen via shared preferences
      *
      * @param dialog the dialog displaying the UI
      */
-    private void setQestionnairesToBeDisplayedOnStartScreen(@NonNull MaterialDialog dialog) {
+    private void setQuestionnairesToBeDisplayedOnStartScreen(@NonNull MaterialDialog dialog) {
         CheckBox checkbox1 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_1);
         CheckBox checkbox2 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_2);
         CheckBox checkbox3 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_3);
