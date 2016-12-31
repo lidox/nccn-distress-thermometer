@@ -8,4 +8,5 @@
     <string name="c_create_new_user">com.artursworld.c_create_new_user</string>
     <string name="c_has_to_create_default_questionnaire">com.artursworld.c_has_to_create_default_questionnaire</string>
     <string name="c_has_to_create_new_questionnaire">com.artursworld.c_has_to_create_new_questionnaire</string>
+    <string name="c_is_selectuser_fragment">com.artursworld.c_is_selectuser_fragment</string>
 </resources>

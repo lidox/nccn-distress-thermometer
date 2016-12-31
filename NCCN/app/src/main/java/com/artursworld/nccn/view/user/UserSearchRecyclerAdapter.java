@@ -58,6 +58,27 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
         });
     }
 
+    /**
+     * Insert a new item to the RecyclerView on a predefined position
+     * @param position
+     * @param user
+     */
+    public void insert(int position, User user) {
+        this.data.add(position, user);
+        notifyItemInserted(position);
+    }
+
+    /**
+     * Remove a RecyclerView item containing a specified Data object
+     * @param user
+     */
+    public void remove(User user) {
+        int position = this.data.indexOf(user);
+        data.remove(position);
+        notifyItemRemoved(position);
+    }
+
+
     private void showQuestionnaireSelectDateDialog(final List<String> dateList) {
         new MaterialDialog.Builder(activity)
                 .title(R.string.select_qustionnaire_date)

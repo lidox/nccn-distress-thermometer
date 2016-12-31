@@ -1,12 +1,14 @@
 package com.artursworld.nccn.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +30,7 @@ import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
+import com.artursworld.nccn.view.user.SelectUserActivity;
 import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -130,7 +133,10 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                 configurationDialog = new UserStartConfiguration(activity);
             configurationDialog.showConfigurationDialog();
         } else if (id == R.id.nav_user_statistics) {
-            Log.i(CLASS_NAME, "nav_user_statistics selected");
+            Log.i(CLASS_NAME, "Navigation item 'user_statistics' has been selected");
+            Intent in = new Intent(activity, SelectUserActivity.class);
+            in.putExtra(Strings.getStringByRId(R.string.c_is_selectuser_fragment), true);
+            startActivity(in);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

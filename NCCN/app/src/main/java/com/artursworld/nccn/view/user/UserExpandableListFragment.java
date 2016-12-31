@@ -17,6 +17,7 @@ import android.widget.EditText;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
+import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -29,12 +30,14 @@ import java.util.regex.Pattern;
 public class UserExpandableListFragment extends Fragment {
 
     private static final String CLASS_NAME = UserExpandableListFragment.class.getSimpleName();
+    private boolean isVisibleInSelectUserFragment = false;
 
     // UI
     private ExpandableRelativeLayout expandLayout;
     private View rootView = null;
     private RecyclerView recyclerView = null;
     private List<User> filteredUsers = new ArrayList<>();
+    private List<User> allUsers = new ArrayList<>();
     private UserSearchRecyclerAdapter adapter = null;
     private EditText searchEditText = null;
 
@@ -50,9 +53,20 @@ public class UserExpandableListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(CLASS_NAME, " onCreateView()");
+
         View view = inflater.inflate(R.layout.fragment_user_expandable_search_list, container, false);
+
         initUI(view);
+
+        checkWhereFragmentIsDisplayed();
+
         return view;
+    }
+
+    private void checkWhereFragmentIsDisplayed() {
+        Bundle bundle = getActivity().getIntent().getExtras();
+        isVisibleInSelectUserFragment = bundle.getBoolean(Strings.getStringByRId(R.string.c_is_selectuser_fragment), false);
+        Log.i(CLASS_NAME, CLASS_NAME  + " is visible in 'Select User' = " + isVisibleInSelectUserFragment);
     }
 
     private void initUI(View view) {
@@ -60,16 +74,16 @@ public class UserExpandableListFragment extends Fragment {
         addOnSearchTextChangeListener();
         expandLayout = (ExpandableRelativeLayout) view.findViewById(R.id.expandableLayout);
         expandLayout.expand();
+        initUserList(view);
+        this.rootView = view;
+    }
+
+    private void initUserList(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //TODO: dummy name?
-        filteredUsers.add(new User(" "));
-        filteredUsers.add(new User(" "));
-        adapter = new UserSearchRecyclerAdapter(filteredUsers, getActivity());
-        recyclerView.setAdapter(adapter);
-        this.rootView = view;
+        Log.i(CLASS_NAME, "first load of all users");
+        loadAllUsers(true);
     }
 
     private void addOnSearchTextChangeListener() {
@@ -79,7 +93,8 @@ public class UserExpandableListFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                getAllUsersAsyncAndFillUserList();
+                boolean hasToFillUserList = true;
+                //getAllUsersAsyncAndFillUserList(hasToFillUserList, false);
                 expandLayout.expand();
             }
 
@@ -88,7 +103,7 @@ public class UserExpandableListFragment extends Fragment {
         });
     }
 
-    private void fillUserList(View view, List<User> allUsers) {
+    private void fillUserList(View view) {
         searchEditText = (EditText) view.findViewById(R.id.search_edit_text);
         filteredUsers.clear();
         String searchedText = searchEditText.getText().toString();
@@ -100,22 +115,36 @@ public class UserExpandableListFragment extends Fragment {
                 }
             }
         }
-        //Log.i(CLASS_NAME, "need to show list with this content: " + this.filteredUsers.toString());
-        adapter.notifyDataSetChanged();
+        if(adapter!= null)
+         adapter.notifyDataSetChanged();
     }
 
-    private void getAllUsersAsyncAndFillUserList() {
-        new AsyncTask<Void, Void, List<User>>(){
+    private void loadAllUsers(final boolean hasToFillUserList) {
+        new AsyncTask<Void, Void, List<User>>() {
 
             @Override
             protected List<User> doInBackground(Void... voids) {
-                return new UserManager().getAllUsers();
+                if(allUsers.size() <= 0)
+                    return new UserManager().getAllUsers();
+
+                return allUsers;
             }
 
             @Override
             protected void onPostExecute(List<User> users) {
+                Log.i(CLASS_NAME, "users has been loaded, now fill list");
                 super.onPostExecute(users);
-                fillUserList(rootView,users);
+                allUsers = users;
+
+                Log.i(CLASS_NAME, "insert users from all user list");
+                for(int j = 0; j < 5; j++){
+                    if(allUsers.size() > j)
+                        filteredUsers.add(allUsers.get(j));
+                }
+
+                adapter = new UserSearchRecyclerAdapter(filteredUsers, getActivity());
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
         }.execute();
     }

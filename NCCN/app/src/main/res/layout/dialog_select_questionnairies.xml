@@ -25,12 +25,7 @@
             android:layout_below="@+id/toggle_user_layout"
             android:visibility="gone">
 
-            <fragment
-                android:id="@+id/user_expandable_search_list_fragment"
-                android:name="com.artursworld.nccn.view.user.UserExpandableListFragment"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@id/edit_text_holder" />
+
 
         </RelativeLayout>
 
