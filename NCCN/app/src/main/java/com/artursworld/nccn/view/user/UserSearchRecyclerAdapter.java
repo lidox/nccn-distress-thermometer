@@ -1,6 +1,7 @@
 package com.artursworld.nccn.view.user;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
+import com.artursworld.nccn.view.statistics.StatisticsTabsActivity;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -56,6 +58,8 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
 
                 if(hasToOpenStatistics){
                     Log.i(CLASS_NAME, "open statistics");
+                    Intent intent = new Intent(activity.getApplicationContext(), StatisticsTabsActivity.class);
+                    activity.startActivity(intent);
                 }
                 else {
                     // get date list
