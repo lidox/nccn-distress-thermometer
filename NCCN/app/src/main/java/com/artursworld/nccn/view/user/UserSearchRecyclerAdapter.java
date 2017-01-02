@@ -27,6 +27,11 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
     private String CLASS_NAME = UserSearchRecyclerAdapter.class.getSimpleName();
     private final List<User> data;
     private Activity activity;
+    private boolean hasToOpenStatistics = false;
+
+    public void setHasToOpenStatistics(boolean hasTo){
+        hasToOpenStatistics = hasTo;
+    }
 
     public UserSearchRecyclerAdapter(final List<User> data, Activity activity) {
         this.activity = activity;
@@ -49,11 +54,15 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
                 Log.i(CLASS_NAME, "clicked on: " + selectedUser);
                 Global.setSelectedUserName(selectedUser.getName());
 
-                // get date list
-                final List<String> dateList = new UserManager().getQuestionnaireDatesByUserName(selectedUser.getName());
-                dateList.add(0, Strings.getStringByRId(R.string.create_new_questionnaire_date));
-
-                showQuestionnaireSelectDateDialog(dateList);
+                if(hasToOpenStatistics){
+                    Log.i(CLASS_NAME, "open statistics");
+                }
+                else {
+                    // get date list
+                    final List<String> dateList = new UserManager().getQuestionnaireDatesByUserName(selectedUser.getName());
+                    dateList.add(0, Strings.getStringByRId(R.string.create_new_questionnaire_date));
+                    showQuestionnaireSelectDateDialog(dateList);
+                }
             }
         });
     }

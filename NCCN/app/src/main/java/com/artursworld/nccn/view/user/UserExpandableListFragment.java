@@ -12,11 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.artursworld.nccn.R;
-import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
@@ -30,12 +28,10 @@ import java.util.regex.Pattern;
 public class UserExpandableListFragment extends Fragment {
 
     private static final String CLASS_NAME = UserExpandableListFragment.class.getSimpleName();
-    private boolean isVisibleInSelectUserFragment = false;
 
     // UI
     private ExpandableRelativeLayout expandLayout;
     private View rootView = null;
-    private RecyclerView recyclerView = null;
     private List<User> filteredUsers = new ArrayList<>();
     private List<User> allUsers = new ArrayList<>();
     private UserSearchRecyclerAdapter adapter = null;
@@ -56,34 +52,48 @@ public class UserExpandableListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_user_expandable_search_list, container, false);
 
-        initUI(view);
-
-        checkWhereFragmentIsDisplayed();
+        rootView = initUI(view);
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(CLASS_NAME, "onResume()");
+
+        initRecyclerView();
+
+        addOnSearchTextChangeListener();
+        loadUsersIntoViewAsync();
+    }
+
     private void checkWhereFragmentIsDisplayed() {
         Bundle bundle = getActivity().getIntent().getExtras();
-        isVisibleInSelectUserFragment = bundle.getBoolean(Strings.getStringByRId(R.string.c_is_selectuser_fragment), false);
+        boolean isVisibleInSelectUserFragment = bundle.getBoolean(Strings.getStringByRId(R.string.c_is_selectuser_fragment), false);
         Log.i(CLASS_NAME, CLASS_NAME  + " is visible in 'Select User' = " + isVisibleInSelectUserFragment);
+        if(adapter != null)
+            adapter.setHasToOpenStatistics(isVisibleInSelectUserFragment);
     }
 
-    private void initUI(View view) {
+    private View initUI(View view) {
+        Log.i(CLASS_NAME, "init UI");
         searchEditText = (EditText) view.findViewById(R.id.search_edit_text);
-        addOnSearchTextChangeListener();
         expandLayout = (ExpandableRelativeLayout) view.findViewById(R.id.expandableLayout);
         expandLayout.expand();
-        initUserList(view);
-        this.rootView = view;
+        return view;
     }
 
-    private void initUserList(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
+    private void initRecyclerView() {
+        Log.i(CLASS_NAME, "init recycler view");
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        Log.i(CLASS_NAME, "first load of all users");
-        loadAllUsers(true);
+        setUserDisplayCount(10);
+        adapter = new UserSearchRecyclerAdapter(filteredUsers, getActivity());
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
+        checkWhereFragmentIsDisplayed();
     }
 
     private void addOnSearchTextChangeListener() {
@@ -93,8 +103,7 @@ public class UserExpandableListFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                boolean hasToFillUserList = true;
-                //getAllUsersAsyncAndFillUserList(hasToFillUserList, false);
+                fillUserList();
                 expandLayout.expand();
             }
 
@@ -103,8 +112,8 @@ public class UserExpandableListFragment extends Fragment {
         });
     }
 
-    private void fillUserList(View view) {
-        searchEditText = (EditText) view.findViewById(R.id.search_edit_text);
+    private void fillUserList() {
+        searchEditText = (EditText) rootView.findViewById(R.id.search_edit_text);
         filteredUsers.clear();
         String searchedText = searchEditText.getText().toString();
         for (User user : allUsers) {
@@ -115,48 +124,40 @@ public class UserExpandableListFragment extends Fragment {
                 }
             }
         }
-        if(adapter!= null)
-         adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
-    private void loadAllUsers(final boolean hasToFillUserList) {
+    private void loadUsersIntoViewAsync() {
         new AsyncTask<Void, Void, List<User>>() {
 
             @Override
             protected List<User> doInBackground(Void... voids) {
                 if(allUsers.size() <= 0)
                     return new UserManager().getAllUsers();
-
-                return allUsers;
+                else
+                    return allUsers;
             }
 
             @Override
             protected void onPostExecute(List<User> users) {
-                Log.i(CLASS_NAME, "users has been loaded, now fill list");
+                Log.i(CLASS_NAME, "users has been loaded, now fill list. user count = " + users.size());
                 super.onPostExecute(users);
                 allUsers = users;
 
                 Log.i(CLASS_NAME, "insert users from all user list");
-                for(int j = 0; j < 5; j++){
+
+                for(int j = 0; j < allUsers.size(); j++){
                     if(allUsers.size() > j)
                         filteredUsers.add(allUsers.get(j));
                 }
-
-                adapter = new UserSearchRecyclerAdapter(filteredUsers, getActivity());
-                recyclerView.setAdapter(adapter);
+                expandLayout.expand();
                 adapter.notifyDataSetChanged();
             }
         }.execute();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(CLASS_NAME, "onResume()");
-
-        if(searchEditText != null)
-            if(Global.getSelectedUser() != null)
-                searchEditText.setText(Global.getSelectedUser());
-
+    public void setUserDisplayCount(int userDisplayCount) {
+        for(int i = 0; i < userDisplayCount; i++)
+            filteredUsers.add(new User(" "));
     }
 }

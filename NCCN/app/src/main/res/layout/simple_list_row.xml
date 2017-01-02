@@ -11,4 +11,12 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textAppearanceLabel"/>
+
+    <ImageView
+        android:id="@+id/arrow_selector_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
 </RelativeLayout>
