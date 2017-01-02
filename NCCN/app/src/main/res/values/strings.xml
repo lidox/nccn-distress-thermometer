@@ -144,4 +144,9 @@
     <string name="create_new_questionnaire_date">neue Umfrage erstellen</string>
     <string name="question">Frage</string>
     <string name="select_user">Wähle einen Patienten aus</string>
+    <string name="history">Verlauf</string>
+    <string name="anxiety">Angst</string>
+    <string name="depression">Depression</string>
+    <string name="points">Punkte</string>
+    <string name="date">Datum</string>
 </resources>

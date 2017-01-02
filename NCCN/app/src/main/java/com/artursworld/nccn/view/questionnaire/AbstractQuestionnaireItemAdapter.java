@@ -34,8 +34,8 @@ public class AbstractQuestionnaireItemAdapter extends ArrayAdapter<AbstractQuest
             convertView = inflater.inflate(R.layout.adapter_questionnaire_item, null);
         }
 
-        TextView proccessPercentage = (TextView) convertView.findViewById(R.id.procces_percentage_txt);
-        TextView questionnaireName = (TextView) convertView.findViewById(R.id.questionnaire_name_txt);
+        TextView proccessPercentage = (TextView) convertView.findViewById(R.id.date_txt);
+        TextView questionnaireName = (TextView) convertView.findViewById(R.id.anxiety_txt);
 
         if(proccessPercentage != null)
             proccessPercentage.setText(list.get(position).getProgressInPercent() +"%");

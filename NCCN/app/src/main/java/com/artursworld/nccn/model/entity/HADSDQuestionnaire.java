@@ -125,4 +125,12 @@ public class HADSDQuestionnaire {
     public byte[] getDefaultByte(){
         return defaultByte;
     }
+
+    public int getDepressionPoints() {
+        return 7;
+    }
+
+    public int getAnxietyPoints() {
+        return 7;
+    }
 }

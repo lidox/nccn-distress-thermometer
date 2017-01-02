@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/procces_percentage_txt"
+        android:id="@+id/date_txt"
         android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,10 +14,10 @@
         android:textSize="@dimen/textAppearanceLabelLarge" />
 
     <TextView
-        android:id="@+id/questionnaire_name_txt"
+        android:id="@+id/anxiety_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/procces_percentage_txt"
+        android:layout_toRightOf="@+id/date_txt"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/textAppearanceLabelLarge" />
 

@@ -6,4 +6,5 @@
     <dimen name="textAppearanceSubLabel">18sp</dimen>
     <dimen name="textAppearanceLabel">25sp</dimen>
     <dimen name="textAppearanceLabelLarge">40sp</dimen>
+    <dimen name="textAppearanceLabelLargeSub">35sp</dimen>
 </resources>

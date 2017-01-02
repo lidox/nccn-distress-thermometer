@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/date_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/textAppearanceLabelLarge" />
+
+    <TextView
+        android:id="@+id/anxiety_points_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date_txt"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/arrow_selector_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/anxiety_points_txt"
+        android:layout_below="@+id/date_txt"
+        android:paddingTop="10dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+    <TextView
+        android:id="@+id/points_depression_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/anxiety_points_txt"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/arrow_selector_img_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_toRightOf="@+id/anxiety_points_txt"
+        android:layout_below="@+id/anxiety_points_txt"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+</RelativeLayout>
