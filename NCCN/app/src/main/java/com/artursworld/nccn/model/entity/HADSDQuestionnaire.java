@@ -126,11 +126,19 @@ public class HADSDQuestionnaire {
         return defaultByte;
     }
 
-    public int getDepressionPoints() {
+    public int getDepressionScore() {
         return 7;
     }
 
-    public int getAnxietyPoints() {
+    public int getAnxietyScore() {
         return 7;
+    }
+
+    public boolean hasDepression(){
+        return (getDepressionScore() >= 11) ? true : false;
+    }
+
+    public boolean hasAnxiety(){
+        return (getAnxietyScore() >= 11) ? true : false;
     }
 }

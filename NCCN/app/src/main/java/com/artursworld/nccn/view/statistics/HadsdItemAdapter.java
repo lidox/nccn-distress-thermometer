@@ -46,10 +46,10 @@ public class HadsdItemAdapter extends ArrayAdapter<HADSDQuestionnaire> {
             date.setText(Strings.getStringByRId(R.string.date) + ": " + list.get(position).getCreationTimeStamp());
 
         if( anxietyPoints != null)
-            anxietyPoints.setText(Strings.getStringByRId(R.string.anxiety) + ": " + list.get(position).getAnxietyPoints() + " " + Strings.getStringByRId(R.string.points));
+            anxietyPoints.setText(Strings.getStringByRId(R.string.anxiety) + ": " + list.get(position).getAnxietyScore() + " " + Strings.getStringByRId(R.string.points));
 
         if( depressionPoints != null)
-             depressionPoints.setText(Strings.getStringByRId(R.string.depression) + ": " + list.get(position).getDepressionPoints()+ " " + Strings.getStringByRId(R.string.points));
+             depressionPoints.setText(Strings.getStringByRId(R.string.depression) + ": " + list.get(position).getDepressionScore()+ " " + Strings.getStringByRId(R.string.points));
 
         return convertView;
     }

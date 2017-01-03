@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
+import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 
@@ -45,6 +46,10 @@ public class HadsdStatisticsFragment extends Fragment {
         super.onResume();
         TextView userNameLabel = (TextView) rootView.findViewById(R.id.user_name_label);
         userNameLabel.setText(Global.getSelectedUser());
+
+        TextView historyLabel = (TextView) rootView.findViewById(R.id.history_label);
+        historyLabel.setText(Strings.getStringByRId(R.string.history)+ ": " +Strings.getStringByRId(R.string.hadsd_questionnaire) );
+
         fillHistoryWithItems();
     }
 
