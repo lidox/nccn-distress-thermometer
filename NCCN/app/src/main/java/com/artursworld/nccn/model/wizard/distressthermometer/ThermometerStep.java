@@ -12,6 +12,7 @@ import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.controller.wizard.WizardNCCN;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
@@ -134,7 +135,8 @@ public class ThermometerStep extends AbstractStep {
 
     @Override
     public void onNext() {
-        System.out.println("onNext");
+        WizardNCCN.updateProgress(questionnaire, currentQuestionNumber);
+        Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber );
     }
 
     @Override

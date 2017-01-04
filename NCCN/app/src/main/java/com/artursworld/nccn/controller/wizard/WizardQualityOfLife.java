@@ -2,6 +2,7 @@ package com.artursworld.nccn.controller.wizard;
 
 
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,7 +11,11 @@ import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
+import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.model.wizard.qualityoflife.QualityOfLifeSpecialStep;
 import com.artursworld.nccn.model.wizard.qualityoflife.QualityOfLifeStep;
@@ -20,6 +25,7 @@ import java.util.List;
 
 public class WizardQualityOfLife extends TextStepper {
 
+    private static final String CLASS_NAME = WizardQualityOfLife.class.getSimpleName();
     public static final String QUESTION_DATA = "WizardQualityOfLife-question-data";
     public static final String QUESTION_NUMBER = "WizardQualityOfLife-QUESTION_NUMBER";
     public static final String SELECTED_USER = "WizardQualityOfLife-SELECTED_USER";
@@ -32,7 +38,7 @@ public class WizardQualityOfLife extends TextStepper {
 
         String userName = Global.getSelectedUser();
         selectedUser = new UserManager().getUserByName(userName);
-        //TODO: check selected questionnaire date
+
         // laod questionnaire into fragments
         putAllQuestionAndAnswersToNewFragments();
 
@@ -100,5 +106,22 @@ public class WizardQualityOfLife extends TextStepper {
     public void onComplete() {
         super.onComplete();
         Log.i(WizardQualityOfLife.class.getSimpleName(), "completed WizardQualityOfLife");
+    }
+
+    public static void updateProgress(final QolQuestionnaire questionnaire, int questionNr){
+        int progressValue = (int) Math.floor(questionNr / 50 * 100);
+        if(questionnaire.getProgressInPercent() < progressValue){
+            Log.i(CLASS_NAME, "new progress value = " + progressValue);
+            questionnaire.setProgressInPercent(progressValue);
+
+            new AsyncTask<Void, Void, Void>(){
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    new QualityOfLifeManager().update(questionnaire);
+                    return null;
+                }
+            }.execute();
+        }
     }
 }

@@ -121,8 +121,8 @@ public class QuestionnaireSelectListFragment extends Fragment {
         int distressProgress = 0;
         int qualityProgress = 0;
 
-        boolean hasToUseDefaultQuestionnaire = Global.hasToUseDefaultQuestionnaire();
-        if (hasToUseDefaultQuestionnaire) {
+        boolean hasToCreateNewQuestionnaire = Global.hasToCreateNewQuestionnaire();
+        if (hasToCreateNewQuestionnaire) {
             Log.i(CLASS_NAME, "Display default questionnaires");
             list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
             list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
@@ -135,8 +135,10 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
                     if (hasToGetProgress) {
                         HADSDQuestionnaire hadsdQuestionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate);
-                        if (hadsdQuestionnaire != null)
+                        if (hadsdQuestionnaire != null){
                             hadsProgress = hadsdQuestionnaire.getProgressInPercent();
+                            Log.i(CLASS_NAME, "Progress loading HADS-D = " +hadsProgress);
+                        }
                     }
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
                 }
@@ -151,8 +153,10 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
                     if (hasToGetProgress) {
                         QolQuestionnaire qolQuestionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
-                        if (qolQuestionnaire != null)
+                        if (qolQuestionnaire != null) {
                             qualityProgress = qolQuestionnaire.getProgressInPercent();
+                            Log.i(CLASS_NAME, "Progress loading QualityOfLife = " + qualityProgress);
+                        }
                     }
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
                 }

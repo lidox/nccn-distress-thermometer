@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.controller.wizard.WizardNCCN;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
@@ -153,7 +154,8 @@ public class FamilyProblemsStep extends AbstractStep {
 
     @Override
     public void onNext() {
-        Log.i(CLASS_NAME, "onNext");
+        WizardNCCN.updateProgress(questionnaire, currentQuestionNumber);
+        Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber );
     }
 
     @Override

@@ -18,6 +18,7 @@ import java.util.List;
 
 public class QualityOfLifeManager extends EntityDbManager {
 
+    private String CLASS_NAME = QualityOfLifeManager.class.getSimpleName();
     public QualityOfLifeManager() {
         super(App.getAppContext());
     }
@@ -37,7 +38,7 @@ public class QualityOfLifeManager extends EntityDbManager {
      */
     public void insertQuestionnaire(QolQuestionnaire questionnaire) {
         if (questionnaire == null) {
-            Log.e(QualityOfLifeManager.class.getSimpleName(),"the questionnaire to insert equals null!");
+            Log.e(CLASS_NAME,"the questionnaire to insert equals null!");
             return;
         }
 
@@ -45,9 +46,9 @@ public class QualityOfLifeManager extends EntityDbManager {
 
         try {
             database.insertOrThrow(DBContracts.QualityOfLifeTable.TABLE_NAME, null, values);
-            Log.i(QualityOfLifeManager.class.getSimpleName(),"New questionnaire added successfully:" + questionnaire.toString());
+            Log.i(CLASS_NAME,"New questionnaire added successfully:" + questionnaire.toString());
         } catch (Exception e) {
-            Log.e(QualityOfLifeManager.class.getSimpleName(),"Could not insert new questionnaire into db: " + questionnaire.toString() + "! " + e.getLocalizedMessage());
+            Log.e(CLASS_NAME,"Could not insert new questionnaire into db: " + questionnaire.toString() + "! " + e.getLocalizedMessage());
         }
     }
 
@@ -155,6 +156,24 @@ public class QualityOfLifeManager extends EntityDbManager {
             Log.e(QualityOfLifeManager.class.getSimpleName(),"Exception! Could not update the questionnaire(" + questionnaire + ") " + " " + e.getLocalizedMessage());
         }
     }
+
+    /**
+     String WHERE_CLAUSE = DBContracts.DistressThermometerTable.CREATION_DATE_PK + " =?";
+     String[] WHERE_ARGS = new String[] {EntityDbManager.dateFormat.format(questionnaire.getCreationDate_PK())};
+
+     if (questionnaire.getCreationDate_PK() == null) {
+     Log.e(CLASS_NAME,"Cannot update questionnaire: " + questionnaire);
+     return;
+     }
+
+     try {
+     ContentValues contentValues = getQuestionnaireContentValues(questionnaire);
+     database.update(DBContracts.DistressThermometerTable.TABLE_NAME, contentValues, WHERE_CLAUSE, WHERE_ARGS);
+     Log.i(CLASS_NAME,questionnaire + " has been updated");
+     } catch (Exception e) {
+     Log.e(CLASS_NAME,"Exception! Could not update the questionnaire(" + questionnaire + ") " + " " + e.getLocalizedMessage());
+     }
+     */
 
     /**
      * Get questionnaire by username and creation date

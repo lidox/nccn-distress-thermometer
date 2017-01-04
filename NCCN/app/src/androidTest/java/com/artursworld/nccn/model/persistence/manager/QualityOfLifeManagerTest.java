@@ -205,5 +205,27 @@ public class QualityOfLifeManagerTest extends InstrumentationTestCase {
         assertEquals(bits, bitsAgain);
     }
 
+    @Test
+    public void testProgress(){
+        // create user
+        User medUser = new User("International Progress");
+        userDB.insertUser(medUser);
+
+        // create questionnaire with question 1 = 1000
+        QolQuestionnaire q = new QolQuestionnaire(medUser.getName());
+        q.setProgressInPercent(77);
+        db.insertQuestionnaire(q);
+
+        // check if created
+        QolQuestionnaire result = db.getQolQuestionnaireByUserName(medUser.getName());
+        assertEquals(77, result.getProgressInPercent());
+
+        q.setProgressInPercent(88);
+        db.update(q);
+        result = db.getQolQuestionnaireByUserName(medUser.getName());
+        assertEquals(88, result.getProgressInPercent());
+
+    }
+
 
 }

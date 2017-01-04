@@ -1,5 +1,6 @@
 package com.artursworld.nccn.model.wizard.hadsd;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -41,16 +42,6 @@ public class AbstractHadsdStep extends AbstractStep {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = getView(inflater, container);
-        /*
-        new AsyncTask<Void, Void, Void>(){
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                initBundledData();
-                return null;
-            }
-        }.execute();
-        */
         initBundledData();
         return v;
     }
@@ -173,6 +164,24 @@ public class AbstractHadsdStep extends AbstractStep {
     @Override
     public void onNext() {
         System.out.println("onNext");
+        increaseProgressValue();
+    }
+
+    private void increaseProgressValue() {
+        double questionNr = currentQuestionNumber + 1;
+        int progressValue = (int) Math.floor(questionNr / questionnaire.getQuestionCount() * 100);
+        if(questionnaire.getProgressInPercent() < progressValue){
+            Log.i(CLASS_NAME, "qNr. "+ questionNr + " and " + questionnaire.getQuestionCount() + " = " + progressValue);
+            questionnaire.setProgressInPercent(progressValue);
+            new AsyncTask<Void, Void, Void>(){
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    new HADSDQuestionnaireManager().update(questionnaire);
+                    return null;
+                }
+            }.execute();
+        }
     }
 
     @Override

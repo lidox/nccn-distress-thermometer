@@ -6,13 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.controller.wizard.WizardNCCN;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
@@ -23,6 +23,8 @@ import com.github.fcannizzaro.materialstepper.AbstractStep;
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 public class QualityOfLifeSpecialStep extends AbstractStep {
+
+    private static String CLASS_NAME = QualityOfLifeSpecialStep.class.getSimpleName();
 
     // View
     private TextView questionLabel;
@@ -65,7 +67,7 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
 
         // load current answers again because maybe there are already updates
         QualityOfLifeManager m = new QualityOfLifeManager();
-        questionnaire = new QualityOfLifeManager().getQolQuestionnaireByUserName(selectedUser.getName());
+        questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
 
         // display oldBits and new byte
         String oldBits = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
@@ -90,7 +92,7 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
 
         currentQuestionNumber = bundle.getInt(WizardQualityOfLife.QUESTION_NUMBER);
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
-        questionnaire = new QualityOfLifeManager().getQolQuestionnaireByUserName(selectedUser.getName());
+        questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
         addAnswerChangeListener();
     }
 
@@ -149,7 +151,8 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
 
     @Override
     public void onNext() {
-        System.out.println("onNext");
+        WizardQualityOfLife.updateProgress(questionnaire, currentQuestionNumber);
+        Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber );
     }
 
     @Override

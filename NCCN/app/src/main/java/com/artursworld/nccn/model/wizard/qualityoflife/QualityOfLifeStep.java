@@ -22,6 +22,8 @@ import com.github.fcannizzaro.materialstepper.AbstractStep;
 
 public class QualityOfLifeStep extends AbstractStep {
 
+    private static String CLASS_NAME = QualityOfLifeStep.class.getSimpleName();
+
     // View
     private TextView questionLabel;
     private RadioButton answerA_btn;
@@ -149,7 +151,8 @@ public class QualityOfLifeStep extends AbstractStep {
 
     @Override
     public void onNext() {
-        System.out.println("onNext");
+        WizardQualityOfLife.updateProgress(questionnaire, currentQuestionNumber);
+        Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber );
     }
 
     @Override

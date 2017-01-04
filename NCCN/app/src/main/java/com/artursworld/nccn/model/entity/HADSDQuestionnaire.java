@@ -41,7 +41,6 @@ public class HADSDQuestionnaire {
         this.lastQuestionEditedNr = lastQuestionEditedNr;
     }
 
-
     public HADSDQuestionnaire(String userNameId){
         this.userNameId_FK = userNameId;
         this.creationDate_PK = new Date();
@@ -158,5 +157,10 @@ public class HADSDQuestionnaire {
 
     public boolean hasAnxiety(){
         return (getAnxietyScore() >= 11) ? true : false;
+    }
+
+
+    public int getQuestionCount() {
+        return questionCountOfHADSDQuestionnaire;
     }
 }

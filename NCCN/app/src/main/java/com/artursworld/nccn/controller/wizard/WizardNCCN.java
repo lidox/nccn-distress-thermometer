@@ -1,11 +1,15 @@
 package com.artursworld.nccn.controller.wizard;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.model.wizard.distressthermometer.BodyProblemsStep;
 import com.artursworld.nccn.model.wizard.distressthermometer.EmotionalProblemsStep;
@@ -23,6 +27,7 @@ import com.github.fcannizzaro.materialstepper.style.TextStepper;
  */
 public class WizardNCCN extends TextStepper {
 
+    private static String CLASS_NAME = WizardHADSD.class.getSimpleName();
     private int currentWizardPosition = 1;
 
     @Override
@@ -47,6 +52,22 @@ public class WizardNCCN extends TextStepper {
         //TODO: check selected questionnaire date
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    public static void updateProgress(final DistressThermometerQuestionnaire questionnaire, int questionNr){
+        int progressValue = (int) Math.floor(questionNr / 6 * 100);
+        if(questionnaire.getProgressInPercent() < progressValue){
+            Log.i(CLASS_NAME, "new progress value = " + progressValue);
+            questionnaire.setProgressInPercent(progressValue);
+            new AsyncTask<Void, Void, Void>(){
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    new DistressThermometerQuestionnaireManager().update(questionnaire);
+                    return null;
+                }
+            }.execute();
+        }
     }
 
 
