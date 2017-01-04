@@ -1,13 +1,53 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="com.artursworld.nccn.view.statistics.DistressThermometerStatisticsFragment">
+
+
+<RelativeLayout
+    android:id="@+id/edit_text_holder"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.artursworld.nccn.view.statistics.DistressThermometerStatisticsFragment">
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/colorPrimary">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/nccn_distress_thermometer" />
+        android:id="@+id/user_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/user_name"
+        android:textSize="@dimen/textAppearanceLabelLarge" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/user_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/user_name_label"
+        android:paddingTop="10dp"
+        android:paddingRight="5dp"
+        android:src="@drawable/ic_face_black_24dp" />
+
+    <TextView
+        android:id="@+id/history_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_icon"
+        android:paddingTop="30dp"
+        android:textColor="@color/colorWhite"
+        android:text="@string/history"
+        android:textSize="@dimen/textAppearanceLabelLarge" />
+
+
+</RelativeLayout>
+
+<ListView
+    android:id="@+id/distress_questionnaire_list"
+    android:layout_width="match_parent"
+    android:padding="20dp"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/edit_text_holder" />
+
+</RelativeLayout>
