@@ -7,12 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Dates;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -41,15 +45,35 @@ public class HadsdItemAdapter extends ArrayAdapter<HADSDQuestionnaire> {
         TextView date = (TextView) convertView.findViewById(R.id.date_txt);
         TextView anxietyPoints = (TextView) convertView.findViewById(R.id.anxiety_points_txt);
         TextView depressionPoints = (TextView) convertView.findViewById(R.id.points_depression_txt);
+        ImageView statusAnxietyImage = (ImageView) convertView.findViewById(R.id.status_anxiety_img);
+        ImageView statusDepressionImage = (ImageView) convertView.findViewById(R.id.status_depression_img);
 
-        if(date != null)
-            date.setText(Strings.getStringByRId(R.string.date) + ": " + list.get(position).getCreationTimeStamp());
+        HADSDQuestionnaire questionnaire = list.get(position);
+        if(date != null) {
+            String creationDate = questionnaire.getCreationTimeStamp();
+            creationDate = Dates.getGermanDateByDateString(creationDate);
+            date.setText(Strings.getStringByRId(R.string.date) + ": " + creationDate + " " +Strings.getStringByRId(R.string.oclock));
+        }
 
         if( anxietyPoints != null)
-            anxietyPoints.setText(Strings.getStringByRId(R.string.anxiety) + ": " + list.get(position).getAnxietyScore() + " " + Strings.getStringByRId(R.string.points));
+            anxietyPoints.setText(Strings.getStringByRId(R.string.anxiety) + ": " + questionnaire.getAnxietyScore() + " " + Strings.getStringByRId(R.string.points));
 
         if( depressionPoints != null)
-             depressionPoints.setText(Strings.getStringByRId(R.string.depression) + ": " + list.get(position).getDepressionScore()+ " " + Strings.getStringByRId(R.string.points));
+             depressionPoints.setText(Strings.getStringByRId(R.string.depression) + ": " + questionnaire.getDepressionScore()+ " " + Strings.getStringByRId(R.string.points));
+
+        if(statusAnxietyImage != null) {
+            if (questionnaire.hasAnxiety())
+                statusAnxietyImage.setImageResource(R.drawable.ic_error_black_24dp);
+            else
+                statusAnxietyImage.setImageResource(R.drawable.ic_check_circle_black_24dp);
+        }
+
+        if(statusDepressionImage != null) {
+            if (questionnaire.hasDepression())
+                statusDepressionImage.setImageResource(R.drawable.ic_error_black_24dp);
+            else
+                statusDepressionImage.setImageResource(R.drawable.ic_check_circle_black_24dp);
+        }
 
         return convertView;
     }

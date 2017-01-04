@@ -22,7 +22,7 @@
         android:textSize="@dimen/textAppearanceLabelLarge" />
 
     <ImageView
-        android:id="@+id/arrow_selector_img"
+        android:id="@+id/status_anxiety_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

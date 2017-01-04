@@ -143,7 +143,8 @@ public class HADSDQuestionnaire {
         for(int i = startIndex; i< endIndex; i++){
             StringBuilder answerBits = new StringBuilder(Bits.getStringByByte(getAnswerByNr(i)).substring(4));
 
-            if(i == 0 || i==1 || i==2 || i==5 || i==6 || i==9 || i==10 || i==11)
+            boolean hasNotToReverse = i == 0 || i == 1 || i == 2 || i == 5 || i == 6 || i == 9 || i == 10 || i == 11;
+            if(!hasNotToReverse)
                 answerBits = answerBits.reverse();
 
             score += answerBits.indexOf("1");

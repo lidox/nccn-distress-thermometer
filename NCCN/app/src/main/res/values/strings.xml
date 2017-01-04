@@ -149,4 +149,5 @@
     <string name="depression">Depression</string>
     <string name="points">Punkte</string>
     <string name="date">Datum</string>
+    <string name="oclock">Uhr</string>
 </resources>

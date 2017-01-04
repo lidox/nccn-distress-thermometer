@@ -12,47 +12,49 @@
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
 
+    <ImageView
+        android:id="@+id/status_anxiety_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date_txt"
+        android:paddingTop="8dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
     <TextView
         android:id="@+id/anxiety_points_txt"
         android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/status_anxiety_img"
         android:layout_height="wrap_content"
         android:layout_below="@+id/date_txt"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
 
     <ImageView
-        android:id="@+id/arrow_selector_img"
+        android:id="@+id/status_depression_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/anxiety_points_txt"
-        android:layout_below="@+id/date_txt"
-        android:paddingTop="15dp"
+        android:paddingTop="8dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/anxiety_points_txt"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+        android:src="@drawable/ic_check_circle_black_24dp" />
 
     <TextView
         android:id="@+id/points_depression_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/status_depression_img"
         android:layout_below="@+id/anxiety_points_txt"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
-
-    <ImageView
-        android:id="@+id/arrow_selector_img_two"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:layout_toRightOf="@+id/points_depression_txt"
-        android:layout_below="@+id/anxiety_points_txt"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_margin="5dp"
-        android:layout_below="@+id/arrow_selector_img_two"
+        android:layout_below="@+id/status_depression_img"
         android:background="#c0c0c0"/>
 
 </RelativeLayout>
