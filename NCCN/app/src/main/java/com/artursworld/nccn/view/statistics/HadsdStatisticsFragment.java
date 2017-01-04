@@ -67,7 +67,7 @@ public class HadsdStatisticsFragment extends Fragment {
                 Log.i(CLASS_NAME, "finished loading data: " + list);
                 questionnairesList = list;
                 adapter = new HadsdItemAdapter(getActivity(), questionnairesList);
-                ListView questionnaireListView = (ListView) rootView.findViewById(R.id.distress_questionnaire_list);
+                ListView questionnaireListView = (ListView) rootView.findViewById(R.id.quality_of_life_questionnaire_list);
                 questionnaireListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }

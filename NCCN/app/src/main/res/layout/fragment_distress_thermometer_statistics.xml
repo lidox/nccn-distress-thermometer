@@ -1,53 +1,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="com.artursworld.nccn.view.statistics.DistressThermometerStatisticsFragment">
-
-
-<RelativeLayout
-    android:id="@+id/edit_text_holder"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent"
+    tools:context="com.artursworld.nccn.view.statistics.DistressThermometerStatisticsFragment">
 
-    <TextView
-        android:id="@+id/user_name_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/user_name"
-        android:textSize="@dimen/textAppearanceLabelLarge" />
-
-    <ImageView
-        android:id="@+id/user_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/user_name_label"
-        android:paddingTop="10dp"
-        android:paddingRight="5dp"
-        android:src="@drawable/ic_face_black_24dp" />
-
-    <TextView
-        android:id="@+id/history_label"
+    <RelativeLayout
+        android:id="@+id/edit_text_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/user_icon"
-        android:paddingTop="30dp"
-        android:textColor="@color/colorWhite"
-        android:text="@string/history"
-        android:textSize="@dimen/textAppearanceLabelLarge" />
+        android:background="@color/colorPrimary"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:id="@+id/user_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/user_name"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/user_name_label"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/ic_face_black_24dp" />
+
+        <TextView
+            android:id="@+id/history_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_icon"
+            android:paddingTop="30dp"
+            android:text="@string/history"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
 
-<ListView
-    android:id="@+id/distress_questionnaire_list"
-    android:layout_width="match_parent"
-    android:padding="20dp"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/edit_text_holder" />
+    <ListView
+        android:id="@+id/quality_of_life_questionnaire_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_holder"
+        android:padding="20dp" />
 
 </RelativeLayout>

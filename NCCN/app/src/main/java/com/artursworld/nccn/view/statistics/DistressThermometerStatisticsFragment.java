@@ -15,9 +15,7 @@ import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
-import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
-import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ import java.util.List;
 public class DistressThermometerStatisticsFragment extends Fragment {
 
 
-    private static final String CLASS_NAME = HadsdStatisticsFragment.class.getSimpleName();
+    private static final String CLASS_NAME = DistressThermometerStatisticsFragment.class.getSimpleName();
     private View rootView = null;
 
     public DistressThermometerStatisticsFragment() {
@@ -66,7 +64,7 @@ public class DistressThermometerStatisticsFragment extends Fragment {
                 super.onPostExecute(list);
                 Log.i(CLASS_NAME, "finished loading data: " + list);
                 DistressThermometerItemAdapter adapter = new DistressThermometerItemAdapter(getActivity(), list);
-                ListView questionnaireListView = (ListView) rootView.findViewById(R.id.distress_questionnaire_list);
+                ListView questionnaireListView = (ListView) rootView.findViewById(R.id.quality_of_life_questionnaire_list);
                 questionnaireListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
