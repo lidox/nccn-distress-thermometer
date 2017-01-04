@@ -127,11 +127,28 @@ public class HADSDQuestionnaire {
     }
 
     public int getDepressionScore() {
-        return 7;
+        int startIndex = 7;
+        int endIndex = 14;
+        return getScoreByIndexRange(startIndex, endIndex);
     }
 
     public int getAnxietyScore() {
-        return 7;
+        int startIndex = 0;
+        int endIndex = 7;
+        return getScoreByIndexRange(startIndex, endIndex);
+    }
+
+    private int getScoreByIndexRange(int startIndex, int endIndex) {
+        int score = 0;
+        for(int i = startIndex; i< endIndex; i++){
+            StringBuilder answerBits = new StringBuilder(Bits.getStringByByte(getAnswerByNr(i)).substring(4));
+
+            if(i == 0 || i==1 || i==2 || i==5 || i==6 || i==9 || i==10 || i==11)
+                answerBits = answerBits.reverse();
+
+            score += answerBits.indexOf("1");
+        }
+        return score;
     }
 
     public boolean hasDepression(){
