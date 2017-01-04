@@ -160,6 +160,8 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().findItem(R.id.nav_user_start_configuration).setChecked(false);
+        navigationView.getMenu().findItem(R.id.nav_user_statistics).setChecked(false);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -191,26 +193,6 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                 Global.setSelectedUserName(defaultUserName);
                 Global.setHasToCreateNewUser(false);
             }
-            /*
-            new AsyncTask<Void,Void,Void>(){
-
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    try {
-                        Thread.sleep(2500);
-                        String defaultUserName = Strings.getStringByRId(R.string.user_name);
-                        selectedUser = new UserManager().getUserByName(defaultUserName);
-                        if(selectedUser != null){
-                            Global.setSelectedUserName(defaultUserName);
-                            Global.setHasToCreateNewUser(false);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-            }.execute();
-        */
         }
 
         return userName;

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="17dp"
     android:orientation="vertical">
 
     <TextView
@@ -9,7 +10,7 @@
         android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorGrey"
         android:layout_marginRight="70dp"
         android:textSize="@dimen/textAppearanceLabelLarge" />
 
@@ -18,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/date_txt"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLarge" />
 
     <ImageView

@@ -1,21 +1,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context="com.artursworld.nccn.view.questionnaire.QuestionnaireSelectListFragment">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:layout_height="wrap_content">
+        android:id="@+id/header_text_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="13dp">
 
         <TextView
             android:id="@+id/progress_information_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/textAppearanceLabel"
-            android:text="@string/you_already_have" />
+            android:text="@string/you_already_have"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/textAppearanceLabelLargeSub" />
 
         <TextView
             android:id="@+id/percentage_text"
@@ -23,23 +27,27 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/progress_information_text"
-            android:textSize="@dimen/textAppearanceLabel"
-            android:text="0" />
+            android:text="0"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/textAppearanceLabelLargeSub" />
 
         <TextView
             android:id="@+id/question_answered_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/percentage_text"
-            android:textSize="@dimen/textAppearanceLabel"
-            android:text="@string/x_questions_answered" />
-
-        <ListView
-            android:id="@+id/questionnaire_list_view"
-            android:layout_width="wrap_content"
-            android:layout_below="@+id/question_answered_text"
-            android:layout_height="wrap_content" />
+            android:text="@string/x_questions_answered"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/textAppearanceLabelLargeSub" />
 
     </RelativeLayout>
+
+    <ListView
+        android:id="@+id/questionnaire_list_view"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_text_layout" />
 
 </RelativeLayout>

@@ -13,9 +13,20 @@
         android:paddingRight="20dp">
 
         <TextView
+            android:id="@+id/history_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="30dp"
+            android:text="@string/history"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <TextView
             android:id="@+id/user_name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/history_label"
             android:layout_centerHorizontal="true"
             android:text="@string/user_name"
             android:textSize="@dimen/textAppearanceLabelLarge" />
@@ -24,23 +35,15 @@
             android:id="@+id/user_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/history_label"
             android:layout_toLeftOf="@+id/user_name_label"
+            android:paddingBottom="30dp"
             android:paddingRight="5dp"
             android:paddingTop="10dp"
             android:src="@drawable/ic_face_black_24dp" />
 
-        <TextView
-            android:id="@+id/history_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/user_icon"
-            android:paddingTop="30dp"
-            android:text="@string/history"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textAppearanceLabelLarge" />
-
-
     </RelativeLayout>
+
 
     <ListView
         android:id="@+id/quality_of_life_questionnaire_list"
