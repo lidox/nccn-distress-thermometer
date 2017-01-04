@@ -18,4 +18,16 @@ public class Dates {
         }
         return creationDate;
     }
+
+    public static String getGermanDateByDate(Date date) {
+        String result = null;
+        try {
+            SimpleDateFormat germanDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            result = germanDateFormat.format(date);
+        }
+        catch (Exception e){
+            Log.e(Dates.class.getSimpleName(), "could not parse date to german representation");
+        }
+        return result;
+    }
 }

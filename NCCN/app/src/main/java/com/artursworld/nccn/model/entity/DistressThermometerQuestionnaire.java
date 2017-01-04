@@ -79,7 +79,7 @@ public class DistressThermometerQuestionnaire {
     }
 
     /**
-     * Sets new bits to the question by question number (first nr. 1 and last 50)
+     * Sets new bits to the question by question number (first nr. 1)
      * @param questionNr the question number
      * @param newBits the new bits to set
      */
@@ -222,5 +222,16 @@ public class DistressThermometerQuestionnaire {
 
     public void setAnswersToQuestionsBytes(byte[] answersToQuestionsBytes) {
         this.answersToQuestionsBytes = answersToQuestionsBytes;
+    }
+
+    public int getDistressScore() {
+        StringBuilder bits = new StringBuilder(getBitsByQuestionNr(1));
+        int score = bits.reverse().indexOf("1");
+        return score;
+    }
+
+    public boolean hasDistress() {
+        boolean scoreValueTooHigh = getDistressScore() >= 6;
+        return scoreValueTooHigh ? true : false;
     }
 }

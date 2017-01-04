@@ -59,6 +59,7 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
                 if(hasToOpenStatistics){
                     Log.i(CLASS_NAME, "open statistics");
                     Intent intent = new Intent(activity.getApplicationContext(), StatisticsTabsActivity.class);
+                    activity.finish();
                     activity.startActivity(intent);
                 }
                 else {

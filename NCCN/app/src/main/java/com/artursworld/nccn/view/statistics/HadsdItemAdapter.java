@@ -15,8 +15,6 @@ import com.artursworld.nccn.controller.util.Dates;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
@@ -43,9 +41,9 @@ public class HadsdItemAdapter extends ArrayAdapter<HADSDQuestionnaire> {
         }
 
         TextView date = (TextView) convertView.findViewById(R.id.date_txt);
-        TextView anxietyPoints = (TextView) convertView.findViewById(R.id.anxiety_points_txt);
+        TextView anxietyPoints = (TextView) convertView.findViewById(R.id.score_txt);
         TextView depressionPoints = (TextView) convertView.findViewById(R.id.points_depression_txt);
-        ImageView statusAnxietyImage = (ImageView) convertView.findViewById(R.id.status_anxiety_img);
+        ImageView statusAnxietyImage = (ImageView) convertView.findViewById(R.id.status_img);
         ImageView statusDepressionImage = (ImageView) convertView.findViewById(R.id.status_depression_img);
 
         HADSDQuestionnaire questionnaire = list.get(position);

@@ -15,8 +15,8 @@ import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Dates;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
-import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 
+import java.util.Date;
 import java.util.List;
 
 public class DistressThermometerItemAdapter extends ArrayAdapter<DistressThermometerQuestionnaire> {
@@ -42,40 +42,27 @@ public class DistressThermometerItemAdapter extends ArrayAdapter<DistressThermom
         }
 
         TextView date = (TextView) convertView.findViewById(R.id.date_txt);
-        TextView anxietyPoints = (TextView) convertView.findViewById(R.id.anxiety_points_txt);
-        TextView depressionPoints = (TextView) convertView.findViewById(R.id.points_depression_txt);
-        ImageView statusAnxietyImage = (ImageView) convertView.findViewById(R.id.status_anxiety_img);
-        ImageView statusDepressionImage = (ImageView) convertView.findViewById(R.id.status_depression_img);
+        TextView anxietyPoints = (TextView) convertView.findViewById(R.id.score_txt);
+        ImageView statusAnxietyImage = (ImageView) convertView.findViewById(R.id.status_img);
 
         DistressThermometerQuestionnaire questionnaire = list.get(position);
 
-        /*
+
         if(date != null) {
-            String creationDate = questionnaire.getCreationTimeStamp();
-            creationDate = Dates.getGermanDateByDateString(creationDate);
+            Date cDate = questionnaire.getCreationDate_PK();
+            String creationDate = Dates.getGermanDateByDate(cDate);
             date.setText(Strings.getStringByRId(R.string.date) + ": " + creationDate + " " +Strings.getStringByRId(R.string.oclock));
         }
 
         if( anxietyPoints != null)
-            anxietyPoints.setText(Strings.getStringByRId(R.string.anxiety) + ": " + questionnaire.getAnxietyScore() + " " + Strings.getStringByRId(R.string.points));
-
-        if( depressionPoints != null)
-            depressionPoints.setText(Strings.getStringByRId(R.string.depression) + ": " + questionnaire.getDepressionScore()+ " " + Strings.getStringByRId(R.string.points));
+            anxietyPoints.setText(questionnaire.getDistressScore() + " " + Strings.getStringByRId(R.string.points));
 
         if(statusAnxietyImage != null) {
-            if (questionnaire.hasAnxiety())
+            if (questionnaire.hasDistress())
                 statusAnxietyImage.setImageResource(R.drawable.ic_error_black_24dp);
             else
                 statusAnxietyImage.setImageResource(R.drawable.ic_check_circle_black_24dp);
         }
-
-        if(statusDepressionImage != null) {
-            if (questionnaire.hasDepression())
-                statusDepressionImage.setImageResource(R.drawable.ic_error_black_24dp);
-            else
-                statusDepressionImage.setImageResource(R.drawable.ic_check_circle_black_24dp);
-        }
-        */
 
         return convertView;
     }
