@@ -150,4 +150,20 @@
     <string name="points">Punkte</string>
     <string name="date">Datum</string>
     <string name="oclock">Uhr</string>
+    <string name="global_health_status">Gesundheitszustand</string>
+    <string name="functional_scales">Funktionale Skala</string>
+    <string name="physical_functioning">Körperliche Funktionsfähigkeit</string>
+    <string name="role_functioning">Rollenfunktion</string>
+    <string name="symptom_scales">Symptom Skalen</string>
+    <string name="fatigue">Müdigkeit</string>
+    <string name="nausea_and_vomiting">Übelkeit und Erbrechen</string>
+    <string name="pain">Schmerz</string>
+    <string name="dyspnoea">Atemnot</string>
+    <string name="insomnia">Schlafstörung</string>
+    <string name="appetite_loss">Appetitlosigkeit</string>
+    <string name="diarrhoea">Durchfall</string>
+    <string name="financial_difficulties">Geldschwierigkeiten</string>
+    <string name="emotional_functioning">Emotionale Fähigkeiten</string>
+    <string name="cognitive_functioning">Kognitive Funktion</string>
+    <string name="social_functioning">Soziale Fähigkeiten</string>
 </resources>

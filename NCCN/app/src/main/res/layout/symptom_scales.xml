@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/symptom_scales_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/symptom_scales"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/fatigue_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/symptom_scales_heading"
+        android:text="@string/fatigue"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/fatigue_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/symptom_scales_heading"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/fatigue_txt"
+        android:text="0"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/fatigue_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/symptom_scales_heading"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/fatigue_score"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
+    <View
+        android:id="@+id/separator1"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/fatigue_status_img"
+        android:layout_margin="5dp"
+        android:background="#c0c0c0" />
+
+    <!-- nausea and vomiting -->
+    <TextView
+        android:id="@+id/nausea_and_vomiting_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator1"
+        android:text="@string/nausea_and_vomiting"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/nausea_and_vomiting_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator1"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/nausea_and_vomiting_txt"
+        android:text="0"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/nausea_and_vomiting_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator1"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/nausea_and_vomiting_score"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/nausea_and_vomiting_status_img"
+        android:layout_margin="5dp"
+        android:background="#c0c0c0" />
+
+    <!-- pain -->
+    <TextView
+        android:id="@+id/pain_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator2"
+        android:text="@string/pain"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/pain_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator2"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/pain_txt"
+        android:text="0"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/pain_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator2"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/pain_score"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
+    <View
+        android:id="@+id/separator3"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/pain_status_img"
+        android:layout_margin="5dp"
+        android:background="#c0c0c0" />
+
+    <!-- dyspnoea atemnot -->
+    <TextView
+        android:id="@+id/dyspnoea_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator3"
+        android:text="@string/dyspnoea"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/dyspnoea_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator3"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/dyspnoea_txt"
+        android:text="0"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/dyspnoea_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator3"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/dyspnoea_score"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
+    <View
+        android:id="@+id/separator4"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/dyspnoea_status_img"
+        android:layout_margin="5dp"
+        android:background="#c0c0c0" />
+
+    <!-- insomnia schlafstörung -->
+    <TextView
+        android:id="@+id/insomnia_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator4"
+        android:text="@string/insomnia"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/insomnia_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator4"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/insomnia_txt"
+        android:text="0"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/insomnia_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator4"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/insomnia_score"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
+    <View
+        android:id="@+id/separator5"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/insomnia_status_img"
+        android:layout_margin="5dp"
+        android:background="#c0c0c0" />
+
+    <!-- appetite_loss Appetitlosigkeit -->
+    <TextView
+        android:id="@+id/appetite_loss_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator5"
+        android:text="@string/appetite_loss"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/appetite_loss_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator5"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/appetite_loss_txt"
+        android:text="0"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/appetite_loss_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator5"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/appetite_loss_score"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
+    <View
+        android:id="@+id/separator6"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/appetite_loss_status_img"
+        android:layout_margin="5dp"
+        android:background="#c0c0c0" />
+
+    <!-- constipation Verstopfung-->
+    <TextView
+        android:id="@+id/constipation_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator6"
+        android:text="@string/constipation"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/constipation_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator6"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/constipation_txt"
+        android:text="0"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/constipation_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator6"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/constipation_score"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
+    <View
+        android:id="@+id/separator7"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/constipation_status_img"
+        android:layout_margin="5dp"
+        android:background="#c0c0c0" />
+
+    <!-- diarrhoea  -->
+    <TextView
+        android:id="@+id/diarrhoea_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator7"
+        android:text="@string/diarrhoea"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/diarrhoea_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator7"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/diarrhoea_txt"
+        android:text="0"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/diarrhoea_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator7"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/diarrhoea_score"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
+    <View
+        android:id="@+id/separator8"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/diarrhoea_status_img"
+        android:layout_margin="5dp"
+        android:background="#c0c0c0" />
+
+    <!-- financial_difficulties  Geldschwierigkeiten -->
+    <TextView
+        android:id="@+id/financial_difficulties_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator8"
+        android:text="@string/financial_difficulties"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <TextView
+        android:id="@+id/financial_difficulties_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator8"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/financial_difficulties_txt"
+        android:text="0"
+        android:textColor="@color/colorGrey"
+        android:textSize="@dimen/textAppearanceLabelLargeSub" />
+
+    <ImageView
+        android:id="@+id/financial_difficulties_status_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator8"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/financial_difficulties_score"
+        android:src="@drawable/ic_check_circle_black_24dp" />
+
+    <View
+        android:id="@+id/separator9"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/financial_difficulties_status_img"
+        android:layout_margin="5dp"
+        android:background="#c0c0c0" />
+
+</RelativeLayout>
