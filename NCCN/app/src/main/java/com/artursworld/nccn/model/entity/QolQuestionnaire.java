@@ -189,9 +189,22 @@ public class QolQuestionnaire {
         this.answersToQuestionsBytes = answersToQuestionsBytes;
     }
 
-    //TODO:
-    public int getGlobalHealthScore() {
-        return -1;
+    //TODO: not implemented yet
+    public double getGlobalHealthScore() {
+        int b = getScoreByBits(getBitsByQuestionNr(29).substring(0,7));
+        int b2 = getScoreByBits(getBitsByQuestionNr(30).substring(0,7));
+        return getSymptomScore(6, 8);
+    }
+
+    private int getScoreByBits(String bits ) {
+        int score = 0;
+        StringBuilder answerBits = new StringBuilder(bits);
+            // boolean hasNotToReverse = i == 0 || i == 1 || i == 2 || i == 5 || i == 6 || i == 9 || i == 10 || i == 11;
+            // if(!hasNotToReverse)
+        answerBits = answerBits.reverse();
+        score = answerBits.indexOf("1");
+
+        return score;
     }
 
     public double getPhysicalFunctioningScore() {
@@ -216,6 +229,7 @@ public class QolQuestionnaire {
 
 
     public double getFatigueScore() {
+
         return -1;
     }
 
@@ -249,5 +263,25 @@ public class QolQuestionnaire {
 
     public double getPainScore() {
         return -1;
+    }
+
+    private double getMiddleScore(double rawScore, double range){
+        return (rawScore - 1) / range;
+    }
+
+    private double getSymptomScore(int range, double... rawValues){
+        return getMiddleScore(getRawScore(rawValues), range) * 100;
+    }
+
+    private double getFunctionalScore(int range, double... rawValues){
+        return (1 - getMiddleScore(getRawScore(rawValues), range)) * 100;
+    }
+
+    public double getRawScore(double... rawValues) {
+        double sum = 0;
+        for (double value : rawValues) {
+            sum += value;
+        }
+        return sum / rawValues.length;
     }
 }
