@@ -19,6 +19,8 @@ import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 public class HadsdStatisticsFragment extends Fragment {
 
     private static final String CLASS_NAME = HadsdStatisticsFragment.class.getSimpleName();

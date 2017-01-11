@@ -25,7 +25,6 @@ public class QualityOfLifeItemAdapter extends ArrayAdapter<QolQuestionnaire> {
     private List<QolQuestionnaire> list = null;
     private Activity activity = null;
 
-
     public QualityOfLifeItemAdapter(Activity activity, List<QolQuestionnaire> list) {
         super(activity, R.layout.adapter_quality_of_life_questionnaire_item, list);
         Log.i(CLASS_NAME, "Adapter loaded by list: " +list.toString());
@@ -44,9 +43,22 @@ public class QualityOfLifeItemAdapter extends ArrayAdapter<QolQuestionnaire> {
         //TODO: connect UI
 
         TextView date = (TextView) convertView.findViewById(R.id.date_txt);
+        TextView globalHealthScoreText = (TextView) convertView.findViewById(R.id.global_health_status_score);
+        TextView physical_functioning_scoreText = (TextView) convertView.findViewById(R.id.physical_functioning_score);
+        TextView role_functioning_scoreText = (TextView) convertView.findViewById(R.id.role_functioning_score);
+        TextView emotional_functioning_scoreText = (TextView) convertView.findViewById(R.id.emotional_functioning_score);
+        TextView cognitive_functioning_scoreText = (TextView) convertView.findViewById(R.id.cognitive_functioning_score);
+        TextView social_functioning_scoreText = (TextView) convertView.findViewById(R.id.social_functioning_score);
 
-        //TextView anxietyPoints = (TextView) convertView.findViewById(R.id.score_txt);
-        //ImageView statusAnxietyImage = (ImageView) convertView.findViewById(R.id.status_img);
+        TextView fatigue_scoreText = (TextView) convertView.findViewById(R.id.fatigue_score);
+        TextView nausea_and_vomiting_scoreText = (TextView) convertView.findViewById(R.id.nausea_and_vomiting_score);
+        TextView pain_scoreText = (TextView) convertView.findViewById(R.id.pain_score);
+        TextView dyspnoea_scoreText = (TextView) convertView.findViewById(R.id.dyspnoea_score);
+        TextView insomnia_scoreText = (TextView) convertView.findViewById(R.id.insomnia_score);
+        TextView appetite_loss_scoreText = (TextView) convertView.findViewById(R.id.appetite_loss_score);
+        TextView constipation_scoreText = (TextView) convertView.findViewById(R.id.constipation_score);
+        TextView diarrhoea_scoreText = (TextView) convertView.findViewById(R.id.diarrhoea_score);
+        TextView financial_difficulties_scoreText = (TextView) convertView.findViewById(R.id.financial_difficulties_score);
 
         QolQuestionnaire questionnaire = list.get(position);
 
@@ -55,6 +67,27 @@ public class QualityOfLifeItemAdapter extends ArrayAdapter<QolQuestionnaire> {
             Date cDate = questionnaire.getCreationDate_PK();
             String creationDate = Dates.getGermanDateByDate(cDate);
             date.setText(Strings.getStringByRId(R.string.date) + ": " + creationDate + " " +Strings.getStringByRId(R.string.oclock));
+        }
+
+        if(globalHealthScoreText != null){
+            globalHealthScoreText.setText(questionnaire.getGlobalHealthScore() + " ");
+            physical_functioning_scoreText.setText(questionnaire.getPhysicalFunctioningScore() + "");
+            role_functioning_scoreText.setText(questionnaire.getRoleFunctioningScore() + "");
+            emotional_functioning_scoreText.setText(questionnaire.getEmotionalFunctioningScore() + "");
+            cognitive_functioning_scoreText.setText(questionnaire.getCognitiveFunctioningScore() + "");
+            social_functioning_scoreText.setText(questionnaire.getSocialFunctioningScore() +"");
+        }
+
+        if(fatigue_scoreText !=null){
+            fatigue_scoreText.setText(questionnaire.getFatigueScore() +"");
+            nausea_and_vomiting_scoreText.setText(questionnaire.getNauseaAndVomitingScore() + "");
+            pain_scoreText.setText(questionnaire.getPainScore() + "");
+            dyspnoea_scoreText.setText(questionnaire.getDyspnoeaScore() + "");
+            insomnia_scoreText.setText(questionnaire.getInsomniaScore()+ "");
+            appetite_loss_scoreText.setText(questionnaire.getAppetiteLossScore()+ "");
+            constipation_scoreText.setText(questionnaire.getConstipationScore() + "");
+            diarrhoea_scoreText.setText(questionnaire.getDiarrhoeaScore()+ "");
+            financial_difficulties_scoreText.setText(questionnaire.getFinancialDifficultiesScore()+ "");
         }
 
         /*

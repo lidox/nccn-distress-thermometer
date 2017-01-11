@@ -188,4 +188,66 @@ public class QolQuestionnaire {
     public void setAnswersToQuestionsBytes(byte[] answersToQuestionsBytes) {
         this.answersToQuestionsBytes = answersToQuestionsBytes;
     }
+
+    //TODO:
+    public int getGlobalHealthScore() {
+        return -1;
+    }
+
+    public double getPhysicalFunctioningScore() {
+        return -1;
+    }
+
+    public double getRoleFunctioningScore() {
+        return -1;
+    }
+
+    public double getEmotionalFunctioningScore() {
+        return -1;
+    }
+
+    public double getCognitiveFunctioningScore() {
+        return -1;
+    }
+
+    public double getSocialFunctioningScore() {
+        return -1;
+    }
+
+
+    public double getFatigueScore() {
+        return -1;
+    }
+
+    public double getNauseaAndVomitingScore() {
+        return -1;
+    }
+
+    public double getDyspnoeaScore() {
+        return -1;
+    }
+
+    public double getInsomniaScore() {
+        return -1;
+    }
+
+    public double getAppetiteLossScore() {
+        return -1;
+    }
+
+    public double getConstipationScore() {
+        return -1;
+    }
+
+    public double getDiarrhoeaScore() {
+        return -1;
+    }
+
+    public double getFinancialDifficultiesScore() {
+        return -1;
+    }
+
+    public double getPainScore() {
+        return -1;
+    }
 }

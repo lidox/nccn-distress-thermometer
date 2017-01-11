@@ -86,44 +86,6 @@
         android:layout_margin="5dp"
         android:background="#c0c0c0" />
 
-    <!-- emotional_functioning Rollenfunktion -->
-    <TextView
-        android:id="@+id/emotional_functioning_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/separator21"
-        android:text="@string/emotional_functioning"
-        android:textColor="@color/colorGrey"
-        android:textSize="@dimen/textAppearanceLabelLargeSub" />
-
-    <TextView
-        android:id="@+id/emotional_functioning_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/separator21"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/emotional_functioning_txt"
-        android:text="0"
-        android:textColor="@color/colorGrey"
-        android:textSize="@dimen/textAppearanceLabelLargeSub" />
-
-    <ImageView
-        android:id="@+id/emotional_functioning_status_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/separator21"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/emotional_functioning_score"
-        android:src="@drawable/ic_check_circle_black_24dp" />
-
-    <View
-        android:id="@+id/separator22"
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/emotional_functioning_status_img"
-        android:layout_margin="5dp"
-        android:background="#c0c0c0" />
-
     <!-- emotional_functioning  -->
     <TextView
         android:id="@+id/emotional_functioning_txt"

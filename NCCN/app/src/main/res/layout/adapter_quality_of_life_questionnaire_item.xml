@@ -31,7 +31,7 @@
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
 
     <TextView
-        android:id="@+id/role_functioning_score"
+        android:id="@+id/global_health_status_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/global_health_status_heading"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/global_health_status_heading"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/role_functioning_score"
+        android:layout_toRightOf="@+id/global_health_status_score"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View

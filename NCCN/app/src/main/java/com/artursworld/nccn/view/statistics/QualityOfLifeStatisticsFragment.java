@@ -18,6 +18,8 @@ import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 
 public class QualityOfLifeStatisticsFragment extends Fragment {
 
