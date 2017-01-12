@@ -189,28 +189,28 @@ public class QolQuestionnaire {
         this.answersToQuestionsBytes = answersToQuestionsBytes;
     }
 
-    //TODO: not implemented yet
     public double getGlobalHealthScore() {
-        int b = getScoreByBits(getBitsByQuestionNr(29).substring(0,7));
-        int b2 = getScoreByBits(getBitsByQuestionNr(30).substring(0,7));
-        return getSymptomScore(6, 8);
+        String binaryString1 = getBitsByQuestionNr(29).substring(0, 7);
+        String binaryString2 = getBitsByQuestionNr(30).substring(0, 7);
+        int b = getScoreByBits(binaryString1);
+        int b2 = getScoreByBits(binaryString2);
+        return getSymptomScore(6, b, b2);
     }
 
-    private int getScoreByBits(String bits ) {
-        int score = 0;
-        StringBuilder answerBits = new StringBuilder(bits);
-            // boolean hasNotToReverse = i == 0 || i == 1 || i == 2 || i == 5 || i == 6 || i == 9 || i == 10 || i == 11;
-            // if(!hasNotToReverse)
-        answerBits = answerBits.reverse();
-        score = answerBits.indexOf("1");
-
-        return score;
-    }
-
+    /**
+     * Measures a range of a score from 0 to 100. A high score represents a high / healthy
+     * level of functioning
+     */
     public double getPhysicalFunctioningScore() {
-        return -1;
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(1));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(2));
+        int itemNUmber3 = getScoreByBits(getBitsByQuestionNr(3));
+        int itemNUmber4 = getScoreByBits(getBitsByQuestionNr(4));
+        int itemNUmber5 = getScoreByBits(getBitsByQuestionNr(5));
+        return getFunctionalScore(3, itemNumber1, itemNUmber2, itemNUmber3, itemNUmber4, itemNUmber5);
     }
 
+    //TODO: not implemented yet
     public double getRoleFunctioningScore() {
         return -1;
     }
@@ -273,10 +273,24 @@ public class QolQuestionnaire {
         return getMiddleScore(getRawScore(rawValues), range) * 100;
     }
 
+    /**
+     * Calculates score only for functional scales. Measures a range of a score from 0 to 100.
+     * A high score represents a high / healthy level of functioning
+     * @param range the item range is the difference between possible maximum and the
+     *              minimum response to individual items; most items take values from 1 to 4,
+     *              giving the range = 3.
+     * @param rawValues some raw values for calculation
+     * @return the functional score
+     */
     private double getFunctionalScore(int range, double... rawValues){
         return (1 - getMiddleScore(getRawScore(rawValues), range)) * 100;
     }
 
+    /**
+     * Calculates the mean by multiple values.
+     * @param rawValues some raw values for calculation
+     * @return the raw score (mean) of the given values
+     */
     public double getRawScore(double... rawValues) {
         double sum = 0;
         for (double value : rawValues) {
@@ -284,4 +298,14 @@ public class QolQuestionnaire {
         }
         return sum / rawValues.length;
     }
+
+    /**
+     * Get the score by binary string
+     * @param bits the given binary string
+     * @return the score of the binary string
+     */
+    private int getScoreByBits(String bits ) {
+        return new StringBuilder(bits).reverse().indexOf("1") + 1;
+    }
+
 }
