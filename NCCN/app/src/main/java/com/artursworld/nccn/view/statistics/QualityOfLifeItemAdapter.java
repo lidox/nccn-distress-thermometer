@@ -40,7 +40,6 @@ public class QualityOfLifeItemAdapter extends ArrayAdapter<QolQuestionnaire> {
             convertView = inflater.inflate(R.layout.adapter_quality_of_life_questionnaire_item, null);
         }
 
-        //TODO: connect UI
 
         TextView date = (TextView) convertView.findViewById(R.id.date_txt);
         TextView globalHealthScoreText = (TextView) convertView.findViewById(R.id.global_health_status_score);

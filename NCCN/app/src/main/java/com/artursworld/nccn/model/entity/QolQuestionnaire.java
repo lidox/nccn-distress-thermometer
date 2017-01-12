@@ -291,7 +291,7 @@ public class QolQuestionnaire {
     }
 
     private double getSymptomScore(int range, double... rawValues){
-        return getMiddleScore(getRawScore(rawValues), range) * 100;
+        return Math.floor(getMiddleScore(getRawScore(rawValues), range) * 100);
     }
 
     /**
@@ -304,7 +304,7 @@ public class QolQuestionnaire {
      * @return the functional score
      */
     private double getFunctionalScore(int range, double... rawValues){
-        return (1 - getMiddleScore(getRawScore(rawValues), range)) * 100;
+        return Math.floor((1 - getMiddleScore(getRawScore(rawValues), range)) * 100);
     }
 
     /**
