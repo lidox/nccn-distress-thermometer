@@ -37,7 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/functional_scales_heading"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/physical_functioning_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -45,7 +46,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/physical_functioning_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- role_functioning Rollenfunktion -->
@@ -83,7 +84,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/role_functioning_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- emotional_functioning  -->
@@ -121,7 +122,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/emotional_functioning_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- cognitive_functioning  -->
@@ -159,7 +160,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/cognitive_functioning_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- social_functioning  -->
@@ -197,7 +198,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/social_functioning_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
 </RelativeLayout>

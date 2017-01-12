@@ -5,6 +5,22 @@
     android:layout_margin="10dp"
     android:orientation="vertical">
 
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        card_view:cardBackgroundColor="@color/colorWhite"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:layout_height="wrap_content">
+
+
     <TextView
         android:id="@+id/date_txt"
         android:layout_width="wrap_content"
@@ -36,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/global_health_status_heading"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/global_health_status_txt"
+        android:layout_toLeftOf="@+id/global_health_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -47,7 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/global_health_status_heading"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/global_health_status_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -55,7 +72,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/global_health_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- functional scale-->
@@ -85,5 +102,6 @@
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
-
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>
