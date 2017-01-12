@@ -190,11 +190,11 @@ public class QolQuestionnaire {
     }
 
     public double getGlobalHealthScore() {
-        String binaryString1 = getBitsByQuestionNr(29).substring(0, 7);
-        String binaryString2 = getBitsByQuestionNr(30).substring(0, 7);
-        int b = getScoreByBits(binaryString1);
-        int b2 = getScoreByBits(binaryString2);
-        return getSymptomScore(6, b, b2);
+        String itemNumber1 = getBitsByQuestionNr(29).substring(0, 7);
+        String itemNUmber2 = getBitsByQuestionNr(30).substring(0, 7);
+        int itemScore1 = getScoreByBits(itemNumber1);
+        int itemScore2 = getScoreByBits(itemNUmber2);
+        return getSymptomScore(6, itemScore1, itemScore2);
     }
 
     /**
@@ -210,59 +210,80 @@ public class QolQuestionnaire {
         return getFunctionalScore(3, itemNumber1, itemNUmber2, itemNUmber3, itemNUmber4, itemNUmber5);
     }
 
-    //TODO: not implemented yet
     public double getRoleFunctioningScore() {
-        return -1;
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(6));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(7));
+        return getFunctionalScore(3, itemNumber1, itemNUmber2);
     }
 
     public double getEmotionalFunctioningScore() {
-        return -1;
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(21));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(22));
+        int itemNUmber3 = getScoreByBits(getBitsByQuestionNr(23));
+        int itemNUmber4 = getScoreByBits(getBitsByQuestionNr(24));
+        return getFunctionalScore(3, itemNumber1, itemNUmber2, itemNUmber3, itemNUmber4);
     }
 
     public double getCognitiveFunctioningScore() {
-        return -1;
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(20));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(25));
+        return getFunctionalScore(3, itemNumber1, itemNUmber2);
     }
 
     public double getSocialFunctioningScore() {
-        return -1;
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(26));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(27));
+        return getFunctionalScore(3, itemNumber1, itemNUmber2);
     }
 
 
     public double getFatigueScore() {
-
-        return -1;
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(10));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(12));
+        int itemNUmber3 = getScoreByBits(getBitsByQuestionNr(18));
+        return getSymptomScore(3, itemNumber1, itemNUmber2, itemNUmber3);
     }
 
     public double getNauseaAndVomitingScore() {
-        return -1;
-    }
-
-    public double getDyspnoeaScore() {
-        return -1;
-    }
-
-    public double getInsomniaScore() {
-        return -1;
-    }
-
-    public double getAppetiteLossScore() {
-        return -1;
-    }
-
-    public double getConstipationScore() {
-        return -1;
-    }
-
-    public double getDiarrhoeaScore() {
-        return -1;
-    }
-
-    public double getFinancialDifficultiesScore() {
-        return -1;
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(14));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(15));
+        return getSymptomScore(3, itemNumber1, itemNUmber2);
     }
 
     public double getPainScore() {
-        return -1;
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(9));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(19));
+        return getSymptomScore(3, itemNumber1, itemNUmber2);
+    }
+
+    public double getDyspnoeaScore() {
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(8));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getInsomniaScore() {
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(11));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getAppetiteLossScore() {
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(13));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getConstipationScore() {
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(16));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getDiarrhoeaScore() {
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(17));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getFinancialDifficultiesScore() {
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(28));
+        return getSymptomScore(3, itemNumber1);
     }
 
     private double getMiddleScore(double rawScore, double range){
