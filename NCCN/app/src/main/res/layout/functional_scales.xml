@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/functional_scales_heading"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/physical_functioning_txt"
+        android:layout_toLeftOf="@+id/physical_functioning_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator20"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/role_functioning_txt"
+        android:layout_toLeftOf="@+id/role_functioning_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -76,7 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator20"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/role_functioning_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -103,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator21"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/emotional_functioning_txt"
+        android:layout_toLeftOf="@+id/emotional_functioning_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -114,7 +115,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator21"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/emotional_functioning_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -141,7 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator22"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/cognitive_functioning_txt"
+        android:layout_toLeftOf="@+id/cognitive_functioning_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -152,7 +154,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator22"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/cognitive_functioning_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -179,7 +182,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator23"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/social_functioning_txt"
+        android:layout_toLeftOf="@+id/social_functioning_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -190,7 +193,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator23"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/social_functioning_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View

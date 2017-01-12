@@ -15,6 +15,7 @@ import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class QualityOfLifeItemAdapter extends ArrayAdapter<QolQuestionnaire> {
         }
 
         if(globalHealthScoreText != null){
+
             globalHealthScoreText.setText(questionnaire.getGlobalHealthScore() + " ");
             physical_functioning_scoreText.setText(questionnaire.getPhysicalFunctioningScore() + "");
             role_functioning_scoreText.setText(questionnaire.getRoleFunctioningScore() + "");

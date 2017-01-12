@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/symptom_scales_heading"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/fatigue_txt"
+        android:layout_toLeftOf="@+id/fatigue_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -37,7 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/symptom_scales_heading"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/fatigue_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -45,7 +46,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/fatigue_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- nausea and vomiting -->
@@ -64,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator1"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/nausea_and_vomiting_txt"
+        android:layout_toLeftOf="@+id/nausea_and_vomiting_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -75,7 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator1"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/nausea_and_vomiting_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -83,7 +85,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/nausea_and_vomiting_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- pain -->
@@ -102,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator2"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/pain_txt"
+        android:layout_toLeftOf="@+id/pain_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -113,7 +115,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator2"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/pain_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -121,7 +124,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/pain_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- dyspnoea atemnot -->
@@ -140,7 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator3"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/dyspnoea_txt"
+        android:layout_toLeftOf="@+id/dyspnoea_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -151,7 +154,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator3"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/dyspnoea_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -159,7 +163,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/dyspnoea_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- insomnia schlafstörung -->
@@ -178,7 +182,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator4"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/insomnia_txt"
+        android:layout_toLeftOf="@+id/insomnia_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -189,7 +193,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator4"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/insomnia_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -197,7 +202,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/insomnia_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- appetite_loss Appetitlosigkeit -->
@@ -216,7 +221,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator5"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/appetite_loss_txt"
+        android:layout_toLeftOf="@+id/appetite_loss_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -227,7 +232,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator5"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/appetite_loss_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -235,7 +241,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/appetite_loss_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- constipation Verstopfung-->
@@ -254,7 +260,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator6"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/constipation_txt"
+        android:layout_toLeftOf="@+id/constipation_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -265,7 +271,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator6"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/constipation_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -273,7 +280,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/constipation_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- diarrhoea  -->
@@ -292,7 +299,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator7"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/diarrhoea_txt"
+        android:layout_toLeftOf="@+id/diarrhoea_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -303,7 +310,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator7"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/diarrhoea_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -311,7 +319,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/diarrhoea_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
     <!-- financial_difficulties  Geldschwierigkeiten -->
@@ -330,7 +338,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator8"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/financial_difficulties_txt"
+        android:layout_toLeftOf="@+id/financial_difficulties_status_img"
         android:text="0"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/textAppearanceLabelLargeSub" />
@@ -341,7 +349,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/separator8"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/financial_difficulties_score"
+        android:paddingTop="5dp"
+        android:layout_alignParentRight="true"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <View
@@ -349,7 +358,7 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/financial_difficulties_status_img"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:background="#c0c0c0" />
 
 </RelativeLayout>
