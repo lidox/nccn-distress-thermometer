@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
 
-
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/search_edit_text"
                 android:layout_width="match_parent"
@@ -59,10 +58,10 @@
 
                 </ScrollView>
 
-
             </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
-
         </RelativeLayout>
+
     </android.support.v7.widget.CardView>
+
 </RelativeLayout>
