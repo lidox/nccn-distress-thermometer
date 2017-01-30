@@ -119,9 +119,6 @@
     <string name="user_name">Benutzername</string>
     <string name="you_already_have">Sie haben bereits</string>
     <string name="x_questions_answered">% aller Fragen beantwortet</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hadsd_questionnaire">HADS-D Fragebogen</string>
     <string name="nccn_distress_thermometer">Gefühls-Thermometer</string>
     <string name="quality_of_life_questionnaire">Fragebogen zur Lebensqualität</string>
