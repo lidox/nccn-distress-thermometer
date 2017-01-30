@@ -106,10 +106,11 @@ public class WizardQualityOfLife extends TextStepper {
     public void onComplete() {
         super.onComplete();
         Log.i(WizardQualityOfLife.class.getSimpleName(), "completed WizardQualityOfLife");
+        finish();
     }
 
     public static void updateProgress(final QolQuestionnaire questionnaire, int questionNr){
-        int progressValue = (int) Math.floor(questionNr / 50 * 100);
+        int progressValue = (int) Math.floor(questionNr / 50. * 100);
         if(questionnaire.getProgressInPercent() < progressValue){
             Log.i(CLASS_NAME, "new progress value = " + progressValue);
             questionnaire.setProgressInPercent(progressValue);
