@@ -59,6 +59,7 @@ public class DistressThermometerQuestionnaire {
         for(int i = 0; i < questionCount; i++){
             sb.append("Answer to question "+(i+1)+"("+ getBitsByQuestionNr(i+1) + ")" +"\n");
         }
+        sb.append("Progress = "+getProgressInPercent()+"%"+"\n");
         sb.append("MD5-HASH = "+getMD5Hash());
         return sb.toString();
     }

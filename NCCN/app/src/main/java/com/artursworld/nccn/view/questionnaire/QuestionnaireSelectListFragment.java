@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.CircularArray;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +25,7 @@ import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
@@ -34,8 +34,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import javax.microedition.khronos.opengles.GL;
 
 public class QuestionnaireSelectListFragment extends Fragment {
 
@@ -55,6 +53,13 @@ public class QuestionnaireSelectListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        Log.i(CLASS_NAME, "onResume() Questionnaire Select Screen. Choose a questionnaire");
+        super.onResume();
+        fillQuestionnaireListViewByItems();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(CLASS_NAME, " onCreateView()");
         createNewUserIfNotExisting();
@@ -68,8 +73,8 @@ public class QuestionnaireSelectListFragment extends Fragment {
     private List<AbstractQuestionnaire> getQuestionnaireList() {
         List<AbstractQuestionnaire> list = new ArrayList<>();
 
-        // set new Date for questionnaires, for the case that a new user need to be created
-        Date selectedQuestionnaireDate = null;
+        /* set new Date for questionnaires, for the case that a new user need to be created */
+        Date selectedQuestionnaireDate;
         String selectedUserName = Global.getSelectedUser();
 
         // check if flag is set e.g. in UserStartConfiguration.class
@@ -78,7 +83,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
         if (hasToCreateNewUser) {
             User user = new User(Strings.getStringByRId(R.string.user_name));
             new UserManager().insertUser(user);
-            fillQuestionnaireListByUserNameAndCreationDate(list, new Date(), user, hasToCreateNewUser);
+            fillQuestionnaireListByUserNameAndCreationDate(list, new Date(), user);
         }
         // a user has been selected
         else {
@@ -87,11 +92,11 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 createNewUser();
                 user = new UserManager().getUserByName(Global.getSelectedUser());
             }
-            Log.i(CLASS_NAME, "loading selected user, in order to show questionniares: User = " + user);
+            Log.i(CLASS_NAME, "Selected User:" + user);
             selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
             selectedQuestionnaireDate = getNewDateIfNull(selectedQuestionnaireDate, selectedUserName);
-            Log.i(CLASS_NAME, "display qestionnaires by user("+user.getName()+") and date " + selectedQuestionnaireDate);
-            fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user, hasToCreateNewUser);
+            Log.i(CLASS_NAME, "Selected Questionnaire Date: " + EntityDbManager.dateFormat.format(selectedQuestionnaireDate));
+            fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user);
         }
 
         return list;
@@ -116,7 +121,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
      * @param selectedQuestionnaireDate the date to use for the questionnaires
      * @param user                      the selected user
      */
-    private void fillQuestionnaireListByUserNameAndCreationDate(List<AbstractQuestionnaire> list, Date selectedQuestionnaireDate, User user, boolean hasToCreateNewUser) {
+    private void fillQuestionnaireListByUserNameAndCreationDate(List<AbstractQuestionnaire> list, Date selectedQuestionnaireDate, User user) {
         int hadsProgress = 0;
         int distressProgress = 0;
         int qualityProgress = 0;
@@ -132,6 +137,8 @@ public class QuestionnaireSelectListFragment extends Fragment {
             Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
             if (setOfBooleans != null) {
                 boolean hasToGetProgress = !Global.hasToCreateNewUser() && user != null;
+
+                // HADS-D
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
                     if (hasToGetProgress) {
                         HADSDQuestionnaire hadsdQuestionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate);
@@ -142,6 +149,8 @@ public class QuestionnaireSelectListFragment extends Fragment {
                     }
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
                 }
+
+                // Distress Thermometer
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
                     if (hasToGetProgress) {
                         DistressThermometerQuestionnaire distressThermometerQuestionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
@@ -150,6 +159,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
                     }
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
                 }
+
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
                     if (hasToGetProgress) {
                         QolQuestionnaire qolQuestionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
@@ -259,14 +269,6 @@ public class QuestionnaireSelectListFragment extends Fragment {
         Global.setSelectedQuestionnaireDate(selectedQuestionnaireDate);
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(CLASS_NAME, "onResume()");
-        fillQuestionnaireListViewByItems();
-    }
-
     private void fillQuestionnaireListViewByItems() {
         new AsyncTask<Void, Void, List<AbstractQuestionnaire>>() {
 
@@ -277,11 +279,12 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
             @Override
             protected void onPostExecute(final List<AbstractQuestionnaire> abstractQuestionnairesList) {
+                Log.i(CLASS_NAME, "Questionnaires loaded by database: " + abstractQuestionnairesList);
                 super.onPostExecute(abstractQuestionnairesList);
                 AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), abstractQuestionnairesList);
                 questionnaireListView.setAdapter(adapter);
                 addOnItemClickListener(abstractQuestionnairesList);
-                percentageAll.setText(getPercentageForAllQuestionnairesByList(abstractQuestionnairesList) + "");
+                percentageAll.setText(getPercentageForAllQuestionnairesByList(abstractQuestionnairesList) + " ");
             }
         }.execute();
     }

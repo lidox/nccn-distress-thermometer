@@ -2,6 +2,7 @@ package com.artursworld.nccn.model.entity;
 
 
 public class AbstractQuestionnaire {
+
     private String name;
     private int progressInPercent;
 
@@ -24,5 +25,13 @@ public class AbstractQuestionnaire {
 
     public void setProgressInPercent(int progressInPercent) {
         this.progressInPercent = progressInPercent;
+    }
+
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append(name);
+        s.append(": ");
+        s.append(progressInPercent + "%");
+        return s.toString();
     }
 }

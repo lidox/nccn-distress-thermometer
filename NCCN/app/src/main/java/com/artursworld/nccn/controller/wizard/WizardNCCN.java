@@ -49,13 +49,13 @@ public class WizardNCCN extends TextStepper {
         bundle.putInt(WizardQualityOfLife.QUESTION_NUMBER, currentWizardPosition ++);
         String selectedUserName = Global.getSelectedUser();
         bundle.putString(WizardQualityOfLife.SELECTED_USER, selectedUserName);
-        //TODO: check selected questionnaire date
         fragment.setArguments(bundle);
         return fragment;
     }
 
     public static void updateProgress(final DistressThermometerQuestionnaire questionnaire, int questionNr){
-        int progressValue = (int) Math.floor(questionNr / 6 * 100);
+        Log.i(CLASS_NAME, "updating progress for DistressThermometerQuestionnaire...");
+        int progressValue = (int) Math.floor(questionNr / 6. * 100);
         if(questionnaire.getProgressInPercent() < progressValue){
             Log.i(CLASS_NAME, "new progress value = " + progressValue);
             questionnaire.setProgressInPercent(progressValue);

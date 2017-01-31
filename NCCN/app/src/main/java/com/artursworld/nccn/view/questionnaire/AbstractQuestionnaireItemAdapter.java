@@ -13,7 +13,9 @@ import com.artursworld.nccn.model.entity.AbstractQuestionnaire;
 
 import java.util.List;
 
-
+/**
+ * Fills list view by abstract questionnaires
+ */
 public class AbstractQuestionnaireItemAdapter extends ArrayAdapter<AbstractQuestionnaire> {
 
     private List<AbstractQuestionnaire> list = null;
