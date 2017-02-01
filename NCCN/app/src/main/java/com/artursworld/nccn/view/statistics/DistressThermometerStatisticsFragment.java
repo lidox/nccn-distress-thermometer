@@ -43,7 +43,7 @@ public class DistressThermometerStatisticsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         TextView userNameLabel = (TextView) rootView.findViewById(R.id.user_name_label);
-        userNameLabel.setText(Global.getSelectedUser());
+        userNameLabel.setText(Global.getSelectedStatisticUser());
 
         TextView historyLabel = (TextView) rootView.findViewById(R.id.history_label);
         historyLabel.setText(Strings.getStringByRId(R.string.history)+ ": " +Strings.getStringByRId(R.string.nccn_distress_thermometer));
@@ -56,7 +56,7 @@ public class DistressThermometerStatisticsFragment extends Fragment {
 
             @Override
             protected List<DistressThermometerQuestionnaire> doInBackground(Void... params) {
-                return new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireList(Global.getSelectedUser());
+                return new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireList(Global.getSelectedStatisticUser());
             }
 
             @Override

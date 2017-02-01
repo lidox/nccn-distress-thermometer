@@ -9,4 +9,5 @@
     <string name="c_has_to_create_default_questionnaire">com.artursworld.c_has_to_create_default_questionnaire</string>
     <string name="c_has_to_create_new_questionnaire">com.artursworld.c_has_to_create_new_questionnaire</string>
     <string name="c_is_selectuser_fragment">com.artursworld.c_is_selectuser_fragment</string>
+    <string name="c_selected_statisc_user_name">com.artursworld.selected_user_for_statistics</string>
 </resources>
