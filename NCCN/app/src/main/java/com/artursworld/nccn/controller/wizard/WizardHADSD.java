@@ -46,6 +46,7 @@ public class WizardHADSD extends TextStepper {
     /**
      * Get all questions and answers from resource file and put them question by question into sinle fragments
      */
+    @SuppressWarnings("ResourceType")
     private void putAllQuestionAndAnswersToNewFragments() {
         List<TypedArray> questionnairyList = Questionnairy.getQuestionnairyListById(R.array.hadsd_questionnaire, App.getAppContext());
         for(TypedArray questionItem: questionnairyList){

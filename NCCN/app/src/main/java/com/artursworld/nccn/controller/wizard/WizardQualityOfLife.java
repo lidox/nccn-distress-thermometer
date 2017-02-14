@@ -52,6 +52,7 @@ public class WizardQualityOfLife extends TextStepper {
     /**
      * Get all questions and answers from resource file and put them question by question into sinle fragments
      */
+    @SuppressWarnings("ResourceType")
     private void putAllQuestionAndAnswersToNewFragments() {
         List<TypedArray> questionnairyList = Questionnairy.getQuestionnairyListById(R.array.quality_of_life_questionnaire, App.getAppContext());
 
