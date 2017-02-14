@@ -54,15 +54,16 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
             public void onClick(final View v) {
                 User selectedUser = data.get(position);
                 Log.i(CLASS_NAME, "clicked on: " + selectedUser);
-                Global.setSelectedUserName(selectedUser.getName());
 
                 if(hasToOpenStatistics){
+                    Global.setSelectedStatisticsUser(selectedUser.getName());
                     Log.i(CLASS_NAME, "open statistics");
                     Intent intent = new Intent(activity.getApplicationContext(), StatisticsTabsActivity.class);
                     activity.finish();
                     activity.startActivity(intent);
                 }
                 else {
+                    Global.setSelectedUserName(selectedUser.getName());
                     // get date list
                     final List<String> dateList = new UserManager().getQuestionnaireDatesByUserName(selectedUser.getName());
                     dateList.add(0, Strings.getStringByRId(R.string.create_new_questionnaire_date));

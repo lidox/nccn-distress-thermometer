@@ -47,7 +47,7 @@ public class HadsdStatisticsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         TextView userNameLabel = (TextView) rootView.findViewById(R.id.user_name_label);
-        userNameLabel.setText(Global.getSelectedUser());
+        userNameLabel.setText(Global.getSelectedStatisticUser());
 
         TextView historyLabel = (TextView) rootView.findViewById(R.id.history_label);
         historyLabel.setText(Strings.getStringByRId(R.string.history)+ ": " +Strings.getStringByRId(R.string.hadsd_questionnaire) );
@@ -60,7 +60,7 @@ public class HadsdStatisticsFragment extends Fragment {
 
             @Override
             protected List<HADSDQuestionnaire> doInBackground(Void... params) {
-                return new HADSDQuestionnaireManager().getHadsdQuestionnaireListByUserName(Global.getSelectedUser());
+                return new HADSDQuestionnaireManager().getHadsdQuestionnaireListByUserName(Global.getSelectedStatisticUser());
             }
 
             @Override

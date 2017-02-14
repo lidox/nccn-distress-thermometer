@@ -22,7 +22,7 @@ public class Share {
     public static String getStringByKey(String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
         String restoredText = prefs.getString(key, null);
-        String logMessage = "get global value by key(key=" + key + ", value=" + restoredText + ")";
+        //String logMessage = "get global value by key(key=" + key + ", value=" + restoredText + ")";
         //Log.i(CLASS_NAME, logMessage);
         return restoredText;
     }
@@ -58,17 +58,21 @@ public class Share {
     }
 
     /**
-     * Writes value into shared preferences
+     * Writes key-value pair into shared preferences
      *
-     * @param key
-     * @param value
+     * @param key the key
+     * @param value the value of type string
+     * @return True if the function (put key-value pair into shared preferances) was succesful). Otherwise false
      */
-    public static void putString(final String key, final String value) {
-                SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).edit();
-                if (key != null && value != null) {
-                    prefs.putString(key, value);
-                    prefs.commit();
-                }
+    public static boolean putString(final String key, final String value) {
+        boolean isFunctionSuccesful = false;
+        SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).edit();
+        if (key != null && value != null) {
+            prefs.putString(key, value);
+            prefs.commit();
+            isFunctionSuccesful = true;
+        }
+        return isFunctionSuccesful;
     }
 
     /**

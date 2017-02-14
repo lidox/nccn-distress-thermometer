@@ -87,4 +87,22 @@ public class Global {
     public static void setHasToCreateNewQuestionnaire(boolean setHasToCreateNewQuestionnaire) {
         Share.putBoolean(Strings.getStringByRId(R.string.c_has_to_create_new_questionnaire), setHasToCreateNewQuestionnaire);
     }
+
+
+    /**
+     * Sets the selected user name in order to show statistics
+     * @param userName the users name to show statistics
+     * @return True on success to set user name. Otherwise false.
+     */
+    public static boolean setSelectedStatisticsUser(String userName) {
+        return  Share.putString(Strings.getStringByRId(R.string.c_selected_statisc_user_name), userName);
+    }
+
+    /**
+     * Get the selected user name in order to show statistics
+     * @return the user name. Otherwise null.
+     */
+    public static String getSelectedStatisticUser() {
+        return Share.getStringByKey(R.string.c_selected_statisc_user_name);
+    }
 }
