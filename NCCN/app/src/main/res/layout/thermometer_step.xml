@@ -21,116 +21,76 @@
                 android:paddingTop="20dp"
                 android:text="@string/thermometer_description"
                 android:textColor="#5C5C5C"
-                android:textSize="@dimen/textAppearanceLabelLarge" />
-
-            <TextView
-                android:id="@+id/place_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/question_label"
-                android:layout_marginTop="30dp" />
-
-            <TextView
-                android:id="@+id/one"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/place_holder"
-                android:layout_margin="5dp"
-                android:text="0"
-                android:textSize="@dimen/textAppearanceLabel" />
-<!--
-            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                android:id="@+id/seekbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/place_holder"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                app:dsb_allowTrackClickToDrag="true"
-                app:dsb_indicatorColor="@color/colorPrimaryDark"
-                app:dsb_indicatorFormatter="%d"
-                app:dsb_max="10"
-                app:dsb_min="0"
-                app:dsb_progressColor="@color/colorAccent"
-                app:dsb_rippleColor="@color/colorAccent"
-                app:dsb_value="5" />
--->
-            <TextView
-                android:id="@+id/seven"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/place_holder"
-                android:layout_margin="5dp"
-                android:text="10"
-                android:textSize="@dimen/textAppearanceLabel" />
-
-            <TextView
-                android:id="@+id/description_left_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/seekbar"
-                android:layout_margin="5dp"
-                android:text="@string/enougt_power"
-                android:textSize="@dimen/textAppearanceLabel" />
-
-            <TextView
-                android:id="@+id/description_right_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/seekbar"
-                android:layout_margin="5dp"
-                android:text="@string/lot_of_problems"
-                android:textSize="@dimen/textAppearanceLabel" />
+                android:textSize="30sp" />
 
         </RelativeLayout>
 
-
         <RelativeLayout
-            android:layout_width="632px"
-            android:layout_height="1300px"
+            android:id="@+id/thermometer_layout"
+            android:layout_width="wrap_content"
             android:layout_below="@+id/rel"
-            android:background="@drawable/thermometer1">
+            android:layout_height="match_parent">
 
-            <RelativeLayout
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/root_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="632px"
+                    android:layout_height="1300px"
+                    android:layout_below="@+id/rel"
+                    android:layout_gravity="center"
+                    android:background="@drawable/thermometer1">
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/description_left_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="615dp"
+                    android:paddingLeft="35dp"
+                    android:layout_margin="5dp"
+                    android:text="@string/enougt_power"
+                    android:textSize="@dimen/textAppearanceLabel" />
+
+                <TextView
+                    android:id="@+id/description_right_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="40dp"
+                    android:paddingLeft="35dp"
+                    android:layout_margin="5dp"
+                    android:text="@string/lot_of_problems"
+                    android:textSize="@dimen/textAppearanceLabel" />
 
                 <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                     android:id="@+id/seekbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="1052px"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="136dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="338dp"
                     android:rotation="-90"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     app:dsb_allowTrackClickToDrag="true"
                     app:dsb_indicatorColor="@color/colorPrimaryDark"
                     app:dsb_indicatorFormatter="%d"
+                    app:dsb_indicatorPopupEnabled="false"
+                    app:dsb_indicatorSeparation="20dp"
                     app:dsb_max="10"
                     app:dsb_min="0"
                     app:dsb_progressColor="@color/colorAccent"
                     app:dsb_rippleColor="@color/colorAccent"
+                    app:dsb_scrubberHeight="10dp"
+                    app:dsb_thumbSize="30dp"
+                    app:dsb_trackHeight="10dp"
                     app:dsb_value="5" />
 
-                <!--
-                <SeekBar
-                    android:layout_width="1300px"
-                    android:layout_height="632px"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:max="88"
-                    android:rotation="-95"
-                    android:thumbOffset="15dp" />
--->
-            </RelativeLayout>
-
-
+            </FrameLayout>
 
         </RelativeLayout>
-
 
     </RelativeLayout>
 
