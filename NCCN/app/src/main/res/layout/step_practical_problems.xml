@@ -7,24 +7,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/question_label"
+        <RelativeLayout
+            android:id="@+id/question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:paddingTop="20dp"
-            android:text="@string/checkbox_description"
-            android:textColor="#5C5C5C"
-            android:textSize="@dimen/textAppearanceLabelLarge" />
+            android:background="@color/colorPrimary"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/subtitle_label"
+            <TextView
+                android:id="@+id/question_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:paddingTop="20dp"
+                android:text="@string/checkbox_description"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/question_label"
-            android:layout_margin="5dp"
-            android:text="@string/practicle_problems"
-            android:textSize="@dimen/textAppearanceLabelLarge" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/question"
+            android:layout_margin="30dp">
+
+            <TextView
+                android:id="@+id/subtitle_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:text="@string/practicle_problems"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
 
             <CheckBox
                 android:id="@+id/housing_situation"
@@ -70,6 +84,6 @@
                 android:layout_margin="10dp"
                 android:text="@string/childcare"
                 android:textSize="@dimen/textAppearanceLabelLarge" />
-
+        </RelativeLayout>
     </RelativeLayout>
 </ScrollView>

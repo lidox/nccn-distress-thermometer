@@ -46,7 +46,8 @@ public class QualityOfLifeStep extends AbstractStep {
 
     /**
      * Loads the UI elements and adds radio button change listener
-     * @param inflater the inflater
+     *
+     * @param inflater  the inflater
      * @param container the container
      * @return the view loaded by xml file
      */
@@ -69,7 +70,7 @@ public class QualityOfLifeStep extends AbstractStep {
         answersGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                Log.i("", "onCheckedChanged("+radioGroup.toString()+", "+i+")");
+                Log.i("", "onCheckedChanged(" + radioGroup.toString() + ", " + i + ")");
                 onSelectedAnswerChanged(answersGroup);
             }
         });
@@ -78,12 +79,13 @@ public class QualityOfLifeStep extends AbstractStep {
     /**
      * On selected radio button change, a new byte array is calculated and
      * update the questionnaire to its new byte array
+     *
      * @param answersGroup the radio group containing all radion buttons
      */
     private void onSelectedAnswerChanged(RadioGroup answersGroup) {
         RadioButton checkedRadioButton = (RadioButton) answersGroup.findViewById(answersGroup.getCheckedRadioButtonId());
         int index = answersGroup.indexOfChild(checkedRadioButton);
-        Log.i(QualityOfLifeStep.class.getSimpleName(), "New box selected= '" +checkedRadioButton.getText() +"' with index = " + index + " and current questionNr = " +currentQuestionNumber);
+        Log.i(QualityOfLifeStep.class.getSimpleName(), "New box selected= '" + checkedRadioButton.getText() + "' with index = " + index + " and current questionNr = " + currentQuestionNumber);
 
         // load current answers again because maybe there are already updates
         QualityOfLifeManager m = new QualityOfLifeManager();
@@ -92,7 +94,7 @@ public class QualityOfLifeStep extends AbstractStep {
         // display old and new byte
         String old = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
         String newOne = Bits.getNewBinaryStringByRadioBtn(checkedRadioButton.isChecked(), index, old, true);
-        Log.i(QualityOfLifeStep.class.getSimpleName(), "Changed answer bits from: "+ old + " to " +newOne);
+        Log.i(QualityOfLifeStep.class.getSimpleName(), "Changed answer bits from: " + old + " to " + newOne);
 
         // update new answer selections
         questionnaire.setBitsByQuestionNr(currentQuestionNumber, newOne);
@@ -105,7 +107,7 @@ public class QualityOfLifeStep extends AbstractStep {
     private void initBundledData() {
         Bundle bundle = getArguments();
         String[] questionData = bundle.getStringArray(WizardQualityOfLife.QUESTION_DATA);
-        if (questionData != null){
+        if (questionData != null) {
             String question = questionData[0];
             questionLabel.setText(question);
             answerA_btn.setText(questionData[1]);
@@ -125,13 +127,29 @@ public class QualityOfLifeStep extends AbstractStep {
      * Sets the radio button as 'checked' by byte array coming from database
      */
     private void checkRadioButtonByBits() {
-        byte[] answerByte = Bits.getByteByString(questionnaire.getBitsByQuestionNr(currentQuestionNumber));
-        Log.i(QualityOfLifeStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr:" +(currentQuestionNumber) + "(index:"+currentQuestionNumber+")");
-        StringBuilder bits = new StringBuilder(Bits.getStringByByte(answerByte)).reverse();
-        int indexToCheck = bits.indexOf("1");
+        double questionNr = currentQuestionNumber + 1;
+        int progressValue = (int) Math.floor(questionNr / 50 * 100);
+        if (questionnaire.getProgressInPercent() >= progressValue) {
+            byte[] answerByte = Bits.getByteByString(questionnaire.getBitsByQuestionNr(currentQuestionNumber));
+            Log.i(QualityOfLifeStep.class.getSimpleName(), "answer bits loaded: " + Bits.getStringByByte(answerByte) + " for questionNr:" + (currentQuestionNumber) + "(index:" + currentQuestionNumber + ")");
+            StringBuilder bits = new StringBuilder(Bits.getStringByByte(answerByte)).reverse();
+            int indexToCheck = bits.indexOf("1");
+            setRadioBoxCheckedByIndex(indexToCheck, true);
+        }
+        else{
+            setRadioBoxCheckedByIndex(4, true);
+        }
+    }
+
+    /**
+     * Sets a specified radio button as checked / unchecked
+     * @param indexToCheck the index of the radio button
+     * @param isChecked check or uncheck radio button
+     */
+    private void setRadioBoxCheckedByIndex(int indexToCheck, boolean isChecked) {
         RadioButton buttonToCheck = ((RadioButton)answersGroup.getChildAt(indexToCheck));
         if(buttonToCheck != null)
-            buttonToCheck.setChecked(true);
+            buttonToCheck.setChecked(isChecked);
     }
 
     @Override
@@ -140,33 +158,24 @@ public class QualityOfLifeStep extends AbstractStep {
     }
 
     @Override
-    public boolean isOptional() {
-        return true;
-    }
-
-
-    @Override
-    public void onStepVisible() {
-    }
-
-    @Override
     public void onNext() {
         WizardQualityOfLife.updateProgress(questionnaire, currentQuestionNumber);
-        Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber );
+        Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber);
     }
 
     @Override
-    public void onPrevious() {
-        System.out.println("onPrevious");
-    }
-
-    @Override
-    public String optional() {
-        return Strings.getStringByRId(R.string.can_skip);
+    public boolean nextIf() {
+        Log.i(CLASS_NAME, "nextIf");
+        return isAnAnswerSelected();
     }
 
     @Override
     public String error() {
-        return "<b>You must click!</b> <small>this is the condition!</small>";
+        return Strings.getStringByRId(R.string.please_select_answer);
+    }
+
+    private boolean isAnAnswerSelected() {
+        RadioButton buttonToCheck = ((RadioButton) answersGroup.getChildAt(4));
+        return !buttonToCheck.isChecked();
     }
 }
