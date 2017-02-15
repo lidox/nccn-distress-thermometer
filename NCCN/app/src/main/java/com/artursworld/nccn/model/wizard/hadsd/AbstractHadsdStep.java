@@ -137,13 +137,30 @@ public class AbstractHadsdStep extends AbstractStep {
      * Sets the radio button as 'checked' by byte array coming from database
      */
     private void checkRadioButtonByBits() {
-        byte[] answerByte = questionnaire.getAnswerByNr(currentQuestionNumber);
-        Log.i(AbstractHadsdStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr: " +(currentQuestionNumber+1) + "(index:"+currentQuestionNumber+")");
-        StringBuilder bits = new StringBuilder(Bits.getStringByByte(answerByte)).reverse();
-        int indexToCheck = bits.indexOf("1");
+        double questionNr = currentQuestionNumber + 1;
+        int progressValue = (int) Math.floor(questionNr / questionnaire.getQuestionCount() * 100);
+        if(questionnaire.getProgressInPercent() >= progressValue){
+            byte[] answerByte = questionnaire.getAnswerByNr(currentQuestionNumber);
+            Log.i(AbstractHadsdStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr: " +(currentQuestionNumber+1) + "(index:"+currentQuestionNumber+")");
+            StringBuilder bits = new StringBuilder(Bits.getStringByByte(answerByte)).reverse();
+            int indexToCheck = bits.indexOf("1");
+            setRadioBoxCheckedByIndex(indexToCheck, true);
+        }
+        else{
+            setRadioBoxCheckedByIndex(4, true);
+        }
+
+    }
+
+    /**
+     * Sets a specified radio button as checked / unchecked
+     * @param indexToCheck the index of the radio button
+     * @param isChecked check or uncheck radio button
+     */
+    private void setRadioBoxCheckedByIndex(int indexToCheck, boolean isChecked) {
         RadioButton buttonToCheck = ((RadioButton)answersGroup.getChildAt(indexToCheck));
         if(buttonToCheck != null)
-            buttonToCheck.setChecked(true);
+            buttonToCheck.setChecked(isChecked);
     }
 
     @Override
@@ -152,19 +169,20 @@ public class AbstractHadsdStep extends AbstractStep {
     }
 
     @Override
-    public boolean isOptional() {
-        return true;
-    }
-
-
-    @Override
-    public void onStepVisible() {
+    public boolean nextIf(){
+        Log.i(CLASS_NAME, "nextIf");
+        return isAnAnswerSelected();
     }
 
     @Override
     public void onNext() {
-        System.out.println("onNext");
-        increaseProgressValue();
+            Log.i(CLASS_NAME, "onNext");
+            increaseProgressValue();
+    }
+
+    private boolean isAnAnswerSelected() {
+        RadioButton buttonToCheck = ((RadioButton)answersGroup.getChildAt(4));
+        return !buttonToCheck.isChecked();
     }
 
     private void increaseProgressValue() {
@@ -185,17 +203,7 @@ public class AbstractHadsdStep extends AbstractStep {
     }
 
     @Override
-    public void onPrevious() {
-        System.out.println("onPrevious");
-    }
-
-    @Override
-    public String optional() {
-        return Strings.getStringByRId(R.string.can_skip);
-    }
-
-    @Override
     public String error() {
-        return "<b>You must click!</b> <small>this is the condition!</small>";
+        return Strings.getStringByRId(R.string.please_select_answer);
     }
 }

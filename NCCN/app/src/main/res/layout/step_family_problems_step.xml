@@ -40,7 +40,6 @@
             android:text="@string/children_problems"
             android:textSize="@dimen/textAppearanceLabelLarge" />
 
-
     </RelativeLayout>
 
 </ScrollView>

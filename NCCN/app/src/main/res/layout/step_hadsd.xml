@@ -8,32 +8,32 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/question"
             android:background="@color/colorPrimary">
 
             <TextView
                 android:id="@+id/question_title"
-                android:layout_marginLeft="80dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
+                android:layout_marginLeft="80dp"
                 android:paddingTop="50dp"
                 android:text=""
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textAppearanceSubLabel" />
 
 
             <TextView
                 android:id="@+id/question_label"
-                android:layout_below="@+id/question_title"
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:textAlignment="center"
+                android:layout_below="@+id/question_title"
+                android:layout_margin="10dp"
                 android:paddingBottom="50dp"
                 android:text="Question"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textAppearanceLabelLarge" />
 
         </RelativeLayout>
@@ -41,48 +41,60 @@
 
         <RadioGroup
             android:id="@+id/answer_radio_group"
-            android:layout_marginTop="15dp"
-            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/question"
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/textAppearanceLabelLarge"
-            android:layout_marginLeft="100dp"
-            android:layout_height="wrap_content" >
+            android:paddingLeft="70dp"
+            android:layout_marginTop="70dp"
+            android:textAlignment="center"
+            android:textSize="@dimen/textAppearanceLabelLarge">
 
             <RadioButton
                 android:id="@+id/answer_a"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/answer_margin"
                 android:buttonTint="@color/colorPrimary"
-                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:checked="true"
                 android:text="A"
-                android:checked="true" />
+                android:textSize="@dimen/textAppearanceLabelLarge" />
 
             <RadioButton
                 android:id="@+id/answer_b"
-                android:text="B"
-                android:textSize="@dimen/textAppearanceLabelLarge"
-                android:buttonTint="@color/colorPrimary"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/answer_margin"
+                android:buttonTint="@color/colorPrimary"
+                android:text="B"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
 
             <RadioButton
                 android:id="@+id/answer_c"
-                android:text="C"
-                android:textSize="@dimen/textAppearanceLabelLarge"
-                android:buttonTint="@color/colorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                android:layout_margin="@dimen/answer_margin"
+                android:buttonTint="@color/colorPrimary"
+                android:text="C"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
 
             <RadioButton
                 android:id="@+id/answer_d"
-                android:text="D"
-                android:buttonTint="@color/colorPrimary"
                 android:layout_width="wrap_content"
-                android:textSize="@dimen/textAppearanceLabelLarge"
                 android:layout_height="wrap_content"
-                />
+                android:layout_margin="@dimen/answer_margin"
+                android:buttonTint="@color/colorPrimary"
+                android:text="D"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
+
+            <RadioButton
+                android:id="@+id/no_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/answer_margin"
+                android:buttonTint="@color/colorPrimary"
+                android:text="E"
+                android:visibility="invisible"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
 
         </RadioGroup>
 

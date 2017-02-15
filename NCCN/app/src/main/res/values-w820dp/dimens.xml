@@ -7,4 +7,5 @@
     <dimen name="textAppearanceLabel">25sp</dimen>
     <dimen name="textAppearanceLabelLarge">40sp</dimen>
     <dimen name="textAppearanceLabelLargeSub">35sp</dimen>
+    <dimen name="answer_margin">15dp</dimen>
 </resources>
