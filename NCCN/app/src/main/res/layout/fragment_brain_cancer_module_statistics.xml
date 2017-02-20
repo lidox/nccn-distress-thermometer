@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.artursworld.nccn.view.statistics.QualityOfLifeStatisticsFragment">
+
+    <RelativeLayout
+        android:id="@+id/edit_text_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="20dp"
+        android:paddingTop="30dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:id="@+id/history_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/history"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/history_label"
+            android:layout_toLeftOf="@+id/user_name_label"
+            android:paddingBottom="30dp"
+            android:paddingRight="5dp"
+            android:src="@drawable/ic_face_black_24dp" />
+
+        <TextView
+            android:id="@+id/user_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/history_label"
+            android:layout_alignTop="@id/user_icon"
+            android:layout_alignBottom="@id/user_icon"
+            android:layout_centerHorizontal="true"
+            android:text="@string/user_name"
+            android:textSize="@dimen/textAppearanceLabelLarge" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/brain_cancer_module_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_holder"
+        android:padding="20dp" />
+
+</RelativeLayout>

@@ -27,6 +27,7 @@ public class StatisticsTabsActivity extends AppCompatActivity {
         fragmentList.add(new HadsdStatisticsFragment());
         fragmentList.add(new DistressThermometerStatisticsFragment());
         fragmentList.add(new QualityOfLifeStatisticsFragment());
+        fragmentList.add(new BrainCancerModuleStatisticsFragment());
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (SpaceTabLayout) findViewById(R.id.spaceTabLayout);

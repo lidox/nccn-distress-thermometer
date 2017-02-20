@@ -329,4 +329,69 @@ public class QolQuestionnaire {
         return new StringBuilder(bits).reverse().indexOf("1") + 1;
     }
 
+    // Brain Cancer Module (BN20)
+    public double getFutureUncertaintyScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(31));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(32));
+        int itemNUmber3 = getScoreByBits(getBitsByQuestionNr(33));
+        int itemNUmber4 = getScoreByBits(getBitsByQuestionNr(34));
+        int itemNUmber5 = getScoreByBits(getBitsByQuestionNr(35));
+        return getSymptomScore(3, itemNumber1, itemNUmber2, itemNUmber3, itemNUmber4, itemNUmber5);
+    }
+
+    public double getVisualDisorderScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(36));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(37));
+        int itemNUmber3 = getScoreByBits(getBitsByQuestionNr(38));
+        return getSymptomScore(3, itemNumber1, itemNUmber2, itemNUmber3);
+    }
+
+    public double getMotorDysfunctionScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(40));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(45));
+        int itemNUmber3 = getScoreByBits(getBitsByQuestionNr(49));
+        return getSymptomScore(3, itemNumber1, itemNUmber2, itemNUmber3);
+    }
+
+    public double getCommunicationDeficitScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(41));
+        int itemNUmber2 = getScoreByBits(getBitsByQuestionNr(42));
+        int itemNUmber3 = getScoreByBits(getBitsByQuestionNr(43));
+        return getSymptomScore(3, itemNumber1, itemNUmber2, itemNUmber3);
+    }
+
+    public double getHeadachesScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(34));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getSeizuresScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(39));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getDrowsinessScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(44));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getHairLossScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(46));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getItchySkinScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(47));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getWeaknessOfLegsScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(48));
+        return getSymptomScore(3, itemNumber1);
+    }
+
+    public double getBladderControlScore(){
+        int itemNumber1 = getScoreByBits(getBitsByQuestionNr(50));
+        return getSymptomScore(3, itemNumber1);
+    }
 }

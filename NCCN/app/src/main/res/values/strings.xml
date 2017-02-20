@@ -165,4 +165,7 @@
     <string name="social_functioning">Soziale Fähigkeiten</string>
     <string name="score">Punkte</string>
     <string name="please_select_answer">Bitte wählen Sie eine Antwort aus</string>
+    <string name="brain_cancer_module">Brain Cancer Module</string>
+    <string name="domains">Domäne</string>
+    <string name="future_uncertainty">Unsicherheit bzgl. der Zukunft</string>
 </resources>
