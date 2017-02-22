@@ -4,28 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
-import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.controller.ElasticRestClient;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
@@ -55,6 +48,18 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         createUserIfNull();
         initNavigationAndToolBar();
         activity = this;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String userName = setUserNameTextByGlobalValue();
+        Log.i(CLASS_NAME, "Display selected user: " + userName);
+        addOnUserNameTextChangeListener();
+
+        ElasticRestClient restapi = new ElasticRestClient();
+        //restapi.getHttpRequest("twitter/tweet/1");
+        restapi.create("4");
     }
 
 
@@ -163,14 +168,6 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         navigationView.getMenu().findItem(R.id.nav_user_start_configuration).setChecked(false);
         navigationView.getMenu().findItem(R.id.nav_user_statistics).setChecked(false);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        String userName = setUserNameTextByGlobalValue();
-        Log.i(CLASS_NAME, "Display selected user: " + userName);
-        addOnUserNameTextChangeListener();
     }
 
     @Nullable
