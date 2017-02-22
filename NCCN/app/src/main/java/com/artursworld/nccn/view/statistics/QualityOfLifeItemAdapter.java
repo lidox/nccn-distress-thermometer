@@ -41,7 +41,7 @@ public class QualityOfLifeItemAdapter extends ArrayAdapter<QolQuestionnaire> {
 
 
         TextView date = (TextView) convertView.findViewById(R.id.date_txt);
-        TextView globalHealthScoreText = (TextView) convertView.findViewById(R.id.future_uncertainty_score);
+        TextView globalHealthScoreText = (TextView) convertView.findViewById(R.id.global_health_score);
         TextView physical_functioning_scoreText = (TextView) convertView.findViewById(R.id.physical_functioning_score);
         TextView role_functioning_scoreText = (TextView) convertView.findViewById(R.id.role_functioning_score);
         TextView emotional_functioning_scoreText = (TextView) convertView.findViewById(R.id.emotional_functioning_score);

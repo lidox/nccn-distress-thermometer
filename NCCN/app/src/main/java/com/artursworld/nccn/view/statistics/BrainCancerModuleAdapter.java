@@ -25,7 +25,6 @@ public class BrainCancerModuleAdapter extends ArrayAdapter<QolQuestionnaire> {
     private Activity activity = null;
 
     public BrainCancerModuleAdapter(Activity activity, List<QolQuestionnaire> list) {
-        //TODO: change layout inside
         super(activity, R.layout.adapter_brain_cancer_module_item, list);
         Log.i(CLASS_NAME, "Adapter loaded by list: " + list.toString());
         this.activity = activity;
@@ -40,45 +39,40 @@ public class BrainCancerModuleAdapter extends ArrayAdapter<QolQuestionnaire> {
             convertView = inflater.inflate(R.layout.adapter_brain_cancer_module_item, null);
         }
 
-        //TODO: chage UI references
         TextView date = (TextView) convertView.findViewById(R.id.date_txt);
-        TextView globalHealthScoreText = (TextView) convertView.findViewById(R.id.future_uncertainty_score);
-        TextView physical_functioning_scoreText = (TextView) convertView.findViewById(R.id.physical_functioning_score);
-        TextView role_functioning_scoreText = (TextView) convertView.findViewById(R.id.role_functioning_score);
-        TextView emotional_functioning_scoreText = (TextView) convertView.findViewById(R.id.emotional_functioning_score);
-        TextView cognitive_functioning_scoreText = (TextView) convertView.findViewById(R.id.cognitive_functioning_score);
-        TextView social_functioning_scoreText = (TextView) convertView.findViewById(R.id.social_functioning_score);
-        TextView fatigue_scoreText = (TextView) convertView.findViewById(R.id.fatigue_score);
-        TextView nausea_and_vomiting_scoreText = (TextView) convertView.findViewById(R.id.nausea_and_vomiting_score);
-        TextView pain_scoreText = (TextView) convertView.findViewById(R.id.pain_score);
-        TextView dyspnoea_scoreText = (TextView) convertView.findViewById(R.id.dyspnoea_score);
-        TextView insomnia_scoreText = (TextView) convertView.findViewById(R.id.insomnia_score);
+        TextView score_future_uncertaintyText = (TextView) convertView.findViewById(R.id.score_future_uncertainty);
+        TextView score_visual_disorderText = (TextView) convertView.findViewById(R.id.score_visual_disorder);
+        TextView score_motor_dysfunctionText = (TextView) convertView.findViewById(R.id.score_motor_dysfunction);
+        TextView score_communication_deficitText = (TextView) convertView.findViewById(R.id.score_communication_deficit);
+        TextView score_headachesText = (TextView) convertView.findViewById(R.id.score_headaches);
+        TextView score_seizuresText = (TextView) convertView.findViewById(R.id.score_seizures);
+        TextView score_drowsinessText = (TextView) convertView.findViewById(R.id.score_drowsiness);
+        TextView score_hair_lossText = (TextView) convertView.findViewById(R.id.score_hair_loss);
+        TextView score_itchy_skinText = (TextView) convertView.findViewById(R.id.score_itchy_skin);
+        TextView score_weakness_of_legsText = (TextView) convertView.findViewById(R.id.score_weakness_of_legs);
+        TextView score_bladder_controlText = (TextView) convertView.findViewById(R.id.score_bladder_control);
 
         QolQuestionnaire questionnaire = list.get(position);
 
 
-        if(date != null) {
+        if (date != null) {
             Date cDate = questionnaire.getCreationDate_PK();
             String creationDate = Dates.getGermanDateByDate(cDate);
-            date.setText(Strings.getStringByRId(R.string.date) + ": " + creationDate + " " +Strings.getStringByRId(R.string.oclock));
+            date.setText(Strings.getStringByRId(R.string.date) + ": " + creationDate + " " + Strings.getStringByRId(R.string.oclock));
         }
 
-        // TODO: change UI references
-        if(globalHealthScoreText != null){
-            globalHealthScoreText.setText(questionnaire.getGlobalHealthScore() + " ");
-            physical_functioning_scoreText.setText(questionnaire.getPhysicalFunctioningScore() + "");
-            role_functioning_scoreText.setText(questionnaire.getRoleFunctioningScore() + "");
-            emotional_functioning_scoreText.setText(questionnaire.getEmotionalFunctioningScore() + "");
-            cognitive_functioning_scoreText.setText(questionnaire.getCognitiveFunctioningScore() + "");
-            social_functioning_scoreText.setText(questionnaire.getSocialFunctioningScore() +"");
-        }
-
-        if(fatigue_scoreText !=null){
-            fatigue_scoreText.setText(questionnaire.getFatigueScore() +"");
-            nausea_and_vomiting_scoreText.setText(questionnaire.getNauseaAndVomitingScore() + "");
-            pain_scoreText.setText(questionnaire.getPainScore() + "");
-            dyspnoea_scoreText.setText(questionnaire.getDyspnoeaScore() + "");
-            insomnia_scoreText.setText(questionnaire.getInsomniaScore()+ "");
+        if (score_future_uncertaintyText != null) {
+            score_future_uncertaintyText.setText(questionnaire.getFutureUncertaintyScore() + " ");
+            score_visual_disorderText.setText(questionnaire.getVisualDisorderScore() + "");
+            score_motor_dysfunctionText.setText(questionnaire.getMotorDysfunctionScore() + "");
+            score_communication_deficitText.setText(questionnaire.getCommunicationDeficitScore() + "");
+            score_headachesText.setText(questionnaire.getHeadachesScore() + "");
+            score_seizuresText.setText(questionnaire.getSeizuresScore() + "");
+            score_drowsinessText.setText(questionnaire.getDrowsinessScore() + "");
+            score_hair_lossText.setText(questionnaire.getHairLossScore() + "");
+            score_itchy_skinText.setText(questionnaire.getItchySkinScore() + "");
+            score_weakness_of_legsText.setText(questionnaire.getWeaknessOfLegsScore() + "");
+            score_bladder_controlText.setText(questionnaire.getBladderControlScore() + "");
         }
 
         return convertView;

@@ -6,4 +6,6 @@
     <color name="colorBlack">#222222</color>
     <color name="colorAccent">#F44236</color>
     <color name="colorGrey">#808080</color>
+    <color name="colorTablePrimaryLight">#e5e3e3</color>
+
 </resources>

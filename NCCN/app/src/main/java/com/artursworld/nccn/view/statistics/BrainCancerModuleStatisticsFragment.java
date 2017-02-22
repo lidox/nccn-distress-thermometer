@@ -30,7 +30,6 @@ public class BrainCancerModuleStatisticsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //TODO: change fragment:
         rootView =  inflater.inflate(R.layout.fragment_brain_cancer_module_statistics, container, false);
         return rootView;
     }
