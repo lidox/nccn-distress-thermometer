@@ -5,6 +5,11 @@ import android.util.Log;
 
 import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.controller.util.Security;
+import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
+import com.artursworld.nccn.model.persistence.manager.UserManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -37,7 +42,7 @@ public class DistressThermometerQuestionnaire {
     private int questionCount = 6; // [10+5+2+6+2+21+(2)]/8= 6 bytes a 8 Bits
     private String CLASS_NAME = DistressThermometerQuestionnaire.class.getSimpleName();
 
-    public DistressThermometerQuestionnaire(String userNameId){
+    public DistressThermometerQuestionnaire(String userNameId) {
         this.userNameId_FK = userNameId;
         this.creationDate_PK = new Date();
         this.updateDate = new Date();
@@ -53,26 +58,27 @@ public class DistressThermometerQuestionnaire {
         answersToQuestionsBytes[5] = defaultByte;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Questionnaires(user = " + userNameId_FK +"\n");
-        for(int i = 0; i < questionCount; i++){
-            sb.append("Answer to question "+(i+1)+"("+ getBitsByQuestionNr(i+1) + ")" +"\n");
+        sb.append("Questionnaires(user = " + userNameId_FK + "\n");
+        for (int i = 0; i < questionCount; i++) {
+            sb.append("Answer to question " + (i + 1) + "(" + getBitsByQuestionNr(i + 1) + ")" + "\n");
         }
-        sb.append("Progress = "+getProgressInPercent()+"%"+"\n");
-        sb.append("MD5-HASH = "+getMD5Hash());
+        sb.append("Progress = " + getProgressInPercent() + "%" + "\n");
+        sb.append("MD5-HASH = " + getMD5Hash());
         return sb.toString();
     }
 
     /**
      * Get the MD5 Hash of the user
+     *
      * @return the MD5 Hash of the user
      */
-    public String getMD5Hash(){
-        return Security.getMD5ByString(getUserNameId_FK()+getCreationDate_PK());
+    public String getMD5Hash() {
+        return Security.getMD5ByString(getUserNameId_FK() + getCreationDate_PK());
     }
 
-    public String getBitsByQuestionNr(int questionNr){
+    public String getBitsByQuestionNr(int questionNr) {
         if (validateQuestionNr(questionNr)) return null;
         StringBuilder currentBinaryAnswerString = new StringBuilder(Bits.getStringByByte(answersToQuestionsBytes));
         int[] startEndIndices = getStartEndIndexByQuestionNr(questionNr);
@@ -81,8 +87,9 @@ public class DistressThermometerQuestionnaire {
 
     /**
      * Sets new bits to the question by question number (first nr. 1)
+     *
      * @param questionNr the question number
-     * @param newBits the new bits to set
+     * @param newBits    the new bits to set
      */
     public void setBitsByQuestionNr(int questionNr, String newBits) {
         if (validateInput(questionNr, newBits)) return;
@@ -109,19 +116,19 @@ public class DistressThermometerQuestionnaire {
         if (isValidLength(questionNr, newBits, 1, 11))
             return true;
 
-        else if(isValidLength(questionNr, newBits, 2, 5))
+        else if (isValidLength(questionNr, newBits, 2, 5))
             return true;
 
-        else if(isValidLength(questionNr, newBits, 3, 2))
+        else if (isValidLength(questionNr, newBits, 3, 2))
             return true;
 
-        else if(isValidLength(questionNr, newBits, 4, 6))
+        else if (isValidLength(questionNr, newBits, 4, 6))
             return true;
 
-        else if(isValidLength(questionNr, newBits, 5, 2))
+        else if (isValidLength(questionNr, newBits, 5, 2))
             return true;
 
-        else if(isValidLength(questionNr, newBits, 6, 21))
+        else if (isValidLength(questionNr, newBits, 6, 21))
             return true;
 
         return false;
@@ -138,11 +145,12 @@ public class DistressThermometerQuestionnaire {
 
     /**
      * Accepts only question number between 1 and 6
+     *
      * @param questionNr the question number to validate
      * @return True if validation fails, otherwise false
      */
     private boolean validateQuestionNr(int questionNr) {
-        if(questionNr < 1 || questionNr > 6){
+        if (questionNr < 1 || questionNr > 6) {
             Log.e(CLASS_NAME, "validateQuestionNr accepts only numbers between [1 - 6]");
             return true;
         }
@@ -152,37 +160,33 @@ public class DistressThermometerQuestionnaire {
     /**
      * Calculates the beginning index, inclusive and the ending index, exclusive
      * of the question by question number
+     *
      * @param questionNr the question number
      * @return an array containing the beginning and ending index
      */
     private int[] getStartEndIndexByQuestionNr(int questionNr) {
-        int [] indexStartEnd = new int[2];
+        int[] indexStartEnd = new int[2];
         int beginningIndex = 0;
         int endingIndex = 0;
 
-        if(questionNr == 1){
+        if (questionNr == 1) {
             beginningIndex = 0;
             endingIndex = 11;
-        }
-        else if( questionNr == 2){
+        } else if (questionNr == 2) {
             beginningIndex = 11;
-            endingIndex =  16;
-        }
-        else if( questionNr == 3){
+            endingIndex = 16;
+        } else if (questionNr == 3) {
             beginningIndex = 16;
             endingIndex = 18;
-        }
-        else if(questionNr == 4){
+        } else if (questionNr == 4) {
             beginningIndex = 18;
             endingIndex = 24;
-        }
-        else if( questionNr == 5){
+        } else if (questionNr == 5) {
             beginningIndex = 24;
-            endingIndex =  26;
-        }
-        else if( questionNr == 6){
+            endingIndex = 26;
+        } else if (questionNr == 6) {
             beginningIndex = 26;
-            endingIndex =  47;
+            endingIndex = 47;
         }
         indexStartEnd[0] = beginningIndex;
         indexStartEnd[1] = endingIndex;
@@ -217,7 +221,7 @@ public class DistressThermometerQuestionnaire {
         return answersToQuestionsBytes;
     }
 
-    public String getAnswersToQuestionsAsString(){
+    public String getAnswersToQuestionsAsString() {
         return Bits.getStringByByte(this.answersToQuestionsBytes);
     }
 
@@ -234,5 +238,21 @@ public class DistressThermometerQuestionnaire {
     public boolean hasDistress() {
         boolean scoreValueTooHigh = getDistressScore() >= 6;
         return scoreValueTooHigh ? true : false;
+    }
+
+    public JSONObject getAsJSON(Date userCreationDate) {
+        JSONObject params = new JSONObject();
+        //TODO getOperationType: pre, post op
+        try {
+            params.put("distress-score", getDistressScore());
+            params.put("has-distress", hasDistress());
+            params.put("creation-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
+            params.put("update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
+            params.put("user-id",Security.getMD5ByString(EntityDbManager.dateFormat.format(userCreationDate)));
+        } catch (Exception e) {
+            Log.e(CLASS_NAME, e.getLocalizedMessage());
+        } finally {
+            return params;
+        }
     }
 }

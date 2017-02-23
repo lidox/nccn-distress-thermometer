@@ -14,7 +14,9 @@ import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.contracts.DBContracts;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserManager extends EntityDbManager {
@@ -128,6 +130,21 @@ public class UserManager extends EntityDbManager {
         }
 
         return user;
+    }
+
+    public List<Date> getQuestionnaireDateListByUserName(String userName) {
+        List<Date> resultList = new ArrayList<>();
+
+        List<String> list = getQuestionnaireDatesByUserName(userName);
+        for (String date : list){
+            try {
+                resultList.add(EntityDbManager.dateFormat.parse(date));
+            } catch (ParseException e) {
+                Log.e(CLASS_NAME, e.getLocalizedMessage());
+            }
+        }
+
+        return resultList;
     }
 
     public List<String> getQuestionnaireDatesByUserName(String userName) {

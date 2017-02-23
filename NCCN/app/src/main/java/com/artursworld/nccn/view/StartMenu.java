@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,7 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.artursworld.nccn.R;
-import com.artursworld.nccn.controller.ElasticRestClient;
+import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
+import com.artursworld.nccn.controller.elasticsearch.ElasticRestClient;
+import com.artursworld.nccn.controller.elasticsearch.METHOD;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
@@ -26,6 +29,9 @@ import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.view.user.SelectUserActivity;
 import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +44,8 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     private User selectedUser = null;
 
     // UI
-    @BindView(R.id.user_name_edit_text) MaterialEditText userNameEditText;
+    @BindView(R.id.user_name_edit_text)
+    MaterialEditText userNameEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +64,20 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         Log.i(CLASS_NAME, "Display selected user: " + userName);
         addOnUserNameTextChangeListener();
 
-        ElasticRestClient restapi = new ElasticRestClient();
-        //restapi.getHttpRequest("twitter/tweet/1");
-        restapi.create("4");
+        //TODO: remove
+        /**
+         final ElasticQuestionnaire q = new ElasticQuestionnaire();
+         //q.post("?pretty",new Pair<>("name", "artur"), new Pair<>("alter", "24"));
+
+
+         new AsyncTask<Void, Void, Void>() {
+        @Override protected Void doInBackground(Void... something) {
+        q.update("1/_update?pretty", new Pair<>("name", "Android"), new Pair<>("alter", "10"));
+        return null;
+        }
+        }.execute();
+         **/
+
     }
 
 
@@ -78,7 +96,8 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         });
         userNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -87,7 +106,8 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
@@ -97,17 +117,17 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         if (selectedUser == null)
             selectedUser = new UserManager().getUserByName(Global.getSelectedUser());
 
-        if(selectedUser != null){
+        if (selectedUser != null) {
             final String newName = userNameEditText.getText().toString();
-            Log.i(CLASS_NAME, "rename user from '" + selectedUser.getName() + "' to '" + newName+"'");
+            Log.i(CLASS_NAME, "rename user from '" + selectedUser.getName() + "' to '" + newName + "'");
             selectedUser.setName(newName);
             Log.i(CLASS_NAME, "user: " + selectedUser);
-            new AsyncTask<Void, Void, Void>(){
+            new AsyncTask<Void, Void, Void>() {
 
                 @Override
                 protected Void doInBackground(Void... voids) {
                     long result = new UserManager().update(selectedUser);
-                    if(result != 0)
+                    if (result != 0)
                         Global.setSelectedUserName(newName);
                     return null;
                 }
@@ -116,11 +136,11 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void createUserIfNull() {
-        if(Global.getSelectedUser() == null){
+        if (Global.getSelectedUser() == null) {
             String defaultUserName = Strings.getStringByRId(R.string.user_name);
             new UserManager().insertUser(new User(defaultUserName));
             selectedUser = new UserManager().getUserByName(defaultUserName);
-            if(selectedUser != null){
+            if (selectedUser != null) {
                 Global.setSelectedUserName(defaultUserName);
                 Global.setHasToCreateNewUser(false);
             }
@@ -134,7 +154,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
         if (id == R.id.nav_user_start_configuration) {
             Log.i(CLASS_NAME, "nav_user_start_configuration selected");
-            if(configurationDialog == null)
+            if (configurationDialog == null)
                 configurationDialog = new UserStartConfiguration(activity);
             configurationDialog.showConfigurationDialog();
         } else if (id == R.id.nav_user_statistics) {
@@ -142,7 +162,17 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             Intent in = new Intent(activity, SelectUserActivity.class);
             in.putExtra(Strings.getStringByRId(R.string.c_is_selectuser_fragment), true);
             startActivity(in);
+        } else if (id == R.id.nav_elastic_synchronisation) {
+            Log.i(CLASS_NAME, "Start Synchronisation...");
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    ElasticQuestionnaire.syncAll(activity.getApplicationContext());
+                    return null;
+                }
+            }.execute();
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -173,20 +203,18 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     @Nullable
     private String setUserNameTextByGlobalValue() {
         final String userName = Global.getSelectedUser();
-        if(userName != null){
-            if(Global.hasToCreateNewUser()){
+        if (userName != null) {
+            if (Global.hasToCreateNewUser()) {
                 userNameEditText.setText("");
-            }
-            else{
+            } else {
                 userNameEditText.setText(userName);
             }
             selectedUser = new UserManager().getUserByName(userName);
-        }
-        else if(userName == null) {
+        } else if (userName == null) {
             Log.i(CLASS_NAME, "user is null, so first time opened this app");
             String defaultUserName = Strings.getStringByRId(R.string.user_name);
             selectedUser = new UserManager().getUserByName(defaultUserName);
-            if(selectedUser != null){
+            if (selectedUser != null) {
                 Global.setSelectedUserName(defaultUserName);
                 Global.setHasToCreateNewUser(false);
             }

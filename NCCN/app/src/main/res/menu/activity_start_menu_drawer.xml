@@ -10,6 +10,10 @@
             android:id="@+id/nav_user_statistics"
             android:icon="@drawable/ic_timeline_black_36dp"
             android:title="@string/user_statistics" />
+        <item
+            android:id="@+id/nav_elastic_synchronisation"
+            android:icon="@drawable/ic_sync_black_24dp"
+            android:title="@string/synchronisation" />
     </group>
 
 
