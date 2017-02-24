@@ -30,4 +30,14 @@ public class Dates {
         }
         return result;
     }
+
+    public static long getLongByDate(Date date){
+        if(date!= null)
+            return date.getTime();
+        return -1;
+    }
+
+    public static Date getDateByNumber(long number){
+        return new Date(number);
+    }
 }

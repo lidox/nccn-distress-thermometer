@@ -63,21 +63,6 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         String userName = setUserNameTextByGlobalValue();
         Log.i(CLASS_NAME, "Display selected user: " + userName);
         addOnUserNameTextChangeListener();
-
-        //TODO: remove
-        /**
-         final ElasticQuestionnaire q = new ElasticQuestionnaire();
-         //q.post("?pretty",new Pair<>("name", "artur"), new Pair<>("alter", "24"));
-
-
-         new AsyncTask<Void, Void, Void>() {
-        @Override protected Void doInBackground(Void... something) {
-        q.update("1/_update?pretty", new Pair<>("name", "Android"), new Pair<>("alter", "10"));
-        return null;
-        }
-        }.execute();
-         **/
-
     }
 
 

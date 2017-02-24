@@ -1,8 +1,16 @@
 package com.artursworld.nccn.model.entity;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.controller.util.Dates;
+import com.artursworld.nccn.controller.util.Security;
+import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
+import com.google.common.collect.Iterables;
+
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -10,6 +18,8 @@ import java.util.Date;
  * Represents the Quality Of Life (Qol) Questionnaire
  */
 public class QolQuestionnaire {
+
+    private static String CLASS_NAME = QolQuestionnaire.class.getSimpleName();
 
     private Date creationDate_PK;
     private String userNameId_FK;
@@ -394,4 +404,91 @@ public class QolQuestionnaire {
         int itemNumber1 = getScoreByBits(getBitsByQuestionNr(50));
         return getSymptomScore(3, itemNumber1);
     }
+
+    /**
+     * Get brain cancer module values
+     * @return brain cancer module values as JSON representation
+     */
+    public JSONObject getBN20AsJSON() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("future-uncertainty", getFutureUncertaintyScore());
+            params.put("visual-disorder", getVisualDisorderScore());
+            params.put("motor-dysfunction", getMotorDysfunctionScore());
+            params.put("communication-deficit", getCommunicationDeficitScore());
+            params.put("headaches", getHeadachesScore());
+            params.put("seizures", getSeizuresScore());
+            params.put("drowsiness", getDrowsinessScore());
+            params.put("hair-loss", getHairLossScore());
+            params.put("itchy-skin", getItchySkinScore());
+            params.put("weakness-of-legs", getWeaknessOfLegsScore());
+            params.put("bladder-control", getBladderControlScore());
+
+            params.put("creation-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
+            params.put("update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
+            params.put("user-name", Security.getMD5ByString(getUserNameId_FK()));
+            params.put("operation-type", getOperationType());
+        } catch (Exception e) {
+            Log.e(CLASS_NAME, e.getLocalizedMessage());
+        } finally {
+            return params;
+        }
+    }
+
+    /**
+     * Get QLQ-C30 values
+     * @return QLQ-C30 values as JSON representation
+     */
+    public JSONObject getQLQC30AsJSON() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("global-health-status", getGlobalHealthScore());
+            params.put("physical-functioning", getPhysicalFunctioningScore());
+            params.put("role-functioning", getRoleFunctioningScore());
+            params.put("emotional-functioning", getEmotionalFunctioningScore());
+            params.put("cognitive-functioning", getCognitiveFunctioningScore());
+            params.put("social-functioning", getSocialFunctioningScore());
+            params.put("fatigue", getFatigueScore());
+            params.put("nausea-and-vomiting", getNauseaAndVomitingScore());
+            params.put("pain", getPainScore());
+            params.put("dyspnoea", getDyspnoeaScore());
+            params.put("insomnia", getInsomniaScore());
+            params.put("appetite-loss", getAppetiteLossScore());
+            params.put("constipation", getConstipationScore());
+            params.put("diarrhoea", getDiarrhoeaScore());
+            params.put("financial-difficulties", getFinancialDifficultiesScore());
+            
+            params.put("creation-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
+            params.put("update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
+            params.put("user-name", Security.getMD5ByString(getUserNameId_FK()));
+            params.put("operation-type", getOperationType());
+        } catch (Exception e) {
+            Log.e(CLASS_NAME, e.getLocalizedMessage());
+        } finally {
+            return params;
+        }
+    }
+
+    @NonNull
+    //TODO getOperationType: pre, post op
+    private String getOperationType() {
+        return "unkown";
+    }
+
+    /**
+     * Get the bulk for Quality of Life (QLQC30)
+     * @return a String containing upsert information
+     */
+    public String getBulkQLQC30() {
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), "quality-of-life", getQLQC30AsJSON().toString());
+    }
+
+    /**
+     * Get the bulk for Brain Cancer Module (BN20)
+     * @return a String containing upsert information
+     */
+    public String getBulkBN20() {
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), "brain-cancer-module", getBN20AsJSON().toString());
+    }
+
 }

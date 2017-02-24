@@ -1,9 +1,12 @@
 package com.artursworld.nccn.model.entity;
 
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.controller.util.Dates;
 import com.artursworld.nccn.controller.util.Security;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
@@ -240,19 +243,32 @@ public class DistressThermometerQuestionnaire {
         return scoreValueTooHigh ? true : false;
     }
 
-    public JSONObject getAsJSON(Date userCreationDate) {
+    public JSONObject getAsJSON() {
         JSONObject params = new JSONObject();
-        //TODO getOperationType: pre, post op
         try {
             params.put("distress-score", getDistressScore());
             params.put("has-distress", hasDistress());
             params.put("creation-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
             params.put("update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
-            params.put("user-id",Security.getMD5ByString(EntityDbManager.dateFormat.format(userCreationDate)));
+            params.put("user-name", Security.getMD5ByString(getUserNameId_FK()));
+            params.put("operation-type", getOperationType());
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         } finally {
             return params;
         }
+    }
+
+    @NonNull
+    //TODO getOperationType: pre, post op
+    private String getOperationType() {
+        return "unkown";
+    }
+    /**
+     * Get the bulk for Distress Thermometer
+     * @return a String containing upsert information
+     */
+    public String getBulk() {
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), "distress-thermometer", getAsJSON().toString());
     }
 }

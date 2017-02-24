@@ -1,11 +1,16 @@
 package com.artursworld.nccn.model.entity;
 
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
 
+import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.controller.util.Security;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
+
+import org.json.JSONObject;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -14,6 +19,9 @@ import java.util.List;
 
 import static com.artursworld.nccn.view.user.UserStartConfiguration.CLASS_NAME;
 
+/**
+ * HADS-D, Hospital Anxiety and Depression Scale
+ */
 public class HADSDQuestionnaire {
 
     private Date creationDate_PK;
@@ -97,6 +105,7 @@ public class HADSDQuestionnaire {
      */
     public void setAnswerByNr(int questionNr, byte[] newByte){
         this.getAnswerToQuestionList().set(questionNr, newByte);
+        this.setUpdateDate(new Date());
     }
 
     public String getCreationTimeStamp(){
@@ -162,5 +171,38 @@ public class HADSDQuestionnaire {
 
     public int getQuestionCount() {
         return questionCountOfHADSDQuestionnaire;
+    }
+
+    public JSONObject getAsJSON() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("anxiety-score", getAnxietyScore());
+            params.put("depression-score", getDepressionScore());
+            params.put("has-depression", hasDepression());
+            params.put("has-anxiety", hasAnxiety());
+
+            params.put("creation-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
+            params.put("update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
+            params.put("user-name", Security.getMD5ByString(getUserNameId_FK()));
+            params.put("operation-type", getOperationType());
+        } catch (Exception e) {
+            Log.e(CLASS_NAME, e.getLocalizedMessage());
+        } finally {
+            return params;
+        }
+    }
+
+    @NonNull
+    //TODO getOperationType: pre, post op
+    private String getOperationType() {
+        return "unkown";
+    }
+
+    /**
+     * Get the bulk for HADS-D, Hospital Anxiety and Depression Scale
+     * @return a String containing upsert information
+     */
+    public String getBulk() {
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), "HADS-D", getAsJSON().toString());
     }
 }

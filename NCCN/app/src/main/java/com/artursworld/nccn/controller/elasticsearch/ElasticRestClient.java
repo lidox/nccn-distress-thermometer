@@ -25,8 +25,6 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 
 public class ElasticRestClient {
 
-    private static final String INDEX = "twitter";
-    private static final String TYPE = "tweet";
     private static final String BASE_URL = "http://10.0.2.2:9200/"; // Android uses this IP to access localhost
 
     private static final String CLASS_NAME = ElasticRestClient.class.getSimpleName();
@@ -53,17 +51,18 @@ public class ElasticRestClient {
 
     /**
      * Makes a synchronous post or put request
+     *
      * @param httpMethod the HTTP method to choose
-     * @param apiString the REST API to use
-     * @param params the parameters to send
+     * @param apiString  the REST API to use
+     * @param params     the parameters to send
      * @return the response of the request
      */
-    public static String postOrPut(METHOD httpMethod, String apiString, JSONObject params) {
+    private static String postOrPut(METHOD httpMethod, String ES_INDEX, String ES_TYPE, String apiString, Object params) {
         String response = null;
         try {
             HttpClient httpClient = HttpClientBuilder.create().build();
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            HttpEntityEnclosingRequestBase postMethod = getHttpMethodConfiguration(httpMethod, apiString, params);
+            HttpEntityEnclosingRequestBase postMethod = getHttpMethodConfiguration(httpMethod, ES_INDEX, ES_TYPE, apiString, params);
             response = httpClient.execute(postMethod, responseHandler);
             Log.i(CLASS_NAME + "response", response);
         } catch (Exception e) {
@@ -75,21 +74,48 @@ public class ElasticRestClient {
     }
 
     /**
+     * Post using a JSON Object as param
+     *
+     * @param apiString
+     * @param params
+     * @return
+     */
+    public static String post(String ES_INDEX, String ES_TYPE, String apiString, JSONObject params) {
+        return postOrPut(METHOD.POST, ES_INDEX, ES_TYPE, apiString, params);
+    }
+
+    /**
+     * Post using a String as param
+     *
+     * @param apiString
+     * @param params
+     * @return
+     */
+    public static String post(String ES_INDEX, String ES_TYPE, String apiString, String params) {
+        return postOrPut(METHOD.POST, ES_INDEX, ES_TYPE, apiString, params);
+    }
+
+    public static String put(String ES_INDEX, String ES_TYPE, String apiString, JSONObject params) {
+        return postOrPut(METHOD.PUT, ES_INDEX, ES_TYPE, apiString, params);
+    }
+
+    /**
      * Configuration for a POST request
+     *
      * @param apiString
      * @param params
      * @return
      * @throws UnsupportedEncodingException
      */
     @NonNull
-    private static  HttpEntityEnclosingRequestBase getHttpMethodConfiguration(METHOD httpMethod, String apiString, JSONObject params) throws UnsupportedEncodingException {
+    private static HttpEntityEnclosingRequestBase getHttpMethodConfiguration(METHOD httpMethod, String ES_INDEX, String ES_TYPE, String apiString, Object params) throws UnsupportedEncodingException {
         HttpEntityEnclosingRequestBase method = null;
 
-        if(httpMethod == METHOD.POST)
-            method = new HttpPost(getAbsoluteUrl(INDEX + "/" + TYPE + "/" + apiString));
+        if (httpMethod == METHOD.POST)
+            method = new HttpPost(getAbsoluteUrl(ES_INDEX + "/" + ES_TYPE + "/" + apiString));
 
-        else if(httpMethod == METHOD.PUT)
-            method = new HttpPut(getAbsoluteUrl(INDEX + "/" + TYPE + "/" + apiString));
+        else if (httpMethod == METHOD.PUT)
+            method = new HttpPut(getAbsoluteUrl(ES_INDEX + "/" + ES_TYPE + "/" + apiString));
 
         method.setHeader("Content-Type", "application/json");
         method.setEntity(new ByteArrayEntity(params.toString().getBytes("UTF8")));
