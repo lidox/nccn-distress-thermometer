@@ -163,15 +163,19 @@ public class ElasticQuestionnaire {
 
 
             DistressThermometerQuestionnaire thermo = new DistressThermometerQuestionnaireManager(ctx).getDistressThermometerQuestionnaireByDate(user.getName(), date);
-            params = addAllKeyValuePairs(thermo.getAsJSON(), params);
+            if (thermo.getProgressInPercent() == 100)
+                params = addAllKeyValuePairs(thermo.getAsJSON(), params);
 
 
             QolQuestionnaire qol = new QualityOfLifeManager(ctx).getQolQuestionnaireByDate(user.getName(), date);
-            params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
-            params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
+            if (qol.getProgressInPercent() == 100) {
+                params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
+                params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
+            }
 
             HADSDQuestionnaire hads = new HADSDQuestionnaireManager(ctx).getHADSDQuestionnaireByDate_PK(user.getName(), date);
-            params = addAllKeyValuePairs(hads.getAsJSON(), params);
+            if (hads.getProgressInPercent() == 100)
+                params = addAllKeyValuePairs(hads.getAsJSON(), params);
 
             bulk.append(ElasticQuestionnaire.getGenericBulk(date, ElasticQuestionnaire.ES_TYPE, params.toString()));
         }
