@@ -15,6 +15,7 @@ import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
@@ -23,13 +24,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class ElasticQuestionnaire {
 
     private static final String CLASS_NAME = ElasticQuestionnaire.class.getSimpleName();
     public static final String ES_INDEX = "questionnaire-app";
-    private static final String ES_TYPE = "tweet";
+    public static final String ES_TYPE = "scores";
 
     /**
      * Does a bulk operation to be faster
@@ -48,7 +50,7 @@ public class ElasticQuestionnaire {
          * { "doc" : {"field" : "value"}, "doc_as_upsert" : true }
          */
         final String apiString = "_bulk";
-        return ElasticRestClient.post("can-let", "this-here", apiString, updateBulkAsString);
+        return ElasticRestClient.post("you-can-let", "this-here", apiString, updateBulkAsString);
     }
 
     public void post(final String es_type, final String apiString, final Pair<String, String>... pairs) {
@@ -121,23 +123,27 @@ public class ElasticQuestionnaire {
      * Synchronizes all questionnaire for all user with elastic search
      * For each user a bulk will be created and sent to the elastic search
      */
-    public static void syncAll(Context ctx) {
+    public static String syncAll(Context ctx) {
         //ALGORITHM:
         // for each user
         // for each questionnaire
         // update
         // if could not update: create
+        StringBuilder response = new StringBuilder();
         List<User> userList = new UserManager(ctx).getAllUsers();
         for (User user : userList) {
             StringBuilder bulk = new StringBuilder();
             bulk.append(getUpsertBulkByUser(ctx, user));
-            ElasticQuestionnaire.bulk(bulk.toString());
+            String singleResponse = ElasticQuestionnaire.bulk(bulk.toString());
+            response.append(singleResponse + "\n");
         }
+        return response.toString();
     }
 
     /**
      * Generates an 'upsert' (update/insert) bulk String for a specific user
-     * @param ctx the database context
+     *
+     * @param ctx  the database context
      * @param user the user
      * @return a bulk containing all upsert information
      */
@@ -145,17 +151,52 @@ public class ElasticQuestionnaire {
         StringBuilder bulk = new StringBuilder();
         List<Date> dates = new UserManager().getQuestionnaireDateListByUserName(user.getName());
         for (Date date : dates) {
+            JSONObject params = new JSONObject();
+            try {
+                // TODO: get general user info: QuestionnaireMetadata
+                //params.put("operation-type", getOperationType());
+                params.put("creation-date", EntityDbManager.dateFormat.format(date));
+                params.put("user-name", Security.getMD5ByString(user.getName()));
+            } catch (Exception e) {
+                Log.e(CLASS_NAME, e.getLocalizedMessage());
+            }
+
+
             DistressThermometerQuestionnaire thermo = new DistressThermometerQuestionnaireManager(ctx).getDistressThermometerQuestionnaireByDate(user.getName(), date);
-            bulk.append(thermo.getBulk());
+            params = addAllKeyValuePairs(thermo.getAsJSON(), params);
+
 
             QolQuestionnaire qol = new QualityOfLifeManager(ctx).getQolQuestionnaireByDate(user.getName(), date);
-            bulk.append(qol.getBulkQLQC30());
-            bulk.append(qol.getBulkBN20());
+            params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
+            params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
 
             HADSDQuestionnaire hads = new HADSDQuestionnaireManager(ctx).getHADSDQuestionnaireByDate_PK(user.getName(), date);
-            bulk.append(hads.getBulk());
+            params = addAllKeyValuePairs(hads.getAsJSON(), params);
+
+            bulk.append(ElasticQuestionnaire.getGenericBulk(date, ElasticQuestionnaire.ES_TYPE, params.toString()));
         }
         return bulk.toString();
+    }
+
+    /**
+     * Adds all key-value pairs from source into destination
+     *
+     * @param source      the source JSON object
+     * @param destination the destination JSON object
+     * @return a JSON object containing key-value pairs of both source and destination
+     */
+    private static JSONObject addAllKeyValuePairs(JSONObject source, JSONObject destination) {
+        Iterator<?> keys = source.keys();
+        while (keys.hasNext()) {
+            try {
+                String key = (String) keys.next();
+                String value = source.get(key).toString();
+                destination.put(key, value);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return destination;
     }
 
     /**

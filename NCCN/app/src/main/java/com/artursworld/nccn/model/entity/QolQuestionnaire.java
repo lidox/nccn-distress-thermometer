@@ -412,22 +412,19 @@ public class QolQuestionnaire {
     public JSONObject getBN20AsJSON() {
         JSONObject params = new JSONObject();
         try {
-            params.put("future-uncertainty", getFutureUncertaintyScore());
-            params.put("visual-disorder", getVisualDisorderScore());
-            params.put("motor-dysfunction", getMotorDysfunctionScore());
-            params.put("communication-deficit", getCommunicationDeficitScore());
-            params.put("headaches", getHeadachesScore());
-            params.put("seizures", getSeizuresScore());
-            params.put("drowsiness", getDrowsinessScore());
-            params.put("hair-loss", getHairLossScore());
-            params.put("itchy-skin", getItchySkinScore());
-            params.put("weakness-of-legs", getWeaknessOfLegsScore());
-            params.put("bladder-control", getBladderControlScore());
-
-            params.put("creation-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
-            params.put("update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
-            params.put("user-name", Security.getMD5ByString(getUserNameId_FK()));
-            params.put("operation-type", getOperationType());
+            String prefix = "BN20-";
+            params.put(prefix+"future-uncertainty", getFutureUncertaintyScore());
+            params.put(prefix+"visual-disorder", getVisualDisorderScore());
+            params.put(prefix+"motor-dysfunction", getMotorDysfunctionScore());
+            params.put(prefix+"communication-deficit", getCommunicationDeficitScore());
+            params.put(prefix+"headaches", getHeadachesScore());
+            params.put(prefix+"seizures", getSeizuresScore());
+            params.put(prefix+"drowsiness", getDrowsinessScore());
+            params.put(prefix+"hair-loss", getHairLossScore());
+            params.put(prefix+"itchy-skin", getItchySkinScore());
+            params.put(prefix+"weakness-of-legs", getWeaknessOfLegsScore());
+            params.put(prefix+"bladder-control", getBladderControlScore());
+            params.put(prefix+"update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         } finally {
@@ -442,26 +439,23 @@ public class QolQuestionnaire {
     public JSONObject getQLQC30AsJSON() {
         JSONObject params = new JSONObject();
         try {
-            params.put("global-health-status", getGlobalHealthScore());
-            params.put("physical-functioning", getPhysicalFunctioningScore());
-            params.put("role-functioning", getRoleFunctioningScore());
-            params.put("emotional-functioning", getEmotionalFunctioningScore());
-            params.put("cognitive-functioning", getCognitiveFunctioningScore());
-            params.put("social-functioning", getSocialFunctioningScore());
-            params.put("fatigue", getFatigueScore());
-            params.put("nausea-and-vomiting", getNauseaAndVomitingScore());
-            params.put("pain", getPainScore());
-            params.put("dyspnoea", getDyspnoeaScore());
-            params.put("insomnia", getInsomniaScore());
-            params.put("appetite-loss", getAppetiteLossScore());
-            params.put("constipation", getConstipationScore());
-            params.put("diarrhoea", getDiarrhoeaScore());
-            params.put("financial-difficulties", getFinancialDifficultiesScore());
-            
-            params.put("creation-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
-            params.put("update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
-            params.put("user-name", Security.getMD5ByString(getUserNameId_FK()));
-            params.put("operation-type", getOperationType());
+            String prefix = "QLQC30-";
+            params.put(prefix+"global-health-status", getGlobalHealthScore());
+            params.put(prefix+"physical-functioning", getPhysicalFunctioningScore());
+            params.put(prefix+"role-functioning", getRoleFunctioningScore());
+            params.put(prefix+"emotional-functioning", getEmotionalFunctioningScore());
+            params.put(prefix+"cognitive-functioning", getCognitiveFunctioningScore());
+            params.put(prefix+"social-functioning", getSocialFunctioningScore());
+            params.put(prefix+"fatigue", getFatigueScore());
+            params.put(prefix+"nausea-and-vomiting", getNauseaAndVomitingScore());
+            params.put(prefix+"pain", getPainScore());
+            params.put(prefix+"dyspnoea", getDyspnoeaScore());
+            params.put(prefix+"insomnia", getInsomniaScore());
+            params.put(prefix+"appetite-loss", getAppetiteLossScore());
+            params.put(prefix+"constipation", getConstipationScore());
+            params.put(prefix+"diarrhoea", getDiarrhoeaScore());
+            params.put(prefix+"financial-difficulties", getFinancialDifficultiesScore());
+            params.put(prefix+"update-date", EntityDbManager.dateFormat.format(getUpdateDate()));
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         } finally {
@@ -469,18 +463,12 @@ public class QolQuestionnaire {
         }
     }
 
-    @NonNull
-    //TODO getOperationType: pre, post op
-    private String getOperationType() {
-        return "unkown";
-    }
-
     /**
      * Get the bulk for Quality of Life (QLQC30)
      * @return a String containing upsert information
      */
     public String getBulkQLQC30() {
-        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), "quality-of-life", getQLQC30AsJSON().toString());
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.ES_TYPE, getQLQC30AsJSON().toString());
     }
 
     /**
@@ -488,7 +476,7 @@ public class QolQuestionnaire {
      * @return a String containing upsert information
      */
     public String getBulkBN20() {
-        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), "brain-cancer-module", getBN20AsJSON().toString());
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.ES_TYPE, getBN20AsJSON().toString());
     }
 
 }

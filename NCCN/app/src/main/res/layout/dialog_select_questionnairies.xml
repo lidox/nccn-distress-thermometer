@@ -17,7 +17,6 @@
             android:id="@+id/toggle_user_layout"
             layout="@layout/toggle_title_subtitle" />
 
-        <!-- Checkboxes Questionnaires -->
         <RelativeLayout
             android:id="@+id/layout_users"
             android:layout_width="match_parent"
@@ -25,6 +24,12 @@
             android:layout_below="@+id/toggle_user_layout"
             android:visibility="gone">
 
+            <fragment
+                android:id="@+id/user_expandable_search_list_fragment"
+                android:name="com.artursworld.nccn.view.user.UserExpandableListFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_label" />
 
 
         </RelativeLayout>

@@ -70,11 +70,15 @@ public class UserExpandableListFragment extends Fragment {
     }
 
     private void checkWhereFragmentIsDisplayed() {
-        Bundle bundle = getActivity().getIntent().getExtras();
-        boolean isVisibleInSelectUserFragment = bundle.getBoolean(Strings.getStringByRId(R.string.c_is_selectuser_fragment), false);
-        Log.i(CLASS_NAME, CLASS_NAME  + " is visible in 'Select User' = " + isVisibleInSelectUserFragment);
-        if(adapter != null)
-            adapter.setHasToOpenStatistics(isVisibleInSelectUserFragment);
+        try {
+            Bundle bundle = getActivity().getIntent().getExtras();
+            boolean isVisibleInSelectUserFragment = bundle.getBoolean(Strings.getStringByRId(R.string.c_is_selectuser_fragment), false);
+            Log.i(CLASS_NAME, CLASS_NAME + " is visible in 'Select User' = " + isVisibleInSelectUserFragment);
+            if (adapter != null)
+                adapter.setHasToOpenStatistics(isVisibleInSelectUserFragment);
+        } catch (Exception e) {
+            Log.e(CLASS_NAME, e.getLocalizedMessage());
+        }
     }
 
     private View initUI(View view) {
@@ -100,7 +104,8 @@ public class UserExpandableListFragment extends Fragment {
     private void addOnSearchTextChangeListener() {
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -109,7 +114,8 @@ public class UserExpandableListFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
@@ -133,7 +139,7 @@ public class UserExpandableListFragment extends Fragment {
 
             @Override
             protected List<User> doInBackground(Void... voids) {
-                if(allUsers.size() <= 0)
+                if (allUsers.size() <= 0)
                     return new UserManager().getAllUsers();
                 else
                     return allUsers;
@@ -147,8 +153,8 @@ public class UserExpandableListFragment extends Fragment {
 
                 Log.i(CLASS_NAME, "insert users from all user list");
 
-                for(int j = 0; j < allUsers.size(); j++){
-                    if(allUsers.size() > j)
+                for (int j = 0; j < allUsers.size(); j++) {
+                    if (allUsers.size() > j)
                         filteredUsers.add(allUsers.get(j));
                 }
                 expandLayout.expand();
@@ -158,7 +164,7 @@ public class UserExpandableListFragment extends Fragment {
     }
 
     public void setUserDisplayCount(int userDisplayCount) {
-        for(int i = 0; i < userDisplayCount; i++)
+        for (int i = 0; i < userDisplayCount; i++)
             filteredUsers.add(new User(" "));
     }
 }

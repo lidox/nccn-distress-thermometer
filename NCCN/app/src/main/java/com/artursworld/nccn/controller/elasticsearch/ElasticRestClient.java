@@ -64,7 +64,7 @@ public class ElasticRestClient {
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             HttpEntityEnclosingRequestBase postMethod = getHttpMethodConfiguration(httpMethod, ES_INDEX, ES_TYPE, apiString, params);
             response = httpClient.execute(postMethod, responseHandler);
-            Log.i(CLASS_NAME + "response", response);
+            Log.i(CLASS_NAME + " response", response);
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
             e.printStackTrace();

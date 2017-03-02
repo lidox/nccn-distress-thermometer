@@ -152,7 +152,8 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... params) {
-                    ElasticQuestionnaire.syncAll(activity.getApplicationContext());
+                    String response = ElasticQuestionnaire.syncAll(activity.getApplicationContext());
+                    Log.i(CLASS_NAME, "response: " +response);
                     return null;
                 }
             }.execute();

@@ -246,12 +246,10 @@ public class DistressThermometerQuestionnaire {
     public JSONObject getAsJSON() {
         JSONObject params = new JSONObject();
         try {
-            params.put("distress-score", getDistressScore());
-            params.put("has-distress", hasDistress());
-            params.put("creation-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
-            params.put("update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
-            params.put("user-name", Security.getMD5ByString(getUserNameId_FK()));
-            params.put("operation-type", getOperationType());
+            String prefix = "DT-";
+            params.put(prefix+"distress-score", getDistressScore());
+            params.put(prefix+"has-distress", hasDistress());
+            params.put(prefix+"update-date", EntityDbManager.dateFormat.format(getUpdateDate()));
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         } finally {
@@ -259,16 +257,11 @@ public class DistressThermometerQuestionnaire {
         }
     }
 
-    @NonNull
-    //TODO getOperationType: pre, post op
-    private String getOperationType() {
-        return "unkown";
-    }
     /**
      * Get the bulk for Distress Thermometer
      * @return a String containing upsert information
      */
     public String getBulk() {
-        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), "distress-thermometer", getAsJSON().toString());
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.ES_TYPE, getAsJSON().toString());
     }
 }

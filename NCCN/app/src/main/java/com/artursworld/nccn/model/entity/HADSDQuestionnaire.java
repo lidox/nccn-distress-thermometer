@@ -176,33 +176,24 @@ public class HADSDQuestionnaire {
     public JSONObject getAsJSON() {
         JSONObject params = new JSONObject();
         try {
-            params.put("anxiety-score", getAnxietyScore());
-            params.put("depression-score", getDepressionScore());
-            params.put("has-depression", hasDepression());
-            params.put("has-anxiety", hasAnxiety());
+            String prefix = "HADS-D-";
+            params.put(prefix+"anxiety-score", getAnxietyScore());
+            params.put(prefix+"depression-score", getDepressionScore());
+            params.put(prefix+"has-depression", hasDepression());
+            params.put(prefix+"has-anxiety", hasAnxiety());
+            params.put(prefix+"update-date", EntityDbManager.dateFormat.format(getUpdateDate()));
 
-            params.put("creation-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
-            params.put("update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
-            params.put("user-name", Security.getMD5ByString(getUserNameId_FK()));
-            params.put("operation-type", getOperationType());
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         } finally {
             return params;
         }
     }
-
-    @NonNull
-    //TODO getOperationType: pre, post op
-    private String getOperationType() {
-        return "unkown";
-    }
-
     /**
      * Get the bulk for HADS-D, Hospital Anxiety and Depression Scale
      * @return a String containing upsert information
      */
     public String getBulk() {
-        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), "HADS-D", getAsJSON().toString());
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.ES_TYPE, getAsJSON().toString());
     }
 }
