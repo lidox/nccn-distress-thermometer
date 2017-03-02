@@ -28,6 +28,10 @@ curl -XPUT 'http://localhost:9200/questionnaires/' -d '{
 curl 'localhost:9200/_cat/indices?v'
 ```
 
+# Kibana
+![kibana](https://cloud.githubusercontent.com/assets/7879175/23508805/a22f0020-ff53-11e6-994d-7c4de58d3603.JPG)
+
+
 # Quality of life papers
 1. Veränderung der Lebensqualität bei Patienten mit
 Prostatakarzinom nach endoskopischer extraperitonealer
