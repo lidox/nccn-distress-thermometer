@@ -28,7 +28,26 @@ public class OperationTypeSwiper {
 
     public OperationTypeSwiper(View rootView, int resourceId) {
         initSwipeSelector(rootView, resourceId);
+        loadSwipeSelectionIfPossible();
         addOnSwipeItemChangeListener();
+
+    }
+
+    private void loadSwipeSelectionIfPossible() {
+        new AsyncTask<Void, Void, MetaQuestionnaire>(){
+            @Override
+            protected MetaQuestionnaire doInBackground(Void... params) {
+                Date creationDate = Global.getSelectedQuestionnaireDate();
+                return new MetaQuestionnaireManager().getMetaDataByCreationDate(creationDate);
+            }
+
+            @Override
+            protected void onPostExecute(MetaQuestionnaire meta) {
+                super.onPostExecute(meta);
+                if(meta != null)
+                    swipeSelector.selectItemWithValue(meta.getOperationType());
+            }
+        }.execute();
     }
 
     private void addOnSwipeItemChangeListener() {
