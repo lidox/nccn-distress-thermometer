@@ -12,6 +12,7 @@ PUT questionnaire-app
         },
         "DT-distress-score":     { "type": "integer"}, 
         "DT-has-distress":     { "type": "boolean"}, 
+        "operation-type":     {  "type":  "keyword"}, 
         "DT-update-date":  {
           "type":   "date", 
           "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd||epoch_millis"
