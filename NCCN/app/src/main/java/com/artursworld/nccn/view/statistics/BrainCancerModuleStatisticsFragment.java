@@ -13,8 +13,12 @@ import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
+import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
+import com.artursworld.nccn.model.entity.IQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
+import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 
 import java.util.List;
@@ -51,7 +55,9 @@ public class BrainCancerModuleStatisticsFragment extends Fragment {
 
             @Override
             protected List<QolQuestionnaire> doInBackground(Void... params) {
-                return new QualityOfLifeManager().getQolQuestionnaireList(Global.getSelectedStatisticUser());
+                List<QolQuestionnaire> list = new QualityOfLifeManager().getQolQuestionnaireList(Global.getSelectedStatisticUser());
+                List<IQuestionnaire> progressList = (List<IQuestionnaire>) (List<?>) list;
+                return (List<QolQuestionnaire>) (List<?>) Questionnairy.getFilteredGoodProgressQuestionnaires(progressList);
             }
 
             @Override

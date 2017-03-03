@@ -4,6 +4,9 @@ package com.artursworld.nccn.controller.util;
 import android.content.Context;
 import android.content.res.TypedArray;
 
+import com.artursworld.nccn.model.entity.IQuestionnaire;
+import com.artursworld.nccn.model.entity.QolQuestionnaire;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,4 +34,24 @@ public class Questionnairy {
         return questionAnswerList;
     }
 
+    /**
+     * Check if statistics can be displayed or transferred to elastic search
+     * @param currentProgressValue the given progress value in percent
+     * @return true if condition is full filled. Otherwise false.
+     */
+    public static boolean canStatisticsBeDisplayed(int currentProgressValue){
+        if (currentProgressValue == 100)
+            return true;
+
+        return false;
+    }
+
+    public static List<Object> getFilteredGoodProgressQuestionnaires(List<IQuestionnaire> list) {
+        List<Object> resultList = new ArrayList<>();
+        for(IQuestionnaire item: list){
+            if(canStatisticsBeDisplayed(item.getProgressInPercent()))
+                resultList.add(item);
+        }
+        return resultList;
+    }
 }

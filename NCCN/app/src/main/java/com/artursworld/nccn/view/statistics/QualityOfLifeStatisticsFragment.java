@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
+import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.model.entity.IQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 
@@ -58,7 +60,9 @@ public class QualityOfLifeStatisticsFragment extends Fragment {
 
             @Override
             protected List<QolQuestionnaire> doInBackground(Void... params) {
-                return new QualityOfLifeManager().getQolQuestionnaireList(Global.getSelectedStatisticUser());
+                List<QolQuestionnaire> qolQuestionnaireList = new QualityOfLifeManager().getQolQuestionnaireList(Global.getSelectedStatisticUser());
+                List<IQuestionnaire> progressList = (List<IQuestionnaire>) (List<?>) qolQuestionnaireList;
+                return (List<QolQuestionnaire>) (List<?>) Questionnairy.getFilteredGoodProgressQuestionnaires(progressList);
             }
 
             @Override

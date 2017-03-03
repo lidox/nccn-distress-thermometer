@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
+import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.IQuestionnaire;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
 
 import java.util.List;
@@ -56,7 +58,9 @@ public class DistressThermometerStatisticsFragment extends Fragment {
 
             @Override
             protected List<DistressThermometerQuestionnaire> doInBackground(Void... params) {
-                return new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireList(Global.getSelectedStatisticUser());
+                List<DistressThermometerQuestionnaire> qolQuestionnaireList = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireList(Global.getSelectedStatisticUser());
+                List<IQuestionnaire> progressList = (List<IQuestionnaire>) (List<?>) qolQuestionnaireList;
+                return (List<DistressThermometerQuestionnaire>) (List<?>) Questionnairy.getFilteredGoodProgressQuestionnaires(progressList);
             }
 
             @Override

@@ -22,7 +22,7 @@ import static com.artursworld.nccn.view.user.UserStartConfiguration.CLASS_NAME;
 /**
  * HADS-D, Hospital Anxiety and Depression Scale
  */
-public class HADSDQuestionnaire {
+public class HADSDQuestionnaire  implements IQuestionnaire{
 
     private Date creationDate_PK;
     private String userNameId_FK;

@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * Represents the Quality Of Life (Qol) Questionnaire
  */
-public class QolQuestionnaire {
+public class QolQuestionnaire  implements IQuestionnaire{
 
     private static String CLASS_NAME = QolQuestionnaire.class.getSimpleName();
 
@@ -28,6 +28,7 @@ public class QolQuestionnaire {
     private int progressInPercent;
     private int lastQuestionEditedNr;
 
+    @Override
     public int getProgressInPercent() {
         return progressInPercent;
     }

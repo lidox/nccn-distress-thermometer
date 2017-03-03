@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-public class DistressThermometerQuestionnaire {
+public class DistressThermometerQuestionnaire  implements IQuestionnaire{
 
     private Date creationDate_PK;
     private String userNameId_FK;

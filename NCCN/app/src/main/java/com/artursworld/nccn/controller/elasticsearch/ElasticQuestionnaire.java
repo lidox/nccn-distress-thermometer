@@ -9,6 +9,7 @@ import android.support.v4.util.Pair;
 import android.util.Log;
 
 import com.artursworld.nccn.controller.util.Dates;
+import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Security;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
@@ -167,18 +168,18 @@ public class ElasticQuestionnaire {
 
 
             DistressThermometerQuestionnaire thermo = new DistressThermometerQuestionnaireManager(ctx).getDistressThermometerQuestionnaireByDate(user.getName(), date);
-            if (thermo.getProgressInPercent() == 100)
+            if (Questionnairy.canStatisticsBeDisplayed(thermo.getProgressInPercent()))
                 params = addAllKeyValuePairs(thermo.getAsJSON(), params);
 
 
             QolQuestionnaire qol = new QualityOfLifeManager(ctx).getQolQuestionnaireByDate(user.getName(), date);
-            if (qol.getProgressInPercent() == 100) {
+            if (Questionnairy.canStatisticsBeDisplayed(qol.getProgressInPercent())) {
                 params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
                 params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
             }
 
             HADSDQuestionnaire hads = new HADSDQuestionnaireManager(ctx).getHADSDQuestionnaireByDate_PK(user.getName(), date);
-            if (hads.getProgressInPercent() == 100)
+            if (Questionnairy.canStatisticsBeDisplayed(hads.getProgressInPercent()))
                 params = addAllKeyValuePairs(hads.getAsJSON(), params);
 
             bulk.append(ElasticQuestionnaire.getGenericBulk(date, ElasticQuestionnaire.ES_TYPE, params.toString()));
