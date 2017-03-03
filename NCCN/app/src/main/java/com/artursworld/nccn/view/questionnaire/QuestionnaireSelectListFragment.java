@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
+import com.artursworld.nccn.controller.util.OperationType;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardHADSD;
 import com.artursworld.nccn.controller.wizard.WizardNCCN;
@@ -22,11 +23,13 @@ import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.AbstractQuestionnaire;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
+import com.artursworld.nccn.model.entity.MetaQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 
@@ -236,8 +239,8 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
     private void insertQuestionnaireIntoDB(List<AbstractQuestionnaire> questionnairesList) {
         if(Global.hasToCreateNewQuestionnaire()) {
+            Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
             for (AbstractQuestionnaire item : questionnairesList) {
-                Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
                 boolean isHadsdQuestionnaire = item.getName().equalsIgnoreCase(Strings.getStringByRId(R.string.hadsd_questionnaire));
                 if (isHadsdQuestionnaire) {
                     HADSDQuestionnaire questionnaire = new HADSDQuestionnaire(Global.getSelectedUser());
@@ -260,6 +263,10 @@ public class QuestionnaireSelectListFragment extends Fragment {
                     Log.i(CLASS_NAME, "Inserting new Quality Of Life by creation date = " + selectedQuestionnaireDate);
                 }
             }
+            MetaQuestionnaire meta = new MetaQuestionnaire();
+            meta.setCreationDate(selectedQuestionnaireDate);
+            meta.setOperationType(OperationType.PRE);
+            new MetaQuestionnaireManager().insert(meta);
         }
     }
 

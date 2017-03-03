@@ -12,11 +12,13 @@ import com.artursworld.nccn.controller.util.Dates;
 import com.artursworld.nccn.controller.util.Security;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
+import com.artursworld.nccn.model.entity.MetaQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 
@@ -153,8 +155,10 @@ public class ElasticQuestionnaire {
         for (Date date : dates) {
             JSONObject params = new JSONObject();
             try {
-                // TODO: get general user info: QuestionnaireMetadata
-                //params.put("operation-type", getOperationType());
+                MetaQuestionnaire meta = new MetaQuestionnaireManager().getMetaDataByCreationDate(date);
+                if(meta != null)
+                    params.put("operation-type", meta.getOperationType());
+
                 params.put("creation-date", EntityDbManager.dateFormat.format(date));
                 params.put("user-name", Security.getMD5ByString(user.getName()));
             } catch (Exception e) {
