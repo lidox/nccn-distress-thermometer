@@ -2,6 +2,7 @@ package com.artursworld.nccn.view.user;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
@@ -117,6 +119,14 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
                     }
                 })
                 .positiveText(R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = activity.getIntent();
+                        activity.finish();
+                        activity.startActivity(intent);
+                    }
+                })
                 .show();
     }
 
