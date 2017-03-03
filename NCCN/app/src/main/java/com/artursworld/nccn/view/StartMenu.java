@@ -45,7 +45,6 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     private String CLASS_NAME = StartMenu.class.getSimpleName();
     private Activity activity = null;
     private UserStartConfiguration configurationDialog = null;
-    private User selectedUser = null;
     private OperationTypeSwiper operationTypeSwiper = null;
 
     // UI
@@ -57,7 +56,6 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_menu);
         ButterKnife.bind(this);
-        createUserIfNull();
         initNavigationAndToolBar();
         activity = this;
     }
@@ -65,77 +63,81 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onResume() {
         super.onResume();
-        String userName = setUserNameTextByGlobalValue();
-        Log.i(CLASS_NAME, "Display selected user: " + userName);
+
+        if (Global.getSelectedUser() == null) {
+            new AsyncTask<Void, Void, Void>(){
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    createUser();
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    onResumeWithSelectedUser();
+                }
+            }.execute();
+        }
+        else{
+            onResumeWithSelectedUser();
+        }
+    }
+
+    private void createUser() {
+        String defaultUserName = Strings.getStringByRId(R.string.user_name);
+        Log.i(CLASS_NAME, "Creating new User("+defaultUserName+"), because no global user has been set");
+        new UserManager().insertUser(new User(defaultUserName));
+        Global.setSelectedUserName(defaultUserName);
+        Global.setHasToCreateNewUser(false);
+    }
+
+    private void onResumeWithSelectedUser() {
+        userNameEditText.setText(Global.getSelectedUser());
+        Log.i(CLASS_NAME, "Display global user(" + Global.getSelectedUser()+") in MaterialEditText");
+
+        // add change listener
         addOnUserNameTextChangeListener();
+
+        // init swipe for operation type e.g. pre-operation
         View rootView = getWindow().getDecorView().getRootView();
-        operationTypeSwiper = new OperationTypeSwiper(rootView,R.id.select_operation_type);
+        operationTypeSwiper = new OperationTypeSwiper(rootView, R.id.select_operation_type);
     }
 
     /**
      * Rename user by name
      */
     private void addOnUserNameTextChangeListener() {
-        userNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    Log.i(CLASS_NAME, "on focus out --> update user");
-                    updateUserByEditText();
-                }
-            }
-        });
+
         userNameEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Log.i(CLASS_NAME, "on user name text changed --> update user");
-                updateUserByEditText();
+                final String oldName = Global.getSelectedUser();
+                final String newName = userNameEditText.getText().toString();
+                new AsyncTask<Void, Void, Void>(){
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        long result = new UserManager().renameUser(oldName, newName);
+                        if (result != 0)
+                            Global.setSelectedUserName(newName);
+                        return null;
+                    }
+                }.execute();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void afterTextChanged(Editable s) {
             }
         });
-    }
 
-    private void updateUserByEditText() {
-        createUserIfNull();
-
-        if (selectedUser == null)
-            selectedUser = new UserManager().getUserByName(Global.getSelectedUser());
-
-        if (selectedUser != null) {
-            final String newName = userNameEditText.getText().toString();
-            Log.i(CLASS_NAME, "rename user from '" + selectedUser.getName() + "' to '" + newName + "'");
-            selectedUser.setName(newName);
-            Log.i(CLASS_NAME, "user: " + selectedUser);
-            new AsyncTask<Void, Void, Void>() {
-
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    long result = new UserManager().update(selectedUser);
-                    if (result != 0)
-                        Global.setSelectedUserName(newName);
-                    return null;
-                }
-            }.execute();
-        }
-    }
-
-    private void createUserIfNull() {
-        if (Global.getSelectedUser() == null) {
-            String defaultUserName = Strings.getStringByRId(R.string.user_name);
-            new UserManager().insertUser(new User(defaultUserName));
-            selectedUser = new UserManager().getUserByName(defaultUserName);
-            if (selectedUser != null) {
-                Global.setSelectedUserName(defaultUserName);
-                Global.setHasToCreateNewUser(false);
-            }
-        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -159,7 +161,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                 @Override
                 protected Void doInBackground(Void... params) {
                     String response = ElasticQuestionnaire.syncAll(activity.getApplicationContext());
-                    Log.i(CLASS_NAME, "response: " +response);
+                    Log.i(CLASS_NAME, "response: " + response);
                     return null;
                 }
             }.execute();
@@ -190,28 +192,5 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         navigationView.getMenu().findItem(R.id.nav_user_start_configuration).setChecked(false);
         navigationView.getMenu().findItem(R.id.nav_user_statistics).setChecked(false);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Nullable
-    private String setUserNameTextByGlobalValue() {
-        final String userName = Global.getSelectedUser();
-        if (userName != null) {
-            if (Global.hasToCreateNewUser()) {
-                userNameEditText.setText("");
-            } else {
-                userNameEditText.setText(userName);
-            }
-            selectedUser = new UserManager().getUserByName(userName);
-        } else if (userName == null) {
-            Log.i(CLASS_NAME, "user is null, so first time opened this app");
-            String defaultUserName = Strings.getStringByRId(R.string.user_name);
-            selectedUser = new UserManager().getUserByName(defaultUserName);
-            if (selectedUser != null) {
-                Global.setSelectedUserName(defaultUserName);
-                Global.setHasToCreateNewUser(false);
-            }
-        }
-
-        return userName;
     }
 }

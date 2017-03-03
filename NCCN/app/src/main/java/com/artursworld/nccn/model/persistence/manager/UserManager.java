@@ -4,10 +4,12 @@ package com.artursworld.nccn.model.persistence.manager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
@@ -29,6 +31,7 @@ public class UserManager extends EntityDbManager {
 
     /**
      * This constructor is used for unit tests
+     *
      * @param ctx the database context to use
      */
     public UserManager(Context ctx) {
@@ -42,7 +45,7 @@ public class UserManager extends EntityDbManager {
      */
     public void insertUser(User user) {
         if (user == null) {
-            Log.e(UserManager.class.getSimpleName(),"the user to insert is null!");
+            Log.e(UserManager.class.getSimpleName(), "the user to insert is null!");
             return;
         }
 
@@ -50,19 +53,19 @@ public class UserManager extends EntityDbManager {
 
         try {
             database.insertOrThrow(DBContracts.UserTable.TABLE_NAME, null, values);
-            Log.i(UserManager.class.getSimpleName(),"New user added successfully:" + user.toString());
+            Log.i(UserManager.class.getSimpleName(), "New user added successfully: " + user.toString());
         } catch (Exception e) {
-            Log.e(UserManager.class.getSimpleName(),"Could not insert new user into db: " + user.toString() + "! " + e.getLocalizedMessage());
+            Log.e(UserManager.class.getSimpleName(), "Could not insert new user into db: " + user.toString() + "! " + e.getLocalizedMessage());
         }
     }
 
     private ContentValues getUserContentValues(User user) {
         ContentValues values = new ContentValues();
 
-        if(user.getName() != null)
+        if (user.getName() != null)
             values.put(DBContracts.UserTable.NAME_ID_PK, user.getName());
 
-        if(user.getCreationDate() != null)
+        if (user.getCreationDate() != null)
             values.put(DBContracts.UserTable.CREATION_DATE, EntityDbManager.dateFormat.format(user.getCreationDate()));
 
         return values;
@@ -78,8 +81,8 @@ public class UserManager extends EntityDbManager {
             User medicalUser = getUserByCursor(cursor);
             userList.add(medicalUser);
         }
-        Log.i(UserManager.class.getSimpleName(),userList.size() + ". users has been found:");
-        Log.i(UserManager.class.getSimpleName(),userList.toString());
+        Log.i(UserManager.class.getSimpleName(), userList.size() + ". users has been found:");
+        Log.i(UserManager.class.getSimpleName(), userList.toString());
 
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
@@ -105,7 +108,7 @@ public class UserManager extends EntityDbManager {
         try {
             medicalUser.setCreationDate(EntityDbManager.dateFormat.parse(cursor.getString(1)));
         } catch (Exception e) {
-            Log.i(UserManager.class.getSimpleName(),"Could not load creation date for  user" + e.getLocalizedMessage());
+            Log.i(UserManager.class.getSimpleName(), "Could not load creation date for  user" + e.getLocalizedMessage());
         }
         //medicalUser.setBmi(cursor.getDouble(6));
         //medicalUser.setMarkedAsDeleted((cursor.getInt(7) == 1) ? true : false);
@@ -136,7 +139,7 @@ public class UserManager extends EntityDbManager {
         List<Date> resultList = new ArrayList<>();
 
         List<String> list = getQuestionnaireDatesByUserName(userName);
-        for (String date : list){
+        for (String date : list) {
             try {
                 resultList.add(EntityDbManager.dateFormat.parse(date));
             } catch (ParseException e) {
@@ -153,28 +156,28 @@ public class UserManager extends EntityDbManager {
         List<DistressThermometerQuestionnaire> listC = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireList(userName);
 
         List<String> dateList = new ArrayList<>();
-        for (QolQuestionnaire item: listA){
+        for (QolQuestionnaire item : listA) {
             String questionnaireDate = EntityDbManager.dateFormat.format(item.getCreationDate_PK());
-            if(!dateList.contains(questionnaireDate)){
+            if (!dateList.contains(questionnaireDate)) {
                 dateList.add(questionnaireDate);
             }
         }
 
-        for (HADSDQuestionnaire item: listB){
+        for (HADSDQuestionnaire item : listB) {
             String questionnaireDate = EntityDbManager.dateFormat.format(item.getCreationDate_PK());
-            if(!dateList.contains(questionnaireDate)){
+            if (!dateList.contains(questionnaireDate)) {
                 dateList.add(questionnaireDate);
             }
         }
 
-        for (DistressThermometerQuestionnaire item: listC){
+        for (DistressThermometerQuestionnaire item : listC) {
             String questionnaireDate = EntityDbManager.dateFormat.format(item.getCreationDate_PK());
-            if(!dateList.contains(questionnaireDate)){
+            if (!dateList.contains(questionnaireDate)) {
                 dateList.add(questionnaireDate);
             }
         }
         Log.i(CLASS_NAME, "Questionnaire Dates found: " + dateList.toString());
-        return  dateList;
+        return dateList;
     }
 
 
@@ -188,15 +191,32 @@ public class UserManager extends EntityDbManager {
             String creationDate = EntityDbManager.dateFormat.format(user.getCreationDate());
             long i = database.update(DBContracts.UserTable.TABLE_NAME, values, WHERE_CREATION_DATE_EQUALS, new String[]{creationDate});
             if (i > 0) {
-                Log.i(CLASS_NAME,"Updated user:" + user.toString());
+                Log.i(CLASS_NAME, "Updated user(" + user.toString() + ")");
                 return 1;  // 1 for successful
             } else {
-                Log.w(CLASS_NAME,"Failed to update user" + user.toString());
+                Log.w(CLASS_NAME, "Failed to update user" + user.toString());
                 return 0;  // 0 for unsuccessful
             }
         } catch (Exception e) {
-            Log.e(CLASS_NAME,"Exception! Could not update user" + user.toString() + "! " + e.getLocalizedMessage());
+            Log.e(CLASS_NAME, "Exception! Could not update user" + user.toString() + "! " + e.getLocalizedMessage());
             return 0;
         }
     }
+
+    /**
+     * Updates a user by
+     */
+    public long renameUser(final String oldName, final String newName) {
+        if (oldName != null) {
+            Log.i(CLASS_NAME, "rename user from '" + oldName + "' to '" + newName + "'");
+            User u = new UserManager().getUserByName(oldName);
+            if (u != null) {
+                u.setName(newName);
+                return new UserManager().update(u);
+            }
+        }
+        return 0;
+    }
+
+
 }

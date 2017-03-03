@@ -151,6 +151,11 @@ public class MetaQuestionnaireManager extends EntityDbManager {
     @NonNull
     public List<MetaQuestionnaire> getMetaListByDate(Date creationDate) {
         List<MetaQuestionnaire> metaList = new ArrayList<>();
+
+        if(creationDate == null){
+            return metaList;
+        }
+
         Cursor cursor = database.query(tableName,
                 getColumns(),
                 DBContracts.MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE + " LIKE '" + EntityDbManager.dateFormat.format(creationDate) + "'",

@@ -17,8 +17,8 @@ public class User {
 
     public String toString(){
         StringBuilder ret = new StringBuilder();
-        ret.append(this.getName() + ", ");
-        ret.append(EntityDbManager.dateFormat.format(creationDate));
+        ret.append(this.getName());
+        //ret.append(EntityDbManager.dateFormat.format(creationDate));
         return ret.toString();
     }
 

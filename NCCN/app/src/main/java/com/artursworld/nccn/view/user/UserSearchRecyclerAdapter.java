@@ -19,6 +19,7 @@ import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
+import com.artursworld.nccn.view.StartMenu;
 import com.artursworld.nccn.view.statistics.StatisticsTabsActivity;
 
 import java.text.ParseException;
@@ -122,7 +123,7 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Intent intent = activity.getIntent();
+                        Intent intent = new Intent(activity, StartMenu.class);
                         activity.finish();
                         activity.startActivity(intent);
                     }
