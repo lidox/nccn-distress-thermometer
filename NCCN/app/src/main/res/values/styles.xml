@@ -19,4 +19,20 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="SwipeTitleStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:textSize">@dimen/textAppearanceLabelLargeSub</item>
+    </style>
+
+    <style name="SwipeSubTitleStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorGrey</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:textSize">@dimen/textAppearanceLabel</item>
+    </style>
+
 </resources>

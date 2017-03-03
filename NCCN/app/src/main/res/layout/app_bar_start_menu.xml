@@ -33,9 +33,9 @@
             android:id="@+id/edit_text_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="30dp"
+            android:background="@color/colorPrimary"
             android:paddingBottom="30dp"
-            android:background="@color/colorPrimary">
+            android:paddingTop="30dp">
 
             <!-- HERE PUT IN YOUT GUI-->
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -55,12 +55,55 @@
 
         </RelativeLayout>
 
-        <fragment
-            android:id="@+id/user_list_fragment"
-            android:name="com.artursworld.nccn.view.questionnaire.QuestionnaireSelectListFragment"
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view1"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@id/edit_text_holder" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_text_holder"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            card_view:cardBackgroundColor="@color/colorWhite"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="4dp"
+            card_view:cardUseCompatPadding="true">
+
+            <com.roughike.swipeselector.SwipeSelector xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/select_operation_type"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_below="@+id/edit_text_holder"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                app:swipe_descriptionTextAppearance="@style/SwipeSubTitleStyle"
+                app:swipe_indicatorActiveColor="@color/colorAccent"
+                app:swipe_indicatorInActiveColor="@color/colorGrey"
+                app:swipe_indicatorSize="10dp"
+                app:swipe_leftButtonResource="@drawable/ic_keyboard_arrow_left_black_24dp"
+                app:swipe_rightButtonResource="@drawable/ic_keyboard_arrow_right_black_24dp"
+                app:swipe_titleTextAppearance="@style/SwipeTitleStyle" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_view1"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            card_view:cardBackgroundColor="@color/colorWhite"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="4dp"
+            card_view:cardUseCompatPadding="true">
+
+            <fragment
+                android:id="@+id/user_list_fragment"
+                android:name="com.artursworld.nccn.view.questionnaire.QuestionnaireSelectListFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.util.Pair;
@@ -26,9 +27,12 @@ import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
+import com.artursworld.nccn.view.questionnaire.OperationTypeSwiper;
 import com.artursworld.nccn.view.user.SelectUserActivity;
 import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.roughike.swipeselector.SwipeItem;
+import com.roughike.swipeselector.SwipeSelector;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +46,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     private Activity activity = null;
     private UserStartConfiguration configurationDialog = null;
     private User selectedUser = null;
+    private OperationTypeSwiper operationTypeSwiper = null;
 
     // UI
     @BindView(R.id.user_name_edit_text)
@@ -63,8 +68,9 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         String userName = setUserNameTextByGlobalValue();
         Log.i(CLASS_NAME, "Display selected user: " + userName);
         addOnUserNameTextChangeListener();
+        View rootView = getWindow().getDecorView().getRootView();
+        operationTypeSwiper = new OperationTypeSwiper(rootView,R.id.select_operation_type);
     }
-
 
     /**
      * Rename user by name

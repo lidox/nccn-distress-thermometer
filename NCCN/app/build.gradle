@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.artursworld.nccn"
@@ -78,4 +78,7 @@ dependencies {
 
     // http REST Client
     compile 'com.loopj.android:android-async-http:1.4.9'
+
+    // swipe selector
+    compile 'com.roughike:swipe-selector:1.0.6'
 }
