@@ -74,7 +74,22 @@ public class DBContracts {
         public static final String LAST_QEUSTION_EDITED_NR = "nr_of_last_question_edited";
     }
 
+    public static abstract class MetaQuestionnaireTable {
+        public static final String TABLE_NAME = "metadata_questionnaire";
+        public static final String CREATION_DATE_QUESTIONNAIRE = "creation_date"; //primary key
+        public static final String UPDATE_DATE = "update_date";
+        public static final String OPERATION_TYPE = "operation_type";
+    }
+
     // Create SQL queries
+    public static final String CREATE_META_QUESTIONNAIRE_TABLE = "CREATE TABLE "
+            + MetaQuestionnaireTable.TABLE_NAME + "("
+            + MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE + DATE_TYPE + COMMA_SEP
+            + MetaQuestionnaireTable.UPDATE_DATE + DATE_TYPE + COMMA_SEP
+            + MetaQuestionnaireTable.OPERATION_TYPE + TEXT_TYPE + COMMA_SEP
+            + " PRIMARY KEY ("+MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE +")"
+            + ");";
+
     public static final String CREATE_USER_TABLE = "CREATE TABLE "
             + UserTable.TABLE_NAME + "("
             + UserTable.CREATION_DATE + DATE_TYPE + COMMA_SEP
@@ -154,6 +169,7 @@ public class DBContracts {
             db.execSQL(CREATE_HADSD_TABLE);
             db.execSQL(CREATE_QUALITY_OF_TABLE);
             db.execSQL(CREATE_DISTRESS_THERMOMETER_TABLE);
+            db.execSQL(CREATE_META_QUESTIONNAIRE_TABLE);
         }
 
         @Override
