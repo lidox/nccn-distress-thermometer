@@ -140,7 +140,7 @@ public class Share {
     public static boolean getBooleanByKey(int keyId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
         String key = App.getAppContext().getResources().getString(keyId);
-        boolean retBool = prefs.getBoolean(key, true);
+        boolean retBool = prefs.getBoolean(key, false);
         return retBool;
     }
 }

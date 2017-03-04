@@ -46,6 +46,7 @@ public class Global {
      */
     public static void setSelectedUserName(String selectedUserName) {
         Share.putString(Strings.getStringByRId(R.string.c_selected_user_name), selectedUserName);
+        Log.i(CLASS_NAME, "setSelectedUserName(" + selectedUserName +")");
     }
 
     public static void setSelectedQuestionnaireDate(Date newCreationDate) {
@@ -65,6 +66,7 @@ public class Global {
     }
 
     public static void setHasToCreateNewUser(boolean hasToCreateNewUser) {
+        Log.i(CLASS_NAME, "setHasToCreateNewUser(" + hasToCreateNewUser +")");
         Share.putBoolean(Strings.getStringByRId(R.string.c_create_new_user), hasToCreateNewUser);
     }
 

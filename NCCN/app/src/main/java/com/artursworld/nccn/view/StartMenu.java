@@ -97,6 +97,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
     private void createUserBAndOnResumeWithSelectedUser() {
         if (Global.getSelectedUser() == null || Global.hasToCreateNewUser()) {
+
             new AsyncTask<Void, Void, Void>(){
 
                 @Override
@@ -110,6 +111,18 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                     super.onPostExecute(aVoid);
                     onResumeWithSelectedUser();
                 }
+
+                @Override
+                protected void onCancelled() {
+                    super.onCancelled();
+                    Log.i(CLASS_NAME, "canceled");
+                }
+
+                @Override
+                protected void onProgressUpdate(Void... values) {
+                    super.onProgressUpdate(values);
+                    Log.i(CLASS_NAME, "bla");
+                }
             }.execute();
         }
         else{
@@ -120,9 +133,11 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     private void createUser() {
         String defaultUserName = Strings.getStringByRId(R.string.user_name);
         Log.i(CLASS_NAME, "Creating new User("+defaultUserName+"), because no global user has been set");
-        new UserManager().insertUser(new User(defaultUserName));
-        Global.setSelectedUserName(defaultUserName);
-        Global.setHasToCreateNewUser(false);
+        boolean hasCreated = new UserManager().insertUser(new User(defaultUserName));
+        if(hasCreated){
+            Global.setSelectedUserName(defaultUserName);
+            Global.setHasToCreateNewUser(false);
+        }
     }
 
     /**

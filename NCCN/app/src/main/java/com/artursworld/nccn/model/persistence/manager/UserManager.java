@@ -43,10 +43,10 @@ public class UserManager extends EntityDbManager {
      *
      * @param user the user to insert
      */
-    public void insertUser(User user) {
+    public boolean insertUser(User user) {
         if (user == null) {
             Log.e(UserManager.class.getSimpleName(), "the user to insert is null!");
-            return;
+            return false;
         }
 
         ContentValues values = getUserContentValues(user);
@@ -54,8 +54,10 @@ public class UserManager extends EntityDbManager {
         try {
             database.insertOrThrow(DBContracts.UserTable.TABLE_NAME, null, values);
             Log.i(UserManager.class.getSimpleName(), "New user added successfully: " + user.toString());
+            return true;
         } catch (Exception e) {
             Log.e(UserManager.class.getSimpleName(), "Could not insert new user into db: " + user.toString() + "! " + e.getLocalizedMessage());
+            return false;
         }
     }
 

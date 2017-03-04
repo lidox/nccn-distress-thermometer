@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +64,6 @@ public class QuestionnaireSelectListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(CLASS_NAME, "onResume()");
-        //fillQuestionnaireListViewByItems();
         showQuestionnairesInListView();
     }
 
@@ -71,13 +71,6 @@ public class QuestionnaireSelectListFragment extends Fragment {
      * Displays the questionnaires containing progress in percentage
      */
     private void showQuestionnairesInListView() {
-        List<AbstractQuestionnaire> list =  getQuestionnaireList();
-        AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), list);
-        questionnaireListView.setAdapter(adapter);
-        percentageAllTextView.setText(getPercentageForAllQuestionnairesByList(list) + " ");
-        addOnItemClickListener(list);
-
-
         boolean userExisting = Global.getSelectedUser() != null;
         if (userExisting) {
 
@@ -89,58 +82,22 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 // create new questionnaire date
                 Global.setSelectedQuestionnaireDate(newCreationDate);
 
-                fillQuestionnaireListByUserNameAndCreationDate(list, newCreationDate, user);
+                fillQuestionnaireListView(user, newCreationDate);
+                //fillQuestionnaireListByUserNameAndCreationDate(list, newCreationDate, user);
             } else {
                 //TODO: async
                 User user = new UserManager().getUserByName(Global.getSelectedUser());
                 if (user != null) {
 
-                    if (Global.getSelectedQuestionnaireDate() == null)
+                    if (Global.getSelectedQuestionnaireDate() == null){
                         Global.setSelectedQuestionnaireDate(newCreationDate);
+                    }
 
-                    fillQuestionnaireListByUserNameAndCreationDate(list, Global.getSelectedQuestionnaireDate(), user);
+                    fillQuestionnaireListView(user, Global.getSelectedQuestionnaireDate());
+
                 }
             }
         }
-    }
-
-    private List<AbstractQuestionnaire> getQuestionnaireList() {
-        List<AbstractQuestionnaire> list = new ArrayList<>();
-
-        /* set new Date for questionnaires, for the case that a new user need to be created */
-        Date selectedQuestionnaireDate;
-        String selectedUserName = Global.getSelectedUser();
-
-        if (Global.hasToCreateNewUser()) {
-            User user = new User(Strings.getStringByRId(R.string.user_name));
-            new UserManager().insertUser(user);
-            fillQuestionnaireListByUserNameAndCreationDate(list, new Date(), user);
-        }
-        // a user has been selected
-        else {
-            User user = new UserManager().getUserByName(selectedUserName);
-            if (user == null) {
-                createNewUser();
-                user = new UserManager().getUserByName(Global.getSelectedUser());
-            }
-            Log.i(CLASS_NAME, "Selected User:" + user);
-            selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
-            selectedQuestionnaireDate = getNewDateIfNull(selectedQuestionnaireDate, selectedUserName);
-            Log.i(CLASS_NAME, "Selected Questionnaire Date: " + EntityDbManager.dateFormat.format(selectedQuestionnaireDate));
-            fillQuestionnaireListByUserNameAndCreationDate(list, selectedQuestionnaireDate, user);
-        }
-
-        return list;
-    }
-
-    @NonNull
-    private Date getNewDateIfNull(Date selectedQuestionnaireDate, String selectedUserName) {
-        if (selectedQuestionnaireDate == null) {
-            selectedQuestionnaireDate = new Date();
-            Log.i(CLASS_NAME, "create new questionnaire creationDate = " + selectedUserName);
-            Global.setSelectedQuestionnaireDate(selectedQuestionnaireDate);
-        }
-        return selectedQuestionnaireDate;
     }
 
     /**
@@ -148,23 +105,38 @@ public class QuestionnaireSelectListFragment extends Fragment {
      * If user name equals 'create user flag' the default questionnaires will be displayed
      * and puts the progress values into list by questionnaire type
      *
-     * @param list                      the list to fill
-     * @param selectedQuestionnaireDate the date to use for the questionnaires
+     * @param creationDate the date to use for the questionnaires
      * @param user                      the selected user
      */
-    private void fillQuestionnaireListByUserNameAndCreationDate(List<AbstractQuestionnaire> list, Date selectedQuestionnaireDate, User user) {
+    private void  fillQuestionnaireListView(User user, Date creationDate) {
+        List<AbstractQuestionnaire> list = new ArrayList<>();
+
         int hadsProgress = 0;
         int distressProgress = 0;
         int qualityProgress = 0;
 
-        boolean hasToCreateNewQuestionnaire = Global.hasToCreateNewQuestionnaire();
-        if (hasToCreateNewQuestionnaire) {
-            Log.i(CLASS_NAME, "Display default questionnaires");
-            list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
-            list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
-            list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
-        } else {
 
+        if (Global.hasToCreateNewQuestionnaire()) {
+            if(Global.hasToUseDefaultQuestionnaire()){
+                Log.i(CLASS_NAME, "display default questionnaires");
+                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
+                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
+                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
+            }
+            else {
+                Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
+                if (setOfBooleans != null) {
+                    if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire)))
+                        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
+
+                    if (setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer)))
+                        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
+
+                    if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire)))
+                        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
+                }
+            }
+        } else {
             Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
             if (setOfBooleans != null) {
                 boolean hasToGetProgress = !Global.hasToCreateNewUser() && user != null;
@@ -172,7 +144,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 // HADS-D
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
                     if (hasToGetProgress) {
-                        HADSDQuestionnaire hadsdQuestionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate);
+                        HADSDQuestionnaire hadsdQuestionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), creationDate);
                         if (hadsdQuestionnaire != null) {
                             hadsProgress = hadsdQuestionnaire.getProgressInPercent();
                             Log.i(CLASS_NAME, "Progress loading HADS-D = " + hadsProgress);
@@ -184,7 +156,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 // Distress Thermometer
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
                     if (hasToGetProgress) {
-                        DistressThermometerQuestionnaire distressThermometerQuestionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
+                        DistressThermometerQuestionnaire distressThermometerQuestionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), creationDate);
                         if (distressThermometerQuestionnaire != null)
                             distressProgress = distressThermometerQuestionnaire.getProgressInPercent();
                     }
@@ -193,7 +165,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
                     if (hasToGetProgress) {
-                        QolQuestionnaire qolQuestionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), selectedQuestionnaireDate);
+                        QolQuestionnaire qolQuestionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), creationDate);
                         if (qolQuestionnaire != null) {
                             qualityProgress = qolQuestionnaire.getProgressInPercent();
                             Log.i(CLASS_NAME, "Progress loading QualityOfLife = " + qualityProgress);
@@ -203,6 +175,10 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 }
             }
         }
+        AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), list);
+        questionnaireListView.setAdapter(adapter);
+        percentageAllTextView.setText(getPercentageForAllQuestionnairesByList(list) + " ");
+        addOnItemClickListener(list);
     }
 
     private void addOnItemClickListener(final List<AbstractQuestionnaire> abstractQuestionnairesList) {
@@ -223,8 +199,6 @@ public class QuestionnaireSelectListFragment extends Fragment {
         Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
         Log.i(CLASS_NAME, "onStartQuestionnaire with selected user name = " + selectedUserName + ", selected date=" + selectedQuestionnaireDate);
 
-        createNewUserIfNotExisting();
-
         insertQuestionnaireIntoDB(questionnairesList);
 
         Class selectedClass = getWizardClassByQuestionnaireName(selectedQuestionnaireName);
@@ -232,20 +206,6 @@ public class QuestionnaireSelectListFragment extends Fragment {
         changeSelectedGlobalValues(selectedQuestionnaireDate);
 
         startActivityForResult(new Intent(getContext(), selectedClass), 0);
-    }
-
-    private void createNewUserIfNotExisting() {
-        String userName = Global.getSelectedUser();
-        if (Global.hasToCreateNewUser() || userName == null) {
-            createNewUser();
-        }
-    }
-
-    private void createNewUser() {
-        User user = new User(Strings.getStringByRId(R.string.user_name));
-        new UserManager().insertUser(user);
-        Global.setSelectedUserName(user.getName());
-        Global.setHasToCreateNewUser(false);
     }
 
     private Class getWizardClassByQuestionnaireName(String selectedQuestionnaireName) {
@@ -274,7 +234,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
                     HADSDQuestionnaire questionnaire = new HADSDQuestionnaire(Global.getSelectedUser());
                     questionnaire.setCreationDate_PK(selectedQuestionnaireDate);
                     new HADSDQuestionnaireManager().insertQuestionnaire(questionnaire);
-                    Log.i(CLASS_NAME, "Inserting new HADSD by creation date = " + selectedQuestionnaireDate);
+                    Log.i(CLASS_NAME, "Inserting new HADS-D by creation date = " + selectedQuestionnaireDate);
                 }
                 boolean isDistressThermometerQuestionnaire = item.getName().equalsIgnoreCase(Strings.getStringByRId(R.string.nccn_distress_thermometer));
                 if (isDistressThermometerQuestionnaire) {
@@ -305,29 +265,6 @@ public class QuestionnaireSelectListFragment extends Fragment {
     }
 
     /**
-     * Fill list view with questionnaires
-     */
-    private void fillQuestionnaireListViewByItems() {
-        new AsyncTask<Void, Void, List<AbstractQuestionnaire>>() {
-
-            @Override
-            protected List<AbstractQuestionnaire> doInBackground(Void... params) {
-                return getQuestionnaireList();
-            }
-
-            @Override
-            protected void onPostExecute(final List<AbstractQuestionnaire> abstractQuestionnairesList) {
-                Log.i(CLASS_NAME, "Questionnaires loaded by database: " + abstractQuestionnairesList);
-                super.onPostExecute(abstractQuestionnairesList);
-                AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), abstractQuestionnairesList);
-                questionnaireListView.setAdapter(adapter);
-                addOnItemClickListener(abstractQuestionnairesList);
-                percentageAllTextView.setText(getPercentageForAllQuestionnairesByList(abstractQuestionnairesList) + " ");
-            }
-        }.execute();
-    }
-
-    /**
      * Get the progress in percentage of all questionnairies by the questionnaire list
      *
      * @param list the list where to count the percentage
@@ -336,13 +273,23 @@ public class QuestionnaireSelectListFragment extends Fragment {
     private int getPercentageForAllQuestionnairesByList(List<AbstractQuestionnaire> list) {
         if (list != null) {
             int count = list.size();
-            int sum = 0;
+            double sum = 0;
             for (AbstractQuestionnaire item : list) {
-                sum += item.getProgressInPercent();
+                double factor = 1;
+                if(item.getName().equals(Strings.getStringByRId(R.string.hadsd_questionnaire))){
+                    factor = 14. / 70;
+                }
+                else if(item.getName().equals(Strings.getStringByRId(R.string.nccn_distress_thermometer))){
+                    factor = 6. / 70;
+                }
+                else if(item.getName().equals(Strings.getStringByRId(R.string.quality_of_life_questionnaire))){
+                    factor = 50. / 70;
+                }
+                sum += factor * item.getProgressInPercent();
             }
 
             if (count != 0) {
-                return sum / count;
+                return (int) Math.floor(sum);
             }
         }
         return 0;
