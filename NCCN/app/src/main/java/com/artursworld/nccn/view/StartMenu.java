@@ -28,6 +28,7 @@ import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.view.questionnaire.OperationTypeSwiper;
+import com.artursworld.nccn.view.questionnaire.QuestionnaireSelectListFragment;
 import com.artursworld.nccn.view.user.SelectUserActivity;
 import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -63,8 +64,39 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onResume() {
         super.onResume();
+        createUserBAndOnResumeWithSelectedUser();
+    }
 
-        if (Global.getSelectedUser() == null) {
+    private void onResumeWithSelectedUser() {
+        userNameEditText.setText(Global.getSelectedUser());
+        Log.i(CLASS_NAME, "Display global user(" + Global.getSelectedUser()+") in MaterialEditText");
+
+        // add change listener
+        addOnUserNameTextChangeListener();
+
+        // init swipe for operation type e.g. pre-operation
+        View rootView = getWindow().getDecorView().getRootView();
+        operationTypeSwiper = new OperationTypeSwiper(rootView, R.id.select_operation_type);
+
+        addQuestionnaireListFragment(rootView);
+    }
+
+    private void addQuestionnaireListFragment(View rootView) {
+        // Check that the activity is using the layout version with
+        // the fragment_container FrameLayout
+        if (rootView.findViewById(R.id.fragment_container) != null) {
+
+            // Create a new Fragment to be placed in the activity layout
+            QuestionnaireSelectListFragment fragment = new QuestionnaireSelectListFragment();
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment).commit();
+        }
+    }
+
+    private void createUserBAndOnResumeWithSelectedUser() {
+        if (Global.getSelectedUser() == null || Global.hasToCreateNewUser()) {
             new AsyncTask<Void, Void, Void>(){
 
                 @Override
@@ -91,18 +123,6 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         new UserManager().insertUser(new User(defaultUserName));
         Global.setSelectedUserName(defaultUserName);
         Global.setHasToCreateNewUser(false);
-    }
-
-    private void onResumeWithSelectedUser() {
-        userNameEditText.setText(Global.getSelectedUser());
-        Log.i(CLASS_NAME, "Display global user(" + Global.getSelectedUser()+") in MaterialEditText");
-
-        // add change listener
-        addOnUserNameTextChangeListener();
-
-        // init swipe for operation type e.g. pre-operation
-        View rootView = getWindow().getDecorView().getRootView();
-        operationTypeSwiper = new OperationTypeSwiper(rootView, R.id.select_operation_type);
     }
 
     /**

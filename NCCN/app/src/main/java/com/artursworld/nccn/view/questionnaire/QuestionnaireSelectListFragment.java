@@ -40,39 +40,70 @@ import java.util.Set;
 
 public class QuestionnaireSelectListFragment extends Fragment {
 
-    private static final String CLASS_NAME = QuestionnaireSelectListFragment.class.getSimpleName();
+    private static String CLASS_NAME = QuestionnaireSelectListFragment.class.getSimpleName();
 
     // UI
     private ListView questionnaireListView = null;
-    private TextView percentageAll = null;
+    private TextView percentageAllTextView = null;
 
     public QuestionnaireSelectListFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        Log.i(CLASS_NAME, "onResume() Questionnaire Select Screen. Choose a questionnaire");
-        super.onResume();
-        fillQuestionnaireListViewByItems();
+        // Fragment requires empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(CLASS_NAME, " onCreateView()");
-        createNewUserIfNotExisting();
         View view = inflater.inflate(R.layout.fragment_questionnaire_select_list, container, false);
         questionnaireListView = (ListView) view.findViewById(R.id.questionnaire_list_view);
-        percentageAll = (TextView) view.findViewById(R.id.percentage_text);
+        percentageAllTextView = (TextView) view.findViewById(R.id.percentage_text);
         return view;
     }
 
-    @NonNull
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(CLASS_NAME, "onResume()");
+        //fillQuestionnaireListViewByItems();
+        showQuestionnairesInListView();
+    }
+
+    /**
+     * Displays the questionnaires containing progress in percentage
+     */
+    private void showQuestionnairesInListView() {
+        List<AbstractQuestionnaire> list =  getQuestionnaireList();
+        AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), list);
+        questionnaireListView.setAdapter(adapter);
+        percentageAllTextView.setText(getPercentageForAllQuestionnairesByList(list) + " ");
+        addOnItemClickListener(list);
+
+
+        boolean userExisting = Global.getSelectedUser() != null;
+        if (userExisting) {
+
+            Date newCreationDate = new Date();
+            if (Global.hasToCreateNewUser()) {
+                // create new user
+                User user = new User(Strings.getStringByRId(R.string.user_name));
+
+                // create new questionnaire date
+                Global.setSelectedQuestionnaireDate(newCreationDate);
+
+                fillQuestionnaireListByUserNameAndCreationDate(list, newCreationDate, user);
+            } else {
+                //TODO: async
+                User user = new UserManager().getUserByName(Global.getSelectedUser());
+                if (user != null) {
+
+                    if (Global.getSelectedQuestionnaireDate() == null)
+                        Global.setSelectedQuestionnaireDate(newCreationDate);
+
+                    fillQuestionnaireListByUserNameAndCreationDate(list, Global.getSelectedQuestionnaireDate(), user);
+                }
+            }
+        }
+    }
+
     private List<AbstractQuestionnaire> getQuestionnaireList() {
         List<AbstractQuestionnaire> list = new ArrayList<>();
 
@@ -80,10 +111,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
         Date selectedQuestionnaireDate;
         String selectedUserName = Global.getSelectedUser();
 
-        // check if flag is set e.g. in UserStartConfiguration.class
-        boolean hasToCreateNewUser = Global.hasToCreateNewUser();
-
-        if (hasToCreateNewUser) {
+        if (Global.hasToCreateNewUser()) {
             User user = new User(Strings.getStringByRId(R.string.user_name));
             new UserManager().insertUser(user);
             fillQuestionnaireListByUserNameAndCreationDate(list, new Date(), user);
@@ -91,7 +119,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
         // a user has been selected
         else {
             User user = new UserManager().getUserByName(selectedUserName);
-            if(user == null){
+            if (user == null) {
                 createNewUser();
                 user = new UserManager().getUserByName(Global.getSelectedUser());
             }
@@ -107,7 +135,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
     @NonNull
     private Date getNewDateIfNull(Date selectedQuestionnaireDate, String selectedUserName) {
-        if(selectedQuestionnaireDate == null){
+        if (selectedQuestionnaireDate == null) {
             selectedQuestionnaireDate = new Date();
             Log.i(CLASS_NAME, "create new questionnaire creationDate = " + selectedUserName);
             Global.setSelectedQuestionnaireDate(selectedQuestionnaireDate);
@@ -145,9 +173,9 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
                     if (hasToGetProgress) {
                         HADSDQuestionnaire hadsdQuestionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), selectedQuestionnaireDate);
-                        if (hadsdQuestionnaire != null){
+                        if (hadsdQuestionnaire != null) {
                             hadsProgress = hadsdQuestionnaire.getProgressInPercent();
-                            Log.i(CLASS_NAME, "Progress loading HADS-D = " +hadsProgress);
+                            Log.i(CLASS_NAME, "Progress loading HADS-D = " + hadsProgress);
                         }
                     }
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
@@ -238,7 +266,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
     }
 
     private void insertQuestionnaireIntoDB(List<AbstractQuestionnaire> questionnairesList) {
-        if(Global.hasToCreateNewQuestionnaire()) {
+        if (Global.hasToCreateNewQuestionnaire()) {
             Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
             for (AbstractQuestionnaire item : questionnairesList) {
                 boolean isHadsdQuestionnaire = item.getName().equalsIgnoreCase(Strings.getStringByRId(R.string.hadsd_questionnaire));
@@ -276,6 +304,9 @@ public class QuestionnaireSelectListFragment extends Fragment {
         Global.setSelectedQuestionnaireDate(selectedQuestionnaireDate);
     }
 
+    /**
+     * Fill list view with questionnaires
+     */
     private void fillQuestionnaireListViewByItems() {
         new AsyncTask<Void, Void, List<AbstractQuestionnaire>>() {
 
@@ -291,7 +322,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), abstractQuestionnairesList);
                 questionnaireListView.setAdapter(adapter);
                 addOnItemClickListener(abstractQuestionnairesList);
-                percentageAll.setText(getPercentageForAllQuestionnairesByList(abstractQuestionnairesList) + " ");
+                percentageAllTextView.setText(getPercentageForAllQuestionnairesByList(abstractQuestionnairesList) + " ");
             }
         }.execute();
     }

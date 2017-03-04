@@ -141,8 +141,6 @@ public class Share {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
         String key = App.getAppContext().getResources().getString(keyId);
         boolean retBool = prefs.getBoolean(key, true);
-        //String logMessage = "get global value by keyId(=" + key + ", value=" + retBool + ")";
-        //Log.i(CLASS_NAME, logMessage);
         return retBool;
     }
 }
