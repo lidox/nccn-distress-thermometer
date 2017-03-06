@@ -201,7 +201,7 @@ public class UserStartConfiguration {
             Global.setHasToUseDefaultQuestionnaire(true);
             resource = "setHasToUseDefaultQuestionnaire(true)";
         }
-        Log.i(CLASS_NAME, resource + " .on toggle is unchecked");
+        //Log.i(CLASS_NAME, resource + " .on toggle is unchecked");
     }
 
     private void onToggleIsChecked(int resourceId) {

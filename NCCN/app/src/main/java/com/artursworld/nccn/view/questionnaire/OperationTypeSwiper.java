@@ -11,6 +11,7 @@ import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.OperationType;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.MetaQuestionnaire;
+import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
 import com.roughike.swipeselector.OnSwipeItemSelectedListener;
 import com.roughike.swipeselector.SwipeItem;
@@ -25,60 +26,78 @@ public class OperationTypeSwiper {
 
     private String CLASS_NAME = OperationTypeSwiper.class.getSimpleName();
     private SwipeSelector swipeSelector;
+    private int checkOnItemSelectedListener = 0;
 
     public OperationTypeSwiper(View rootView, int resourceId) {
         initSwipeSelector(rootView, resourceId);
-        loadSwipeSelectionIfPossible();
-        addOnSwipeItemChangeListener();
+        //TODO: async
+        if(swipeSelector != null)
+            swipeSelector.selectItemWithValue(getOperationType());
 
+        insertIfNowExists();
+
+
+        if(swipeSelector != null)
+            swipeSelector.setOnItemSelectedListener(getSwipeListener());
     }
 
-    private void loadSwipeSelectionIfPossible() {
-        new AsyncTask<Void, Void, MetaQuestionnaire>(){
-            @Override
-            protected MetaQuestionnaire doInBackground(Void... params) {
-                Date creationDate = Global.getSelectedQuestionnaireDate();
-                return new MetaQuestionnaireManager().getMetaDataByCreationDate(creationDate);
-            }
-
-            @Override
-            protected void onPostExecute(MetaQuestionnaire meta) {
-                super.onPostExecute(meta);
-                if(meta != null)
-                    swipeSelector.selectItemWithValue(meta.getOperationType());
-            }
-        }.execute();
+    private OperationType getOperationType() {
+        MetaQuestionnaire meta = new MetaQuestionnaireManager().getMetaDataByCreationDate(Global.getSelectedQuestionnaireDate());
+        OperationType operationType = meta.getOperationType();
+        Log.i(CLASS_NAME, "set operation type selection to: " + operationType + ". It has been loaded from database");
+        return operationType;
     }
 
-    private void addOnSwipeItemChangeListener() {
-        swipeSelector.setOnItemSelectedListener(new OnSwipeItemSelectedListener() {
-            @Override
-            public void onItemSelected(final SwipeItem selectedOperationTypeItem) {
-                new AsyncTask<Void, Void, Void>(){
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        MetaQuestionnaire meta = getSelectedMetaQuestionnaire(selectedOperationTypeItem);
-                        MetaQuestionnaireManager manager = new MetaQuestionnaireManager();
-                        manager.update(meta);
-                        return null;
-                    }
-                }.execute();
-            }
-        });
+    private void insertIfNowExists() {
+        Date creationDate = Global.getSelectedQuestionnaireDate();
+        MetaQuestionnaire meta = new MetaQuestionnaireManager().getMetaDataByCreationDate(creationDate);
+
+        if (meta == null) {
+            Log.i(CLASS_NAME, "create meta data, because not existing yet for creation date: " + EntityDbManager.dateFormat.format(creationDate));
+            new MetaQuestionnaireManager().insert(new MetaQuestionnaire(creationDate));
+        }
     }
 
     @NonNull
+    private OnSwipeItemSelectedListener getSwipeListener() {
+        return new OnSwipeItemSelectedListener() {
+            @Override
+            public void onItemSelected(final SwipeItem selectedOperationTypeItem) {
+                Log.i(CLASS_NAME, "on click listener set selected new operation type in the UI: "+ selectedOperationTypeItem.value + ". CreationDate: " + Global.getSelectedQuestionnaireDate());
+                MetaQuestionnaire meta = getSelectedMetaQuestionnaire(selectedOperationTypeItem);
+                meta.setCreationDate(Global.getSelectedQuestionnaireDate());
+                MetaQuestionnaireManager manager = new MetaQuestionnaireManager();
+                    manager.update(meta);
+            }
+        };
+    }
+
+    /**
+     * Get the selected type by UI
+     * @param item
+     * @return
+     */
+    @NonNull
     private MetaQuestionnaire getSelectedMetaQuestionnaire(SwipeItem item) {
-        Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
+        Log.i(CLASS_NAME, "get selected operation type in the UI: " + item.value + ". CreationDate: " + Global.getSelectedQuestionnaireDate());
+        Date creationDate = Global.getSelectedQuestionnaireDate();
         OperationType selectedOpType = (OperationType) item.value;
-        MetaQuestionnaire meta = new MetaQuestionnaire();
-        meta.setOperationType(selectedOpType);
-        meta.setCreationDate(selectedQuestionnaireDate);
-        Log.i(CLASS_NAME, "selected operation type: " + selectedOpType + " for date: " + selectedQuestionnaireDate);
+        MetaQuestionnaire meta = new MetaQuestionnaireManager().getMetaDataByCreationDate(creationDate);
+        if (meta == null) {
+            Log.i(CLASS_NAME, "Could not find any meta data for creation date, so create a new one");
+            meta = new MetaQuestionnaire(creationDate);
+            meta.setOperationType(selectedOpType);
+            new MetaQuestionnaireManager().insert(meta);
+        } else {
+            meta.setOperationType(selectedOpType);
+            meta.setCreationDate(creationDate);
+        }
+
         return meta;
     }
 
     private void initSwipeSelector(View rootView, int resourceId) {
+        Log.i(CLASS_NAME, "init meta data swipe selector");
         if (rootView != null) {
             swipeSelector = (SwipeSelector) rootView.findViewById(resourceId);
             swipeSelector.setItems(

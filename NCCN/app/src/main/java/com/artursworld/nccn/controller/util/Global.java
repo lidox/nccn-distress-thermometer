@@ -53,7 +53,7 @@ public class Global {
         try {
             String stringId = Strings.getStringByRId(R.string.c_selected_questionnaire_creation_date);
             String dateAsString = EntityDbManager.dateFormat.format(newCreationDate);
-            Log.i(CLASS_NAME, "CHANGE Q-DATE from: " + getSelectedQuestionnaireDate() + " to: " + dateAsString);
+            Log.i(CLASS_NAME, "CREATION Q-DATE changed to: " + dateAsString + " (old value="+ EntityDbManager.dateFormat.format(getSelectedQuestionnaireDate()) + ")");
             Share.putString(stringId, dateAsString);
         }
         catch (Exception e){
@@ -87,6 +87,7 @@ public class Global {
     }
 
     public static void setHasToCreateNewQuestionnaire(boolean setHasToCreateNewQuestionnaire) {
+        Log.i(CLASS_NAME, "setHasToCreateNewQuestionnaire(" + setHasToCreateNewQuestionnaire +")");
         Share.putBoolean(Strings.getStringByRId(R.string.c_has_to_create_new_questionnaire), setHasToCreateNewQuestionnaire);
     }
 

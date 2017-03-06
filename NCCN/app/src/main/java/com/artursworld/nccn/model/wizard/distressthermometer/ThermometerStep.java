@@ -58,6 +58,9 @@ public class ThermometerStep extends AbstractStep {
         Bundle bundle = getArguments();
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
         //questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByUserName(selectedUser.getName());
+        if(selectedUser == null)
+            return;
+
         questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
     }
 

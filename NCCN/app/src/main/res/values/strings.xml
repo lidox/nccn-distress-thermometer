@@ -183,4 +183,5 @@
     <string name="pre_operation_description">Es wurde keine Operation durchgeführt.</string>
     <string name="post_operation_description">Die Operation ist bereits durchgeführt worden.</string>
     <string name="post_operation">Postoperativ</string>
+    <string name="user">Benutzer</string>
 </resources>

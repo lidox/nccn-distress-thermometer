@@ -23,6 +23,7 @@ import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
 import com.artursworld.nccn.controller.elasticsearch.ElasticRestClient;
 import com.artursworld.nccn.controller.elasticsearch.METHOD;
+import com.artursworld.nccn.controller.util.Generator;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
@@ -59,12 +60,23 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         ButterKnife.bind(this);
         initNavigationAndToolBar();
         activity = this;
+
+        // init swipe for operation type e.g. pre-operation
+        View rootView = getWindow().getDecorView().getRootView();
+        if(operationTypeSwiper == null)
+            operationTypeSwiper = new OperationTypeSwiper(rootView, R.id.select_operation_type);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         createUserBAndOnResumeWithSelectedUser();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        operationTypeSwiper = null;
     }
 
     private void onResumeWithSelectedUser() {
@@ -76,7 +88,6 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
         // init swipe for operation type e.g. pre-operation
         View rootView = getWindow().getDecorView().getRootView();
-        operationTypeSwiper = new OperationTypeSwiper(rootView, R.id.select_operation_type);
 
         addQuestionnaireListFragment(rootView);
     }
@@ -91,13 +102,16 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment).commit();
+                    .replace(R.id.fragment_container, fragment).commit();
         }
     }
 
     private void createUserBAndOnResumeWithSelectedUser() {
+        //TODO: async
         if (Global.getSelectedUser() == null || Global.hasToCreateNewUser()) {
-
+            createUser();
+            onResumeWithSelectedUser();
+            /*
             new AsyncTask<Void, Void, Void>(){
 
                 @Override
@@ -112,26 +126,17 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                     onResumeWithSelectedUser();
                 }
 
-                @Override
-                protected void onCancelled() {
-                    super.onCancelled();
-                    Log.i(CLASS_NAME, "canceled");
-                }
-
-                @Override
-                protected void onProgressUpdate(Void... values) {
-                    super.onProgressUpdate(values);
-                    Log.i(CLASS_NAME, "bla");
-                }
             }.execute();
+            */
         }
         else{
             onResumeWithSelectedUser();
         }
+
     }
 
     private void createUser() {
-        String defaultUserName = Strings.getStringByRId(R.string.user_name);
+        String defaultUserName = Strings.getStringByRId(R.string.user) + Generator.getRandomInRange(0, 100000);
         Log.i(CLASS_NAME, "Creating new User("+defaultUserName+"), because no global user has been set");
         boolean hasCreated = new UserManager().insertUser(new User(defaultUserName));
         if(hasCreated){

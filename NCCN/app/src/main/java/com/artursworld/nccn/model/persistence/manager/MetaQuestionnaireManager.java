@@ -31,27 +31,31 @@ public class MetaQuestionnaireManager extends EntityDbManager {
 
     /**
      * This constructor is used for unit tests
+     *
      * @param context the database context to use
      */
     public MetaQuestionnaireManager(Context context) {
         super(context);
     }
 
-    public void update(MetaQuestionnaire meta) {
+    public long update(MetaQuestionnaire meta) {
+        long rowsAffected = -1;
         String WHERE_CLAUSE = DBContracts.MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE + " =?";
-        String[] WHERE_ARGS = new String[] {EntityDbManager.dateFormat.format(meta.getCreationDate())};
+        String[] WHERE_ARGS = new String[]{EntityDbManager.dateFormat.format(meta.getCreationDate())};
 
         if (meta.getCreationDate() == null) {
-            Log.e(CLASS_NAME,"Cannot update meta: " + meta);
-            return;
+            Log.e(CLASS_NAME, "Cannot update meta: " + meta);
+            return -1;
         }
 
         try {
             ContentValues contentValues = getMetaDataContentValues(meta);
-            int rowsAffected = database.update(tableName, contentValues, WHERE_CLAUSE, WHERE_ARGS);
+            rowsAffected = database.update(tableName, contentValues, WHERE_CLAUSE, WHERE_ARGS);
             Log.i(tableName, meta + " has been updated. Rows affected: " + rowsAffected);
         } catch (Exception e) {
-            Log.e(tableName,"Exception! Could not update the meta data(" + meta + ") " + " " + e.getLocalizedMessage());
+            Log.e(tableName, "Exception! Could not update the meta data(" + meta + ") " + " " + e.getLocalizedMessage());
+        } finally {
+            return rowsAffected;
         }
     }
 
@@ -63,7 +67,7 @@ public class MetaQuestionnaireManager extends EntityDbManager {
      */
     public void insert(MetaQuestionnaire meta) {
         if (meta == null) {
-            Log.e(CLASS_NAME,"the meta data to insert equals null!");
+            Log.e(CLASS_NAME, "the meta data to insert equals null!");
             return;
         }
 
@@ -71,27 +75,28 @@ public class MetaQuestionnaireManager extends EntityDbManager {
 
         try {
             database.insertOrThrow(tableName, null, values);
-            Log.i(CLASS_NAME,"New meta added successfully:" + meta.toString());
+            Log.i(CLASS_NAME, "New meta added successfully:" + meta.toString());
         } catch (Exception e) {
-            Log.e(CLASS_NAME,"Could not insert new meta into db: " + meta.toString() + "! " + e.getLocalizedMessage());
+            Log.e(CLASS_NAME, "Could not insert new meta into db: " + meta.toString() + "! " + e.getLocalizedMessage());
         }
     }
 
     /**
      * Get content values by meta data
+     *
      * @param meta the meta to get the values out
      * @return the ContentValues of the meta
      */
     private ContentValues getMetaDataContentValues(MetaQuestionnaire meta) {
         ContentValues values = new ContentValues();
 
-        if(meta.getCreationDate() != null)
+        if (meta.getCreationDate() != null)
             values.put(DBContracts.MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE, EntityDbManager.dateFormat.format(meta.getCreationDate()));
 
-        if(meta.getUpdateDate() != null)
+        if (meta.getUpdateDate() != null)
             values.put(DBContracts.MetaQuestionnaireTable.UPDATE_DATE, EntityDbManager.dateFormat.format(meta.getUpdateDate()));
 
-        if(meta.getOperationType() != null)
+        if (meta.getOperationType() != null)
             values.put(DBContracts.MetaQuestionnaireTable.OPERATION_TYPE, meta.getOperationType().name());
 
         return values;
@@ -128,6 +133,7 @@ public class MetaQuestionnaireManager extends EntityDbManager {
 
     /**
      * Helps to get meta data by creation date
+     *
      * @param date the creation date
      * @return a single meta data object
      */
@@ -138,13 +144,14 @@ public class MetaQuestionnaireManager extends EntityDbManager {
         if (metaList.size() > 0) {
             return metaList.get(0);
         } else {
-            Log.e(CLASS_NAME,"Exception! Could not find meta data by creation date(" + date + ") in database");
+            Log.w(CLASS_NAME, "WARNING! Could not find meta data by creation date(" + date + ") in database");
             return null;
         }
     }
 
     /**
      * Get all meta dates by a creation date
+     *
      * @param creationDate the creation date of the meta data
      * @return a list of all meta dates by creation date
      */
@@ -152,7 +159,7 @@ public class MetaQuestionnaireManager extends EntityDbManager {
     public List<MetaQuestionnaire> getMetaListByDate(Date creationDate) {
         List<MetaQuestionnaire> metaList = new ArrayList<>();
 
-        if(creationDate == null){
+        if (creationDate == null) {
             return metaList;
         }
 
@@ -162,15 +169,15 @@ public class MetaQuestionnaireManager extends EntityDbManager {
                 null, null, null, null);
 
         while (cursor.moveToNext()) {
-            MetaQuestionnaire meta = new MetaQuestionnaire();
-
+            MetaQuestionnaire meta = null;
             try {
+                meta = new MetaQuestionnaire(EntityDbManager.dateFormat.parse(cursor.getString(0)));
                 meta.setCreationDate(EntityDbManager.dateFormat.parse(cursor.getString(0)));
                 meta.setUpdateDate(EntityDbManager.dateFormat.parse(cursor.getString(1)));
                 meta.setOperationType(OperationType.findByName(cursor.getString(2)));
 
             } catch (Exception e) {
-                Log.i(CLASS_NAME,"Failed to getMetaListByDate(" + creationDate + ")!" + e.getLocalizedMessage());
+                Log.i(CLASS_NAME, "Failed to getMetaListByDate(" + creationDate + ")!" + e.getLocalizedMessage());
             }
             metaList.add(meta);
         }

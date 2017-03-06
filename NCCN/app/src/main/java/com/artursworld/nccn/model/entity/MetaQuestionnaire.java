@@ -13,8 +13,9 @@ public class MetaQuestionnaire {
     private Date creationDate = null;
     private OperationType operationType = null;
 
-    public MetaQuestionnaire(){
-        creationDate = new Date();
+    public MetaQuestionnaire(Date creationDate){
+        operationType = OperationType.PRE;
+        this.creationDate = creationDate;
         updateDate = new Date();
     }
 
