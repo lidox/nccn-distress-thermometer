@@ -57,11 +57,12 @@ public class ThermometerStep extends AbstractStep {
     private void initBundledData() {
         Bundle bundle = getArguments();
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
-        //questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByUserName(selectedUser.getName());
+
         if(selectedUser == null)
             return;
 
         questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
+        Log.i(CLASS_NAME, "loaded questionnaire: " + questionnaire);
     }
 
     @NonNull
@@ -103,7 +104,6 @@ public class ThermometerStep extends AbstractStep {
 
         // load current answers again because maybe there are already updates
         final DistressThermometerQuestionnaireManager m = new DistressThermometerQuestionnaireManager();
-        questionnaire = m.getDistressThermometerQuestionnaireByUserName(selectedUser.getName());
 
         // display oldBits and new byte
         String oldBits = questionnaire.getBitsByQuestionNr(currentQuestionNumber);

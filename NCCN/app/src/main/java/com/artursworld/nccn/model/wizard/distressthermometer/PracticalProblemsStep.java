@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardNCCN;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
@@ -119,7 +120,7 @@ public class PracticalProblemsStep extends AbstractStep {
     private void initBundledData() {
         Bundle bundle = getArguments();
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
-        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByUserName(selectedUser.getName());
+        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
     }
 
     @NonNull

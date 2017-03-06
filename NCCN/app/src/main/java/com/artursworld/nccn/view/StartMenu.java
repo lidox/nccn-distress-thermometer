@@ -18,6 +18,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
@@ -27,6 +29,7 @@ import com.artursworld.nccn.controller.util.Generator;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
+import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.view.questionnaire.OperationTypeSwiper;
 import com.artursworld.nccn.view.questionnaire.QuestionnaireSelectListFragment;
@@ -38,6 +41,8 @@ import com.roughike.swipeselector.SwipeSelector;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -232,5 +237,24 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         navigationView.getMenu().findItem(R.id.nav_user_start_configuration).setChecked(false);
         navigationView.getMenu().findItem(R.id.nav_user_statistics).setChecked(false);
         navigationView.setNavigationItemSelectedListener(this);
+
+        initSelectedUserAndDateInNavigation();
+    }
+
+    private void initSelectedUserAndDateInNavigation() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+
+        TextView selectedUserText = (TextView) hView.findViewById(R.id.menu_selected_user);
+        TextView selectedCreationDate = (TextView) hView.findViewById(R.id.menu_creation_date);
+
+        if(selectedUserText!=null)
+            selectedUserText.setText(Global.getSelectedUser());
+
+        if(selectedCreationDate!=null) {
+            Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
+            if(selectedCreationDate!=null)
+                selectedCreationDate.setText(EntityDbManager.dateFormat.format(selectedQuestionnaireDate));
+        }
     }
 }

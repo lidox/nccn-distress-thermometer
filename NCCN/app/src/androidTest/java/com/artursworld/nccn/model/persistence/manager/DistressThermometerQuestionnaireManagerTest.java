@@ -3,6 +3,7 @@ package com.artursworld.nccn.model.persistence.manager;
 import android.test.InstrumentationTestCase;
 import android.test.RenamingDelegatingContext;
 
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 
@@ -193,7 +194,7 @@ public class DistressThermometerQuestionnaireManagerTest extends Instrumentation
         db.update(result);
 
         // check update
-        DistressThermometerQuestionnaire updated = db.getDistressThermometerQuestionnaireByUserName(user.getName());
+        DistressThermometerQuestionnaire updated = db.getDistressThermometerQuestionnaireByDate(user.getName(), Global.getSelectedQuestionnaireDate());
         assertEquals("01010101010", updated.getBitsByQuestionNr(1));
 
         // update question nr. 30 because it has 8 bits instead of 4 like the others

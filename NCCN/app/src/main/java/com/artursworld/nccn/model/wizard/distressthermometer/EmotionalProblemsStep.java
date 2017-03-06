@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardNCCN;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
@@ -120,7 +121,7 @@ public class EmotionalProblemsStep extends AbstractStep {
     private void initBundledData() {
         Bundle bundle = getArguments();
         User selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
-        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByUserName(selectedUser.getName());
+        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
         Log.i(CLASS_NAME,"Questionnaire loaded by user("+selectedUser.getName()+") questionnaire=" +questionnaire);
         Log.i(CLASS_NAME, "Questionbits for questionNr("+ currentQuestionNumber+")=" +questionnaire.getBitsByQuestionNr(currentQuestionNumber));
     }

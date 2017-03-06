@@ -40,13 +40,14 @@ public class MetaQuestionnaireManager extends EntityDbManager {
 
     public long update(MetaQuestionnaire meta) {
         long rowsAffected = -1;
-        String WHERE_CLAUSE = DBContracts.MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE + " =?";
-        String[] WHERE_ARGS = new String[]{EntityDbManager.dateFormat.format(meta.getCreationDate())};
 
         if (meta.getCreationDate() == null) {
             Log.e(CLASS_NAME, "Cannot update meta: " + meta);
             return -1;
         }
+
+        String WHERE_CLAUSE = DBContracts.MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE + " =?";
+        String[] WHERE_ARGS = new String[]{EntityDbManager.dateFormat.format(meta.getCreationDate())};
 
         try {
             ContentValues contentValues = getMetaDataContentValues(meta);

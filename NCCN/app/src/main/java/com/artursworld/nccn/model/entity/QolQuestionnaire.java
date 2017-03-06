@@ -28,6 +28,14 @@ public class QolQuestionnaire  implements IQuestionnaire{
     private int progressInPercent;
     private int lastQuestionEditedNr;
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("QolQuestionnaire(user = " + userNameId_FK + "\n");
+        sb.append("CreationDate = " + EntityDbManager.dateFormat.format(getCreationDate_PK())+ "\n");
+        sb.append("Progress = " + getProgressInPercent() + "%" + "\n");
+        return sb.toString();
+    }
+
     @Override
     public int getProgressInPercent() {
         return progressInPercent;

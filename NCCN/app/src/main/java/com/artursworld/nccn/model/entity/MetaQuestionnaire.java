@@ -1,5 +1,7 @@
 package com.artursworld.nccn.model.entity;
 
+import android.util.Log;
+
 import com.artursworld.nccn.controller.util.OperationType;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 
@@ -14,6 +16,10 @@ public class MetaQuestionnaire {
     private OperationType operationType = null;
 
     public MetaQuestionnaire(Date creationDate){
+        if(creationDate == null){
+            Log.e("", "Cannot creation meta data with creation date = null");
+            return;
+        }
         operationType = OperationType.PRE;
         this.creationDate = creationDate;
         updateDate = new Date();
@@ -48,7 +54,8 @@ public class MetaQuestionnaire {
         StringBuilder ret = new StringBuilder();
         ret.append("operationType: " + getOperationType().name() +"\n");
         ret.append("updateDate: "+EntityDbManager.dateFormat.format(updateDate) +"\n");
-        ret.append("creationDate: "+EntityDbManager.dateFormat.format(creationDate) +"\n");
+        if(creationDate!=null)
+            ret.append("creationDate: "+EntityDbManager.dateFormat.format(creationDate) +"\n");
         return ret.toString();
     }
 

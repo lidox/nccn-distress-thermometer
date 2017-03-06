@@ -58,8 +58,7 @@ public class OperationTypeSwiper {
     private void insertIfNowExists() {
         Date creationDate = Global.getSelectedQuestionnaireDate();
         MetaQuestionnaire meta = new MetaQuestionnaireManager().getMetaDataByCreationDate(creationDate);
-
-        if (meta == null) {
+        if (meta != null) {
             Log.i(CLASS_NAME, "create meta data, because not existing yet for creation date: " + EntityDbManager.dateFormat.format(creationDate));
             new MetaQuestionnaireManager().insert(new MetaQuestionnaire(creationDate));
         }
@@ -72,9 +71,11 @@ public class OperationTypeSwiper {
             public void onItemSelected(final SwipeItem selectedOperationTypeItem) {
                 Log.i(CLASS_NAME, "on click listener set selected new operation type in the UI: "+ selectedOperationTypeItem.value + ". CreationDate: " + Global.getSelectedQuestionnaireDate());
                 MetaQuestionnaire meta = getSelectedMetaQuestionnaire(selectedOperationTypeItem);
-                meta.setCreationDate(Global.getSelectedQuestionnaireDate());
-                MetaQuestionnaireManager manager = new MetaQuestionnaireManager();
+                if(meta != null){
+                    meta.setCreationDate(Global.getSelectedQuestionnaireDate());
+                    MetaQuestionnaireManager manager = new MetaQuestionnaireManager();
                     manager.update(meta);
+                }
             }
         };
     }

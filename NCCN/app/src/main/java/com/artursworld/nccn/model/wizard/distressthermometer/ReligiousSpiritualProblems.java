@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardNCCN;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
@@ -116,7 +117,7 @@ public class ReligiousSpiritualProblems extends AbstractStep {
     private void initBundledData() {
         Bundle bundle = getArguments();
         User selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
-        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByUserName(selectedUser.getName());
+        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
     }
 
 

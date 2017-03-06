@@ -64,6 +64,7 @@ public class DistressThermometerQuestionnaire  implements IQuestionnaire{
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Questionnaires(user = " + userNameId_FK + "\n");
+        sb.append("CreationDate = " + EntityDbManager.dateFormat.format(getCreationDate_PK())+ "\n");
         for (int i = 0; i < questionCount; i++) {
             sb.append("Answer to question " + (i + 1) + "(" + getBitsByQuestionNr(i + 1) + ")" + "\n");
         }

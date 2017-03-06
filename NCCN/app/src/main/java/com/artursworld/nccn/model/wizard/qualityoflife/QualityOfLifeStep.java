@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Bits;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
@@ -89,7 +90,8 @@ public class QualityOfLifeStep extends AbstractStep {
 
         // load current answers again because maybe there are already updates
         QualityOfLifeManager m = new QualityOfLifeManager();
-        questionnaire = new QualityOfLifeManager().getQolQuestionnaireByUserName(selectedUser.getName());
+        //questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(Global.getSelectedStatisticUser(), Global.getSelectedQuestionnaireDate());
+
 
         // display old and new byte
         String old = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
@@ -118,9 +120,11 @@ public class QualityOfLifeStep extends AbstractStep {
 
         currentQuestionNumber = bundle.getInt(WizardQualityOfLife.QUESTION_NUMBER);
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardQualityOfLife.SELECTED_USER));
-        questionnaire = new QualityOfLifeManager().getQolQuestionnaireByUserName(selectedUser.getName());
-        checkRadioButtonByBits();
-        addAnswerChangeListener();
+        questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
+        if(questionnaire != null){
+            checkRadioButtonByBits();
+            addAnswerChangeListener();
+        }
     }
 
     /**

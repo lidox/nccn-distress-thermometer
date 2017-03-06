@@ -27,7 +27,18 @@ public class Global {
         try {
             selectedQuestionnaireDate = EntityDbManager.dateFormat.parse(Share.getStringByKey(R.string.c_selected_questionnaire_creation_date));
         } catch (Exception e) {
-            Log.i(CLASS_NAME, "date could not be parsed so use default date");
+            if(Share.getStringByKey(R.string.c_selected_questionnaire_creation_date) == null){
+                Log.i(CLASS_NAME, "first time app has been started. so new creation date");
+                try {
+                    String stringId = Strings.getStringByRId(R.string.c_selected_questionnaire_creation_date);
+                    String dateAsString = EntityDbManager.dateFormat.format(new Date());
+                    Share.putString(stringId, dateAsString);
+                }
+                catch (Exception ex){
+                    Log.e(CLASS_NAME, ex.getLocalizedMessage());
+                }
+            }
+            Log.w(CLASS_NAME, "date could not be parsed so use default date");
         }
         return selectedQuestionnaireDate;
     }
