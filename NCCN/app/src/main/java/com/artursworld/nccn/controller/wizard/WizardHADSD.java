@@ -31,6 +31,10 @@ public class WizardHADSD extends TextStepper {
     protected void onCreate(Bundle savedInstanceState) {
         String userName = Global.getSelectedUser();
         selectedUser = new UserManager().getUserByName(userName);
+        if(selectedUser == null){
+            Log.w(CLASS_NAME, "Cannot open new wizard because no user selected");
+            return;
+        }
         Log.i(CLASS_NAME, "WizardHADSD: selected user = " + selectedUser);
 
         // laod questionnairy into fragments

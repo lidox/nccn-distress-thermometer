@@ -31,8 +31,12 @@ public class OperationTypeSwiper {
     public OperationTypeSwiper(View rootView, int resourceId) {
         initSwipeSelector(rootView, resourceId);
         //TODO: async
-        if(swipeSelector != null)
-            swipeSelector.selectItemWithValue(getOperationType());
+        if(swipeSelector != null){
+            OperationType type = getOperationType();
+            if(type != null)
+                swipeSelector.selectItemWithValue(type);
+        }
+
 
         insertIfNowExists();
 
@@ -43,9 +47,12 @@ public class OperationTypeSwiper {
 
     private OperationType getOperationType() {
         MetaQuestionnaire meta = new MetaQuestionnaireManager().getMetaDataByCreationDate(Global.getSelectedQuestionnaireDate());
-        OperationType operationType = meta.getOperationType();
-        Log.i(CLASS_NAME, "set operation type selection to: " + operationType + ". It has been loaded from database");
-        return operationType;
+        if(meta != null){
+            OperationType operationType = meta.getOperationType();
+            Log.i(CLASS_NAME, "set operation type selection to: " + operationType + ". It has been loaded from database");
+            return operationType;
+        }
+            return null;
     }
 
     private void insertIfNowExists() {
