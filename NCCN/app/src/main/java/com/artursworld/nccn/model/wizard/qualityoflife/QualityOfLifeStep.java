@@ -84,6 +84,7 @@ public class QualityOfLifeStep extends AbstractStep {
      * @param answersGroup the radio group containing all radion buttons
      */
     private void onSelectedAnswerChanged(RadioGroup answersGroup) {
+        questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
         RadioButton checkedRadioButton = (RadioButton) answersGroup.findViewById(answersGroup.getCheckedRadioButtonId());
         int index = answersGroup.indexOfChild(checkedRadioButton);
         Log.i(QualityOfLifeStep.class.getSimpleName(), "New box selected= '" + checkedRadioButton.getText() + "' with index = " + index + " and current questionNr = " + currentQuestionNumber);

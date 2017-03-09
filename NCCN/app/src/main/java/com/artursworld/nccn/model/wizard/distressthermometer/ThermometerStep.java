@@ -113,14 +113,7 @@ public class ThermometerStep extends AbstractStep {
 
         // update new answer selections
         questionnaire.setBitsByQuestionNr(currentQuestionNumber, newOne);
-        new AsyncTask<Void, Void, Void>(){
-            @Override
-            protected Void doInBackground(Void... params) {
-                m.update(questionnaire);
-                return null;
-            }
-        }.execute();
-
+        m.update(questionnaire);
     }
 
     @Override

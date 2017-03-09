@@ -69,13 +69,7 @@ public class ReligiousSpiritualProblems extends AbstractStep {
         binaryString.setCharAt(indexOfAnswerCheckBox , bit);
         questionnaire.setBitsByQuestionNr(currentQuestionNumber, binaryString.toString());
         Log.i(CLASS_NAME, "try to changed bits to: " + binaryString.toString() + " for questionNr:" + currentQuestionNumber);
-        new AsyncTask<Void, Void, Void>(){
-            @Override
-            protected Void doInBackground(Void... params) {
-                new DistressThermometerQuestionnaireManager().update(questionnaire);
-                return null;
-            }
-        }.execute();
+        new DistressThermometerQuestionnaireManager().update(questionnaire);
     }
 
 
