@@ -137,8 +137,13 @@ public class ElasticQuestionnaire {
         for (User user : userList) {
             StringBuilder bulk = new StringBuilder();
             bulk.append(getUpsertBulkByUser(ctx, user));
-            String singleResponse = ElasticQuestionnaire.bulk(bulk.toString());
-            response.append(singleResponse + "\n");
+            String upsertCommand = bulk.toString();
+            boolean isBulkEmpty = upsertCommand.equals("");
+            if(!isBulkEmpty){
+                Log.i(CLASS_NAME, "Fire upsert: " + upsertCommand);
+                String singleResponse = ElasticQuestionnaire.bulk(upsertCommand);
+                response.append(singleResponse + "\n");
+            }
         }
         return response.toString();
     }
@@ -153,36 +158,39 @@ public class ElasticQuestionnaire {
     private static String getUpsertBulkByUser(Context ctx, User user) {
         StringBuilder bulk = new StringBuilder();
         List<Date> dates = new UserManager().getQuestionnaireDateListByUserName(user.getName());
-        for (Date date : dates) {
-            JSONObject params = new JSONObject();
-            try {
-                MetaQuestionnaire meta = new MetaQuestionnaireManager().getMetaDataByCreationDate(date);
-                if(meta != null)
-                    params.put("operation-type", meta.getOperationType());
+        if (dates != null) {
+            for (Date date : dates) {
+                JSONObject params = new JSONObject();
+                try {
+                    MetaQuestionnaire meta = new MetaQuestionnaireManager().getMetaDataByCreationDate(date);
+                    if (meta != null)
+                        params.put("operation-type", meta.getOperationType());
 
-                params.put("creation-date", EntityDbManager.dateFormat.format(date));
-                params.put("user-name", Security.getMD5ByString(user.getName()));
-            } catch (Exception e) {
-                Log.e(CLASS_NAME, e.getLocalizedMessage());
+                    params.put("creation-date", EntityDbManager.dateFormat.format(date));
+                    params.put("user-name", Security.getMD5ByString(user.getName()));
+                } catch (Exception e) {
+                    Log.e(CLASS_NAME, e.getLocalizedMessage());
+                }
+
+
+                DistressThermometerQuestionnaire thermo = new DistressThermometerQuestionnaireManager(ctx).getDistressThermometerQuestionnaireByDate(user.getName(), date);
+                if (Questionnairy.canStatisticsBeDisplayed(thermo.getProgressInPercent()))
+                    params = addAllKeyValuePairs(thermo.getAsJSON(), params);
+
+
+                QolQuestionnaire qol = new QualityOfLifeManager(ctx).getQolQuestionnaireByDate(user.getName(), date);
+                if (Questionnairy.canStatisticsBeDisplayed(qol.getProgressInPercent())) {
+                    params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
+                    params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
+                }
+
+                HADSDQuestionnaire hads = new HADSDQuestionnaireManager(ctx).getHADSDQuestionnaireByDate_PK(user.getName(), date);
+                if (Questionnairy.canStatisticsBeDisplayed(hads.getProgressInPercent()))
+                    params = addAllKeyValuePairs(hads.getAsJSON(), params);
+
+                bulk.append(ElasticQuestionnaire.getGenericBulk(date, ElasticQuestionnaire.ES_TYPE, params.toString()));
             }
 
-
-            DistressThermometerQuestionnaire thermo = new DistressThermometerQuestionnaireManager(ctx).getDistressThermometerQuestionnaireByDate(user.getName(), date);
-            if (Questionnairy.canStatisticsBeDisplayed(thermo.getProgressInPercent()))
-                params = addAllKeyValuePairs(thermo.getAsJSON(), params);
-
-
-            QolQuestionnaire qol = new QualityOfLifeManager(ctx).getQolQuestionnaireByDate(user.getName(), date);
-            if (Questionnairy.canStatisticsBeDisplayed(qol.getProgressInPercent())) {
-                params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
-                params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
-            }
-
-            HADSDQuestionnaire hads = new HADSDQuestionnaireManager(ctx).getHADSDQuestionnaireByDate_PK(user.getName(), date);
-            if (Questionnairy.canStatisticsBeDisplayed(hads.getProgressInPercent()))
-                params = addAllKeyValuePairs(hads.getAsJSON(), params);
-
-            bulk.append(ElasticQuestionnaire.getGenericBulk(date, ElasticQuestionnaire.ES_TYPE, params.toString()));
         }
         return bulk.toString();
     }

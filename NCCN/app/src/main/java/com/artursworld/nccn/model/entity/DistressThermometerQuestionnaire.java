@@ -251,6 +251,7 @@ public class DistressThermometerQuestionnaire  implements IQuestionnaire{
             params.put(prefix+"distress-score", getDistressScore());
             params.put(prefix+"has-distress", hasDistress());
             params.put(prefix+"update-date", EntityDbManager.dateFormat.format(getUpdateDate()));
+            Log.i(CLASS_NAME, "DistressScores: " + params);
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         } finally {

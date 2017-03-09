@@ -100,6 +100,7 @@ public class ThermometerStep extends AbstractStep {
      * @param newValueIndex the new selected index of the seek bar
      */
     private void onSelectedAnswerChanged(int newValueIndex) {
+        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
         Log.i(CLASS_NAME,"New selected answer at index= '" + newValueIndex + " and current questionNr = " +currentQuestionNumber);
 
         // load current answers again because maybe there are already updates

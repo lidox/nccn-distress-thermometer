@@ -64,6 +64,7 @@ public class BodyProblemsStep extends AbstractStep {
      * @param indexOfAnswerCheckBox index of the bit to be checked or unchecked
      */
     private void changeBitByIndex(boolean isChecked, int indexOfAnswerCheckBox ) {
+        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
         char bit = ((isChecked? 1 : 0) + "").charAt(0);
         StringBuilder binaryString = new StringBuilder(questionnaire.getBitsByQuestionNr(currentQuestionNumber));
         binaryString.setCharAt(indexOfAnswerCheckBox , bit);
