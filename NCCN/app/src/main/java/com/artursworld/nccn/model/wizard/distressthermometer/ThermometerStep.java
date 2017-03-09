@@ -132,6 +132,7 @@ public class ThermometerStep extends AbstractStep {
 
     @Override
     public void onNext() {
+        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
         WizardNCCN.updateProgress(questionnaire, currentQuestionNumber);
         Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber );
     }

@@ -186,6 +186,7 @@ public class AbstractHadsdStep extends AbstractStep {
     }
 
     private void increaseProgressValue() {
+        questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
         double questionNr = currentQuestionNumber + 1;
         int progressValue = (int) Math.floor(questionNr / questionnaire.getQuestionCount() * 100);
         if(questionnaire.getProgressInPercent() < progressValue){

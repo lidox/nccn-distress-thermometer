@@ -164,6 +164,7 @@ public class QualityOfLifeStep extends AbstractStep {
 
     @Override
     public void onNext() {
+        questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
         WizardQualityOfLife.updateProgress(questionnaire, currentQuestionNumber);
         Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber);
     }
