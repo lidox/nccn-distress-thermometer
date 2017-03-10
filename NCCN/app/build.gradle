@@ -81,4 +81,7 @@ dependencies {
 
     // swipe selector
     compile 'com.roughike:swipe-selector:1.0.6'
+
+    // loading view for sync with elastic search
+    compile 'com.github.jlmd:AnimatedCircleLoadingView:1.1.5@aar'
 }

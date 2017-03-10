@@ -123,7 +123,7 @@
     <string name="nccn_distress_thermometer">Gefühls-Thermometer</string>
     <string name="quality_of_life_questionnaire">Fragebogen zur Lebensqualität</string>
     <string name="user_statistics">Auswertungen</string>
-    <string name="user_start_configuration">Konfiguration</string>
+    <string name="user_start_configuration">Benutzer Konfiguration</string>
     <string name="questionnaire_to_display">Fragebögen, die angezeigt werden sollen</string>
     <string name="ok">Ok</string>
     <string name="cancel">Abbrechen</string>
@@ -136,7 +136,7 @@
     <string name="select_existing_user">Existierenden Benutzer auswählen</string>
     <string name="switch_to_new_user">Klick, um einen neuen Benutzer auszuwählen</string>
     <string name="placeholder"> </string>
-    <string name="configuration">Benutzer Konfiguration</string>
+    <string name="configuration">Konfiguration</string>
     <string name="select_qustionnaire_date">Wählen Sie das Umfragedatum</string>
     <string name="create_new_questionnaire_date">neue Umfrage erstellen</string>
     <string name="question">Frage</string>
@@ -184,4 +184,6 @@
     <string name="post_operation_description">Die Operation ist bereits durchgeführt worden.</string>
     <string name="post_operation">Postoperativ</string>
     <string name="user">Benutzer</string>
+    <string name="settings">Einstellungen</string>
+    <string name="database_settings">Datenbank Einstellungen</string>
 </resources>

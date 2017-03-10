@@ -67,7 +67,7 @@ public class ElasticRestClient {
             Log.i(CLASS_NAME + " response", response);
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
-            e.printStackTrace();
+            response = e.getLocalizedMessage();
         } finally {
             return response;
         }

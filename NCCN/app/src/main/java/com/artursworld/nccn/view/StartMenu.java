@@ -203,16 +203,9 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             startActivity(in);
         } else if (id == R.id.nav_elastic_synchronisation) {
             Log.i(CLASS_NAME, "Start Synchronisation...");
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    String response = ElasticQuestionnaire.syncAll(activity.getApplicationContext());
-                    Log.i(CLASS_NAME, "response: " + response);
-                    return null;
-                }
-            }.execute();
+            String response = ElasticQuestionnaire.syncAll(activity);
+            Log.i(CLASS_NAME, "response: " + response);
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -240,6 +233,19 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         navigationView.setNavigationItemSelectedListener(this);
 
         initSelectedUserAndDateInNavigation();
+
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if(drawerLayout != null){
+            drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    Log.i(CLASS_NAME, "On Navigation Drawer open (burger menu open)");
+                    initSelectedUserAndDateInNavigation();
+                    super.onDrawerOpened(drawerView);
+                }
+            });
+        }
+
     }
 
     private void initSelectedUserAndDateInNavigation() {

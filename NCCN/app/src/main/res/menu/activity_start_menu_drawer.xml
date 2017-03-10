@@ -16,6 +16,13 @@
             android:title="@string/synchronisation" />
     </group>
 
-
+    <item android:title="@string/settings">
+        <menu>
+            <item
+                android:id="@+id/nav_elastic_database"
+                android:icon="@drawable/ic_data_setting_black_24dp"
+                android:title="@string/database_settings" />
+        </menu>
+    </item>
 
 </menu>

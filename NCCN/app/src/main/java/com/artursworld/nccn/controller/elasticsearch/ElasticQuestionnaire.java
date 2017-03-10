@@ -5,9 +5,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.media.VolumeProviderCompat;
 import android.support.v4.util.Pair;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Dates;
 import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Security;
@@ -22,10 +26,12 @@ import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
+import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -126,26 +132,80 @@ public class ElasticQuestionnaire {
      * Synchronizes all questionnaire for all user with elastic search
      * For each user a bulk will be created and sent to the elastic search
      */
-    public static String syncAll(Context ctx) {
+    public static String syncAll(final Context ctx) {
+        final List<String> responseList = new ArrayList<>();
+        // open dialog
+        MaterialDialog.Builder b = new MaterialDialog.Builder(ctx)
+                .title(R.string.synchronisation)
+                .customView(R.layout.dialog_sync_elasticsearch, true);
+        MaterialDialog dialog = b.show();
+        if(dialog != null) {
+            final AnimatedCircleLoadingView animatedCircleLoadingView = (AnimatedCircleLoadingView) dialog.getView().findViewById(R.id.circle_loading_view);
+            if (animatedCircleLoadingView != null) {
+                animatedCircleLoadingView.startDeterminate();
+
+                new AsyncTask<Void, Double, List<String>>(){
+                    @Override
+                    protected List<String> doInBackground(Void... params) {
+
+                        List<User> userList = new UserManager(ctx).getAllUsers();
+                        double userCount = userList.size();
+                        double userLoadedCount = 0;
+                        for (User user : userList) {
+                            StringBuilder bulk = new StringBuilder();
+                            bulk.append(getUpsertBulkByUser(ctx, user));
+                            String upsertCommand = bulk.toString();
+                            boolean isBulkEmpty = upsertCommand.equals("");
+                            if(!isBulkEmpty){
+                                Log.i(CLASS_NAME, "Fire upsert: " + upsertCommand);
+                                String singleResponse = ElasticQuestionnaire.bulk(upsertCommand);
+                                responseList.add(singleResponse);
+                                if(userCount > 0){
+                                    userLoadedCount++;
+                                    double progress = userLoadedCount / userCount * 100;
+                                    publishProgress(progress);
+                                }
+                            }
+                        }
+                        return responseList;
+                    }
+
+
+                    @Override
+                    protected void onProgressUpdate(Double... progress) {
+                        int progressValue = (int) Math.floor(progress[0]);
+                        Log.i(CLASS_NAME, "progess: " + progressValue + "%");
+                        animatedCircleLoadingView.setPercent(progressValue);
+                    }
+                    @Override
+                    protected void onPostExecute(List<String> resultList) {
+                        Log.i(CLASS_NAME, "finished: " +resultList);
+                        boolean hasErrors = false;
+                        for (String userResponse: resultList) {
+                            try {
+                                JSONObject a = new JSONObject(userResponse);
+                                if(a != null)
+                                    hasErrors = a.getBoolean("errors");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if(hasErrors)
+                            animatedCircleLoadingView.stopFailure();
+                        else
+                            animatedCircleLoadingView.stopOk();
+                    }
+                }.execute();
+            }
+        }
+
+
         //ALGORITHM:
         // for each user
         // for each questionnaire
         // update
         // if could not update: create
-        StringBuilder response = new StringBuilder();
-        List<User> userList = new UserManager(ctx).getAllUsers();
-        for (User user : userList) {
-            StringBuilder bulk = new StringBuilder();
-            bulk.append(getUpsertBulkByUser(ctx, user));
-            String upsertCommand = bulk.toString();
-            boolean isBulkEmpty = upsertCommand.equals("");
-            if(!isBulkEmpty){
-                Log.i(CLASS_NAME, "Fire upsert: " + upsertCommand);
-                String singleResponse = ElasticQuestionnaire.bulk(upsertCommand);
-                response.append(singleResponse + "\n");
-            }
-        }
-        return response.toString();
+        return responseList.toString();
     }
 
     /**
