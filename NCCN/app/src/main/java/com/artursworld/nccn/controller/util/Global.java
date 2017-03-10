@@ -6,6 +6,7 @@ import com.artursworld.nccn.R;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -33,6 +34,13 @@ public class Global {
                     String stringId = Strings.getStringByRId(R.string.c_selected_questionnaire_creation_date);
                     String dateAsString = EntityDbManager.dateFormat.format(new Date());
                     Share.putString(stringId, dateAsString);
+                    Global.setHasToUseDefaultQuestionnaire(true);
+                    Set<String> selectedQuestionnairesSet = new HashSet<>();
+                    selectedQuestionnairesSet.add(Strings.getStringByRId(R.string.hadsd_questionnaire));
+                    selectedQuestionnairesSet.add(Strings.getStringByRId(R.string.nccn_distress_thermometer));
+                    selectedQuestionnairesSet.add(Strings.getStringByRId(R.string.quality_of_life_questionnaire));
+                    Log.i(CLASS_NAME, "Following questionnaires are selected to be displayed on start screen=" + selectedQuestionnairesSet);
+                    Share.putStringSet(Strings.getStringByRId(R.string.c_selected_questionnaires), selectedQuestionnairesSet);
                 }
                 catch (Exception ex){
                     Log.e(CLASS_NAME, ex.getLocalizedMessage());
@@ -66,6 +74,10 @@ public class Global {
             String dateAsString = EntityDbManager.dateFormat.format(newCreationDate);
             Log.i(CLASS_NAME, "CREATION Q-DATE changed to: " + dateAsString + " (old value="+ EntityDbManager.dateFormat.format(getSelectedQuestionnaireDate()) + ")");
             Share.putString(stringId, dateAsString);
+
+            String stringByRId2 = Strings.getStringByRId(R.string.c_has_to_create_default_questionnaire);
+            Share.putBoolean(stringByRId2, true);
+
         }
         catch (Exception e){
             Log.e(CLASS_NAME, e.getLocalizedMessage());

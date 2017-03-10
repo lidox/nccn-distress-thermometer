@@ -147,6 +147,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         if(hasCreated){
             Global.setSelectedUserName(defaultUserName);
             Global.setHasToCreateNewUser(false);
+            Global.setHasToCreateNewQuestionnaire(true);
         }
     }
 
@@ -251,9 +252,9 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         if(selectedUserText!=null)
             selectedUserText.setText(Global.getSelectedUser());
 
-        if(selectedCreationDate!=null) {
+        if(selectedCreationDate != null) {
             Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
-            if(selectedCreationDate!=null)
+            if(selectedQuestionnaireDate != null)
                 selectedCreationDate.setText(EntityDbManager.dateFormat.format(selectedQuestionnaireDate));
         }
     }

@@ -104,10 +104,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
         if (Global.hasToCreateNewQuestionnaire()) {
             if (Global.hasToUseDefaultQuestionnaire()) {
-                Log.i(CLASS_NAME, "display default questionnaires");
-                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
-                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
-                list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
+                displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress);
             } else {
                 Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
                 if (setOfBooleans != null) {
@@ -119,6 +116,9 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
                     if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire)))
                         list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
+                }
+                else{
+                    displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress);
                 }
             }
         } else {
@@ -159,11 +159,22 @@ public class QuestionnaireSelectListFragment extends Fragment {
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
                 }
             }
+            else{
+                //displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress);
+                Log.w(CLASS_NAME, "something went wrong");
+            }
         }
         AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), list);
         questionnaireListView.setAdapter(adapter);
         percentageAllTextView.setText(getPercentageForAllQuestionnairesByList(list) + " ");
         addOnItemClickListener(list);
+    }
+
+    private void displayDefaultQuestionnaires(List<AbstractQuestionnaire> list, int hadsProgress, int distressProgress, int qualityProgress) {
+        Log.i(CLASS_NAME, "display default questionnaires");
+        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
+        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
+        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
     }
 
     private void addOnItemClickListener(final List<AbstractQuestionnaire> abstractQuestionnairesList) {
