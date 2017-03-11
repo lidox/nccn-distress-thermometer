@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/database_settings">
+
+        <ListPreference
+            android:entries="@array/listProtocolKeys"
+            android:entryValues="@array/listProtocolValues"
+            android:key="@string/c_select_protocol"
+            android:layout="@layout/preference_layout"
+            android:summary="@string/select_protocol_elasticsearch"
+            android:title="@string/protocol_elasticsearch" />
+
+        <EditTextPreference
+            android:defaultValue="@string/c_server_ip_elastic_search_default_value"
+            android:key="@string/c_select_server_ip"
+            android:layout="@layout/preference_layout"
+            android:summary="@string/select_server_ip_elastic_search"
+            android:textSize="@dimen/textAppearanceLabelLargeSub"
+            android:title="@string/server_ip_elastic_search" />
+
+        <EditTextPreference
+            android:defaultValue="9200"
+            android:key="@string/c_select_server_port"
+            android:layout="@layout/preference_layout"
+            android:numeric="signed"
+            android:summary="@string/select_server_port_elastic_search"
+            android:textSize="@dimen/textAppearanceLabelLargeSub"
+            android:title="@string/server_port_elastic_search" />
+
+    </PreferenceCategory>
+
+    <EditTextPreference
+        android:defaultValue="@string/c_elastic_search_index_name_default_value"
+        android:key="@string/c_select_elastic_search_index_name"
+        android:layout="@layout/preference_layout"
+        android:summary="@string/select_elastic_search_index_name"
+        android:textSize="@dimen/textAppearanceLabelLargeSub"
+        android:title="@string/elastic_search_index_name" />
+
+    <EditTextPreference
+        android:defaultValue="@string/c_elastic_search_type_name_default_value"
+        android:key="@string/c_select_elastic_search_type_name"
+        android:layout="@layout/preference_layout"
+        android:summary="@string/select_elastic_search_type_name"
+        android:textSize="@dimen/textAppearanceLabelLargeSub"
+        android:title="@string/elastic_search_type_name" />
+
+</PreferenceScreen>

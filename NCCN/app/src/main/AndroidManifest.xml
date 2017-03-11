@@ -23,6 +23,7 @@
         <activity android:name=".controller.wizard.WizardQualityOfLife" />
         <activity android:name=".view.user.SelectUserActivity" />
         <activity android:name=".view.statistics.StatisticsTabsActivity"></activity>
+        <activity android:name=".model.pereferences.ElasticSearchPreferenceActivity"></activity>
     </application>
 
 </manifest>

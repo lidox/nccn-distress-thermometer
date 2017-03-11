@@ -477,7 +477,7 @@ public class QolQuestionnaire  implements IQuestionnaire{
      * @return a String containing upsert information
      */
     public String getBulkQLQC30() {
-        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.ES_TYPE, getQLQC30AsJSON().toString());
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.getType(), getQLQC30AsJSON().toString());
     }
 
     /**
@@ -485,7 +485,7 @@ public class QolQuestionnaire  implements IQuestionnaire{
      * @return a String containing upsert information
      */
     public String getBulkBN20() {
-        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.ES_TYPE, getBN20AsJSON().toString());
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.getType(), getBN20AsJSON().toString());
     }
 
 }

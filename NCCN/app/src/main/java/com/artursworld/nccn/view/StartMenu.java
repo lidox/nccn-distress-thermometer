@@ -29,6 +29,7 @@ import com.artursworld.nccn.controller.util.Generator;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.User;
+import com.artursworld.nccn.model.pereferences.ElasticSearchPreferenceActivity;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.view.questionnaire.OperationTypeSwiper;
@@ -205,6 +206,10 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             Log.i(CLASS_NAME, "Start Synchronisation...");
             String response = ElasticQuestionnaire.syncAll(activity);
             Log.i(CLASS_NAME, "response: " + response);
+        }
+        else if(id == R.id.nav_elastic_database){
+            Intent i = new Intent(this, ElasticSearchPreferenceActivity.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -186,4 +186,14 @@
     <string name="user">Benutzer</string>
     <string name="settings">Einstellungen</string>
     <string name="database_settings">Datenbank Einstellungen</string>
+    <string name="protocol_elasticsearch">Protokoll für ElasticSearch</string>
+    <string name="select_protocol_elasticsearch">Wählen Sie den Protokolltypen für ElasticSearch aus</string>
+    <string name="select_server_ip_elastic_search">Bitte wählen Sie die IP der ElasticSearch-Instanz aus</string>
+    <string name="server_ip_elastic_search">Server IP</string>
+    <string name="server_port_elastic_search">Server Port</string>
+    <string name="select_server_port_elastic_search">Bitte wählen Sie den Port der ElasticSearch-Instanz aus</string>
+    <string name="select_elastic_search_index_name">Wählen Sie den INDEX für ElasticSearch aus</string>
+    <string name="elastic_search_index_name">ElasticSearch Index</string>
+    <string name="select_elastic_search_type_name">Wählen Sie den TYPE für ElasticSearch aus</string>
+    <string name="elastic_search_type_name">ElasticSearch Type</string>
 </resources>

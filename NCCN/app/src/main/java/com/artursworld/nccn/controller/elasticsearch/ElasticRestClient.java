@@ -1,8 +1,13 @@
 package com.artursworld.nccn.controller.elasticsearch;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.config.App;
+import com.artursworld.nccn.controller.util.Strings;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -25,13 +30,35 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 
 public class ElasticRestClient {
 
-    private static final String BASE_URL = "http://10.0.2.2:9200/"; // Android uses this IP to access localhost
+   // private static final String BASE_URL = "http://10.0.2.2:9200/"; // Android uses this IP to access localhost
 
     private static final String CLASS_NAME = ElasticRestClient.class.getSimpleName();
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    @NonNull
+    private static String getBaseUrl() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        // protocol
+        String defaultProtocolValue = "http://";
+        String protocolValue = Strings.getStringByRId(R.string.c_select_protocol);
+        String protocol = sp.getString(protocolValue, defaultProtocolValue);
+        // server ip
+        String defaultServerIPValue = Strings.getStringByRId(R.string.c_server_ip_elastic_search_default_value);
+        String serverIPValue = Strings.getStringByRId(R.string.c_select_server_ip);
+        String SERVER_IP = sp.getString(serverIPValue, defaultServerIPValue);
+        // port
+        String defaultPortValue = 9200+"";
+        String portValue = Strings.getStringByRId(R.string.c_select_server_port);
+        String ES_PORT = sp.getString(portValue, defaultPortValue);
+
+        //String protocol = "http://";
+        String BASE_URL = protocol + SERVER_IP +":"+ ES_PORT +"/";
+        Log.i(CLASS_NAME, "BaseUrl:" + BASE_URL);
+        return BASE_URL;
     }
 
     /*
@@ -46,7 +73,7 @@ public class ElasticRestClient {
     */
 
     private static String getAbsoluteUrl(String relativeUrl) {
-        return BASE_URL + relativeUrl;
+        return getBaseUrl() + relativeUrl;
     }
 
     /**

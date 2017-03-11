@@ -2,7 +2,9 @@ package com.artursworld.nccn.controller.elasticsearch;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.media.VolumeProviderCompat;
@@ -12,9 +14,12 @@ import android.util.Log;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.controller.util.Dates;
+import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Security;
+import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.MetaQuestionnaire;
@@ -39,8 +44,8 @@ import java.util.List;
 public class ElasticQuestionnaire {
 
     private static final String CLASS_NAME = ElasticQuestionnaire.class.getSimpleName();
-    public static final String ES_INDEX = "questionnaire-app";
-    public static final String ES_TYPE = "scores";
+    //public static final String ES_INDEX = "questionnaire-app";
+    //public static final String ES_TYPE = "scores";
 
     /**
      * Does a bulk operation to be faster
@@ -74,10 +79,34 @@ public class ElasticQuestionnaire {
                         Log.e(CLASS_NAME, e.getLocalizedMessage());
                     }
                 }
-                ElasticRestClient.post(ES_INDEX, es_type, apiString, params);
+                ElasticRestClient.post(getIndex(), es_type, apiString, params);
                 return null;
             }
         }.execute();
+    }
+
+    /**
+     * Getting ElasticSearch Index by Preferences
+     * @return the ElasticSearch Index
+     */
+    private static String getIndex() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        String defaultValue = Strings.getStringByRId(R.string.c_elastic_search_index_name_default_value);
+        String value = Strings.getStringByRId(R.string.c_select_elastic_search_index_name);
+        String index = sp.getString(value, defaultValue);
+        return index;
+    }
+
+    /**
+     * Getting ElasticSearch Type by Preferences
+     * @return the ElasticSearch Type
+     */
+    public static String getType() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        String defaultValue = Strings.getStringByRId(R.string.c_elastic_search_type_name_default_value);
+        String value = Strings.getStringByRId(R.string.c_select_elastic_search_type_name);
+        String type = sp.getString(value, defaultValue);
+        return type;
     }
 
     /**
@@ -119,7 +148,7 @@ public class ElasticQuestionnaire {
         try {
             JSONObject docObject = new JSONObject();
             docObject.put("doc", params);
-            response = ElasticRestClient.post(ES_INDEX, es_type, apiString, docObject);
+            response = ElasticRestClient.post(getIndex(), es_type, apiString, docObject);
         } catch (JSONException e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         } finally {
@@ -248,7 +277,7 @@ public class ElasticQuestionnaire {
                 if (Questionnairy.canStatisticsBeDisplayed(hads.getProgressInPercent()))
                     params = addAllKeyValuePairs(hads.getAsJSON(), params);
 
-                bulk.append(ElasticQuestionnaire.getGenericBulk(date, ElasticQuestionnaire.ES_TYPE, params.toString()));
+                bulk.append(ElasticQuestionnaire.getGenericBulk(date, getType(), params.toString()));
             }
 
         }
@@ -292,7 +321,7 @@ public class ElasticQuestionnaire {
         * */
         StringBuilder bulk = new StringBuilder();
         long questionnaireId = Dates.getLongByDate(creationDate);
-        bulk.append("{ \"update\" : {\"_id\" : \"" + questionnaireId + "\", \"_type\" : \"" + ES_TYPE + "\", \"_index\" : \"" + ES_INDEX + "\"} }" + "\n");
+        bulk.append("{ \"update\" : {\"_id\" : \"" + questionnaireId + "\", \"_type\" : \"" + ES_TYPE + "\", \"_index\" : \"" + getIndex() + "\"} }" + "\n");
         bulk.append("{ \"doc\" : " + jsonValues + ", \"doc_as_upsert\" : true }" + "\n");
         return bulk.toString();
     }

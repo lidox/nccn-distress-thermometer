@@ -10,4 +10,13 @@
     <string name="c_has_to_create_new_questionnaire">com.artursworld.c_has_to_create_new_questionnaire</string>
     <string name="c_is_selectuser_fragment">com.artursworld.c_is_selectuser_fragment</string>
     <string name="c_selected_statisc_user_name">com.artursworld.selected_user_for_statistics</string>
+
+    <string name="c_select_protocol">com.artursworld.select_protocol</string>
+    <string name="c_select_server_ip">com.artursworld.select_server_ip</string>
+    <string name="c_select_server_port">com.artursworld.select_server_port</string>
+    <string name="c_select_elastic_search_index_name">com.artursworld.select_elastic_search_index_name</string>
+    <string name="c_select_elastic_search_type_name">com.artursworld.select_elastic_search_type_name</string>
+    <string name="c_server_ip_elastic_search_default_value">10.0.2.2</string>
+    <string name="c_elastic_search_index_name_default_value">questionnaire-app</string>
+    <string name="c_elastic_search_type_name_default_value">scores</string>
 </resources>

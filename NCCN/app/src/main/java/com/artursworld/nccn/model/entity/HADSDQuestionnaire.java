@@ -194,6 +194,6 @@ public class HADSDQuestionnaire  implements IQuestionnaire{
      * @return a String containing upsert information
      */
     public String getBulk() {
-        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.ES_TYPE, getAsJSON().toString());
+        return ElasticQuestionnaire.getGenericBulk(getCreationDate_PK(), ElasticQuestionnaire.getType(), getAsJSON().toString());
     }
 }
