@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.StartMenu">
+
+    <item
+        android:id="@+id/sync"
+        android:icon="@drawable/ic_sync_white_24dp"
+        app:showAsAction="always"
+        android:title="@string/synchronize_user" />
+
+</menu>

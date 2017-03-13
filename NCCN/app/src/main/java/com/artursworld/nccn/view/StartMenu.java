@@ -15,6 +15,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -37,8 +39,10 @@ import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.goodiebag.pinview.Pinview;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -199,7 +203,8 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             startActivity(in);
         } else if (id == R.id.nav_elastic_synchronisation) {
             Log.i(CLASS_NAME, "Start Synchronisation...");
-            String response = ElasticQuestionnaire.syncAll(activity);
+            List<User> allUsers = new UserManager(activity).getAllUsers();
+            String response = ElasticQuestionnaire.syncAll(activity, allUsers);
             Log.i(CLASS_NAME, "response: " + response);
         } else if (id == R.id.nav_elastic_database) {
             Intent i = new Intent(this, ElasticSearchPreferenceActivity.class);
@@ -299,5 +304,33 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             if (selectedQuestionnaireDate != null)
                 selectedCreationDate.setText(EntityDbManager.dateFormat.format(selectedQuestionnaireDate));
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.sync:
+                syncUser(Global.getSelectedUser());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void syncUser(String selectedUser) {
+        User user = new UserManager().getUserByName(selectedUser);
+        List<User> userList = new ArrayList<>();
+        if(user != null)
+            userList.add(user);
+
+         ElasticQuestionnaire.syncAll(activity, userList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
     }
 }

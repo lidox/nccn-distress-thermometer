@@ -199,4 +199,5 @@
     <string name="password">Passwort</string>
     <string name="select_a_pin_code">Wählen Sie einen neuen PIN aus</string>
     <string name="pin_code">PIN Code</string>
+    <string name="synchronize_user">Benutzer synchronisieren</string>
 </resources>

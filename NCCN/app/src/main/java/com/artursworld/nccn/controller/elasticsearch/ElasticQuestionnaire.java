@@ -87,6 +87,7 @@ public class ElasticQuestionnaire {
 
     /**
      * Getting ElasticSearch Index by Preferences
+     *
      * @return the ElasticSearch Index
      */
     private static String getIndex() {
@@ -99,6 +100,7 @@ public class ElasticQuestionnaire {
 
     /**
      * Getting ElasticSearch Type by Preferences
+     *
      * @return the ElasticSearch Type
      */
     public static String getType() {
@@ -158,26 +160,30 @@ public class ElasticQuestionnaire {
 
 
     /**
-     * Synchronizes all questionnaire for all user with elastic search
+     * Synchronizes all questionnaire for all user in the list with elastic search
      * For each user a bulk will be created and sent to the elastic search
+     *
+     * @param ctx      the application context
+     * @param userList the list of users to synchronize
+     * @return the response
      */
-    public static String syncAll(final Context ctx) {
+    public static String syncAll(final Context ctx, final List<User> userList) {
         final List<String> responseList = new ArrayList<>();
         // open dialog
         MaterialDialog.Builder b = new MaterialDialog.Builder(ctx)
                 .title(R.string.synchronisation)
                 .customView(R.layout.dialog_sync_elasticsearch, true);
         MaterialDialog dialog = b.show();
-        if(dialog != null) {
+        if (dialog != null) {
             final AnimatedCircleLoadingView animatedCircleLoadingView = (AnimatedCircleLoadingView) dialog.getView().findViewById(R.id.circle_loading_view);
             if (animatedCircleLoadingView != null) {
                 animatedCircleLoadingView.startDeterminate();
 
-                new AsyncTask<Void, Double, List<String>>(){
+                new AsyncTask<Void, Double, List<String>>() {
                     @Override
                     protected List<String> doInBackground(Void... params) {
 
-                        List<User> userList = new UserManager(ctx).getAllUsers();
+                        //List<User> userList = new UserManager(ctx).getAllUsers();
                         double userCount = userList.size();
                         double userLoadedCount = 0;
                         for (User user : userList) {
@@ -185,11 +191,11 @@ public class ElasticQuestionnaire {
                             bulk.append(getUpsertBulkByUser(ctx, user));
                             String upsertCommand = bulk.toString();
                             boolean isBulkEmpty = upsertCommand.equals("");
-                            if(!isBulkEmpty){
+                            if (!isBulkEmpty) {
                                 Log.i(CLASS_NAME, "Fire upsert: " + upsertCommand);
                                 String singleResponse = ElasticQuestionnaire.bulk(upsertCommand);
                                 responseList.add(singleResponse);
-                                if(userCount > 0){
+                                if (userCount > 0) {
                                     userLoadedCount++;
                                     double progress = userLoadedCount / userCount * 100;
                                     publishProgress(progress);
@@ -206,20 +212,21 @@ public class ElasticQuestionnaire {
                         Log.i(CLASS_NAME, "progess: " + progressValue + "%");
                         animatedCircleLoadingView.setPercent(progressValue);
                     }
+
                     @Override
                     protected void onPostExecute(List<String> resultList) {
-                        Log.i(CLASS_NAME, "finished: " +resultList);
+                        Log.i(CLASS_NAME, "finished: " + resultList);
                         boolean hasErrors = false;
-                        for (String userResponse: resultList) {
+                        for (String userResponse : resultList) {
                             try {
                                 JSONObject a = new JSONObject(userResponse);
-                                if(a != null)
+                                if (a != null)
                                     hasErrors = a.getBoolean("errors");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                        if(hasErrors)
+                        if (hasErrors)
                             animatedCircleLoadingView.stopFailure();
                         else
                             animatedCircleLoadingView.stopOk();
