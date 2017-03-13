@@ -1,8 +1,11 @@
 package com.artursworld.nccn.controller.util;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.artursworld.nccn.R;
+import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 
 import java.util.Date;
@@ -130,5 +133,25 @@ public class Global {
      */
     public static String getSelectedStatisticUser() {
         return Share.getStringByKey(R.string.c_selected_statisc_user_name);
+    }
+
+    /**
+     * Sets the pin code to access some UIs
+     * @param pinCode the new pin to set
+     * @return True on success to set pin code. Otherwise false.
+     */
+    public static boolean setPinCode(String pinCode) {
+        return Share.putString(Strings.getStringByRId(R.string.c_pin_code), pinCode);
+    }
+
+    /**
+     * Get the the pin code
+     * @return the pin code. Otherwise 000000.
+     */
+    public static String getPinCode() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        String key = App.getAppContext().getResources().getString(R.string.c_pin_code);
+        String restoredText = prefs.getString(key, Strings.getStringByRId(R.string.c_pin_code_default_value));
+        return restoredText;
     }
 }

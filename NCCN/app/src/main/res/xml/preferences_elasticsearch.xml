@@ -29,7 +29,6 @@
             android:textSize="@dimen/textAppearanceLabelLargeSub"
             android:title="@string/server_port_elastic_search" />
 
-    </PreferenceCategory>
 
     <EditTextPreference
         android:defaultValue="@string/c_elastic_search_index_name_default_value"
@@ -46,5 +45,20 @@
         android:summary="@string/select_elastic_search_type_name"
         android:textSize="@dimen/textAppearanceLabelLargeSub"
         android:title="@string/elastic_search_type_name" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pin_code">
+
+        <EditTextPreference
+            android:defaultValue="@string/c_pin_code_default_value"
+            android:key="@string/c_pin_code"
+            android:layout="@layout/preference_layout"
+            android:maxLength="5"
+            android:summary="@string/select_a_pin_code"
+            android:textSize="@dimen/textAppearanceLabelLargeSub"
+            android:title="@string/pin_code" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

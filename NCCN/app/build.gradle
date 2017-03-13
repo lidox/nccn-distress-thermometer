@@ -84,4 +84,8 @@ dependencies {
 
     // loading view for sync with elastic search
     compile 'com.github.jlmd:AnimatedCircleLoadingView:1.1.5@aar'
+
+    //PIN CODE
+    compile 'com.github.GoodieBag:Pinview:v1.3'
+
 }

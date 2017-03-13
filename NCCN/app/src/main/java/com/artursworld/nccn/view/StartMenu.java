@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,15 +14,15 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
-import com.artursworld.nccn.controller.elasticsearch.ElasticRestClient;
-import com.artursworld.nccn.controller.elasticsearch.METHOD;
 import com.artursworld.nccn.controller.util.Generator;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
@@ -36,13 +34,10 @@ import com.artursworld.nccn.view.questionnaire.OperationTypeSwiper;
 import com.artursworld.nccn.view.questionnaire.QuestionnaireSelectListFragment;
 import com.artursworld.nccn.view.user.SelectUserActivity;
 import com.artursworld.nccn.view.user.UserStartConfiguration;
+import com.goodiebag.pinview.Pinview;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.roughike.swipeselector.SwipeItem;
-import com.roughike.swipeselector.SwipeSelector;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.Arrays;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -54,6 +49,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     private Activity activity = null;
     private UserStartConfiguration configurationDialog = null;
     private OperationTypeSwiper operationTypeSwiper = null;
+    private DrawerLayout drawerLayout = null;
 
     // UI
     @BindView(R.id.user_name_edit_text)
@@ -69,7 +65,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
         // init swipe for operation type e.g. pre-operation
         View rootView = getWindow().getDecorView().getRootView();
-        if(operationTypeSwiper == null)
+        if (operationTypeSwiper == null)
             operationTypeSwiper = new OperationTypeSwiper(rootView, R.id.select_operation_type);
     }
 
@@ -87,7 +83,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
     private void onResumeWithSelectedUser() {
         userNameEditText.setText(Global.getSelectedUser());
-        Log.i(CLASS_NAME, "Display global user(" + Global.getSelectedUser()+") in MaterialEditText");
+        Log.i(CLASS_NAME, "Display global user(" + Global.getSelectedUser() + ") in MaterialEditText");
 
         // add change listener
         addOnUserNameTextChangeListener();
@@ -134,8 +130,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
             }.execute();
             */
-        }
-        else{
+        } else {
             onResumeWithSelectedUser();
         }
 
@@ -143,9 +138,9 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
     private void createUser() {
         String defaultUserName = Strings.getStringByRId(R.string.user) + Generator.getRandomInRange(0, 100000);
-        Log.i(CLASS_NAME, "Creating new User("+defaultUserName+"), because no global user has been set");
+        Log.i(CLASS_NAME, "Creating new User(" + defaultUserName + "), because no global user has been set");
         boolean hasCreated = new UserManager().insertUser(new User(defaultUserName));
-        if(hasCreated){
+        if (hasCreated) {
             Global.setSelectedUserName(defaultUserName);
             Global.setHasToCreateNewUser(false);
             Global.setHasToCreateNewQuestionnaire(true);
@@ -164,7 +159,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                 Log.i(CLASS_NAME, "on user name text changed --> update user");
                 final String oldName = Global.getSelectedUser();
                 final String newName = userNameEditText.getText().toString();
-                new AsyncTask<Void, Void, Void>(){
+                new AsyncTask<Void, Void, Void>() {
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -189,7 +184,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.nav_user_start_configuration) {
@@ -206,8 +201,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             Log.i(CLASS_NAME, "Start Synchronisation...");
             String response = ElasticQuestionnaire.syncAll(activity);
             Log.i(CLASS_NAME, "response: " + response);
-        }
-        else if(id == R.id.nav_elastic_database){
+        } else if (id == R.id.nav_elastic_database) {
             Intent i = new Intent(this, ElasticSearchPreferenceActivity.class);
             startActivity(i);
         }
@@ -239,33 +233,70 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
         initSelectedUserAndDateInNavigation();
 
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(drawerLayout != null){
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawerLayout != null) {
             drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
                 @Override
                 public void onDrawerOpened(View drawerView) {
-                    Log.i(CLASS_NAME, "On Navigation Drawer open (burger menu open)");
+                    Log.i(CLASS_NAME, "On Navigation Drawer open. burger menu open");
+                    openPasswordProtection();
                     initSelectedUserAndDateInNavigation();
                     super.onDrawerOpened(drawerView);
                 }
             });
+        }
+    }
+
+    private void openPasswordProtection() {
+        MaterialDialog.Builder b = new MaterialDialog.Builder(activity)
+                .title(R.string.password)
+                .cancelable(false)
+                .customView(R.layout.dialog_password_protection, true)
+                .negativeText(R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (drawerLayout != null) {
+                            Log.i(CLASS_NAME, "on cancel close burger menu");
+                            drawerLayout.closeDrawer(Gravity.LEFT);
+                        }
+                    }
+                });
+        final MaterialDialog dialog = b.show();
+        if (dialog != null) {
+            final Pinview pin = (Pinview) dialog.getView().findViewById(R.id.pin_code_view);
+            if (pin != null) {
+
+                pin.setPinViewEventListener(new Pinview.PinViewEventListener() {
+                    @Override
+                    public void onDataEntered(Pinview pinview, boolean fromUser) {
+                        Log.i(CLASS_NAME, "code entered is : " + pin.getValue());
+                        if(pin.getValue().equals(Global.getPinCode())){
+                            Log.i(CLASS_NAME, "correct pin code typed!");
+                            dialog.cancel();
+                        }
+                        else
+                            Log.i(CLASS_NAME, "incorrect pin code!");
+                    }
+                });
+            }
         }
 
     }
 
     private void initSelectedUserAndDateInNavigation() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View hView =  navigationView.getHeaderView(0);
+        View hView = navigationView.getHeaderView(0);
 
         TextView selectedUserText = (TextView) hView.findViewById(R.id.menu_selected_user);
         TextView selectedCreationDate = (TextView) hView.findViewById(R.id.menu_creation_date);
 
-        if(selectedUserText!=null)
+        if (selectedUserText != null)
             selectedUserText.setText(Global.getSelectedUser());
 
-        if(selectedCreationDate != null) {
+        if (selectedCreationDate != null) {
             Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
-            if(selectedQuestionnaireDate != null)
+            if (selectedQuestionnaireDate != null)
                 selectedCreationDate.setText(EntityDbManager.dateFormat.format(selectedQuestionnaireDate));
         }
     }
