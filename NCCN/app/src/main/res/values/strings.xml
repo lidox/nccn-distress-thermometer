@@ -178,7 +178,7 @@
     <string name="itchy_skin">Juckende Haut</string>
     <string name="weakness_of_legs">Schwache Beine</string>
     <string name="bladder_control">Kontrolle über die Blase</string>
-    <string name="synchronisation">Alle Benutzer Synchronisieren</string>
+    <string name="synchronisation">Benutzer Synchronisieren</string>
     <string name="pre_operation">Präoperativ</string>
     <string name="pre_operation_description">Es wurde keine Operation durchgeführt.</string>
     <string name="post_operation_description">Die Operation ist bereits durchgeführt worden.</string>
