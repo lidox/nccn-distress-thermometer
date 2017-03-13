@@ -73,11 +73,4 @@ public class ElasticQuestionnaireTest extends InstrumentationTestCase {
         int i = 0;
         //assertEquals("Check how to get Date by number and vice versa",newDate.toString(), secondDate.toString());
     }
-
-
-
-    @Test
-    public void testSyncAll(){
-        ElasticQuestionnaire.syncAll(context);
-    }
 }

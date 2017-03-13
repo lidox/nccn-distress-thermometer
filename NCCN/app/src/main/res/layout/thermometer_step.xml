@@ -28,8 +28,8 @@
         <RelativeLayout
             android:id="@+id/thermometer_layout"
             android:layout_width="wrap_content"
-            android:layout_below="@+id/rel"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rel">
 
             <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/root_view"
@@ -39,7 +39,7 @@
 
                 <RelativeLayout
                     android:layout_width="632px"
-                    android:layout_height="1300px"
+                    android:layout_height="1200px"
                     android:layout_below="@+id/rel"
                     android:layout_gravity="center"
                     android:background="@drawable/thermometer1">
@@ -50,9 +50,9 @@
                     android:id="@+id/description_left_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="615dp"
-                    android:paddingLeft="35dp"
                     android:layout_margin="5dp"
+                    android:paddingLeft="35dp"
+                    android:paddingTop="575dp"
                     android:text="@string/enougt_power"
                     android:textSize="@dimen/textAppearanceLabel" />
 
@@ -60,19 +60,19 @@
                     android:id="@+id/description_right_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="40dp"
-                    android:paddingLeft="35dp"
                     android:layout_margin="5dp"
+                    android:paddingLeft="35dp"
+                    android:paddingTop="40dp"
                     android:text="@string/lot_of_problems"
                     android:textSize="@dimen/textAppearanceLabel" />
 
                 <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                     android:id="@+id/seekbar"
-                    android:layout_width="1052px"
+                    android:layout_width="1000px"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="136dp"
+                    android:layout_marginLeft="133dp"
                     android:layout_marginRight="12dp"
-                    android:layout_marginTop="338dp"
+                    android:layout_marginTop="277dp"
                     android:rotation="-90"
                     app:dsb_allowTrackClickToDrag="true"
                     app:dsb_indicatorColor="@color/colorPrimaryDark"
