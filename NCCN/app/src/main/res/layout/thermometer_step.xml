@@ -72,7 +72,7 @@
                     android:layout_height="50dp"
                     android:layout_marginLeft="133dp"
                     android:layout_marginRight="12dp"
-                    android:layout_marginTop="277dp"
+                    android:layout_marginTop="280dp"
                     android:rotation="-90"
                     app:dsb_allowTrackClickToDrag="true"
                     app:dsb_indicatorColor="@color/colorPrimaryDark"
