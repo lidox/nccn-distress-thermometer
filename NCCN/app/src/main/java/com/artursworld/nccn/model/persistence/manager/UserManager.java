@@ -221,4 +221,32 @@ public class UserManager extends EntityDbManager {
     }
 
 
+    /**
+     * Deletes user from database
+     *
+     * @param user the user to delete
+     * @return the number of rows affected if a whereClause is passed in, 0
+     * otherwise.
+     */
+    public int delete(User user) {
+        int resultCode = 0;
+
+        // validation
+        if (user == null)
+            return resultCode;
+
+        String WHERE_CLAUSE = DBContracts.UserTable.CREATION_DATE + " =?";
+        try {
+            resultCode = database.delete(
+                    DBContracts.UserTable.TABLE_NAME,
+                    WHERE_CLAUSE,
+                    new String[]{EntityDbManager.dateFormat.format(user.getCreationDate())}
+            );
+            Log.i(CLASS_NAME, "User(" + user + ") has been deleted from database");
+        } catch (Exception e) {
+            Log.e(CLASS_NAME, "Exception! Could not delete User(" + user + ") from databse" + " " + e.getLocalizedMessage());
+        }
+
+        return resultCode;
+    }
 }

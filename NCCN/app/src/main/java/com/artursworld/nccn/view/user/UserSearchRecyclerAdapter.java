@@ -2,13 +2,18 @@ package com.artursworld.nccn.view.user;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -33,8 +38,9 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
     private final List<User> data;
     private Activity activity;
     private boolean hasToOpenStatistics = false;
+    private int selectedUserPosition = 0;
 
-    public void setHasToOpenStatistics(boolean hasTo){
+    public void setHasToOpenStatistics(boolean hasTo) {
         hasToOpenStatistics = hasTo;
     }
 
@@ -46,7 +52,7 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.simple_list_row, parent, false));
+                .inflate(R.layout.simple_list_row, parent, false), activity);
     }
 
     @Override
@@ -58,14 +64,13 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
                 User selectedUser = data.get(position);
                 Log.i(CLASS_NAME, "clicked on: " + selectedUser);
 
-                if(hasToOpenStatistics){
+                if (hasToOpenStatistics) {
                     Global.setSelectedStatisticsUser(selectedUser.getName());
                     Log.i(CLASS_NAME, "open statistics");
                     Intent intent = new Intent(activity.getApplicationContext(), StatisticsTabsActivity.class);
                     activity.finish();
                     activity.startActivity(intent);
-                }
-                else {
+                } else {
                     Global.setSelectedUserName(selectedUser.getName());
                     // get date list
                     final List<String> dateList = new UserManager().getQuestionnaireDatesByUserName(selectedUser.getName());
@@ -74,10 +79,19 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
                 }
             }
         });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                setPosition(position);
+                Log.i(CLASS_NAME, "selected user position:" + position);
+                return false;
+            }
+        });
     }
 
     /**
      * Insert a new item to the RecyclerView on a predefined position
+     *
      * @param position
      * @param user
      */
@@ -88,12 +102,17 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
 
     /**
      * Remove a RecyclerView item containing a specified Data object
+     *
      * @param user
      */
     public void remove(User user) {
-        int position = this.data.indexOf(user);
-        data.remove(position);
-        notifyItemRemoved(position);
+        //TODO: async
+        int deletedUserCount = new UserManager().delete(user);
+        if(deletedUserCount>0){
+            int position = this.data.indexOf(user);
+            data.remove(position);
+            notifyItemRemoved(position);
+        }
     }
 
 
@@ -136,12 +155,51 @@ public class UserSearchRecyclerAdapter extends RecyclerView.Adapter<UserSearchRe
         return data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
+    public int getPosition() {
+        return selectedUserPosition;
+    }
 
-        public ViewHolder(View v) {
+    public void setPosition(int position) {
+        this.selectedUserPosition = position;
+    }
+
+    /*
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.user_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        if (item.getItemId() == R.id.delete_user) {
+            Log.i(CLASS_NAME, "Option 'delete' selected for user: " + filteredUsers.get(info.position));
+           // openMarkUserAsDeletedAttentionDialog(info.position);
+        }
+        return super.onContextItemSelected(item);
+    }
+    * */
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements  View.OnCreateContextMenuListener{
+        public TextView textView;
+        private Activity activity;
+
+        public ViewHolder(View v, Activity activity) {
             super(v);
+            this.activity = activity;
             textView = (TextView) v.findViewById(R.id.textView);
+            v.setOnCreateContextMenuListener(this);
+        }
+
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            if(activity !=null) {
+                activity.getMenuInflater().inflate(R.menu.user_menu, menu);
+            }
         }
     }
 

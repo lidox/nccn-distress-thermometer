@@ -10,8 +10,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 
 import com.artursworld.nccn.R;
@@ -166,5 +168,17 @@ public class UserExpandableListFragment extends Fragment {
     public void setUserDisplayCount(int userDisplayCount) {
         for (int i = 0; i < userDisplayCount; i++)
             filteredUsers.add(new User(" "));
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        if (item.getItemId() == R.id.delete_user) {
+            User selectedUser = filteredUsers.get(adapter.getPosition());
+            Log.i(CLASS_NAME, "Option 'delete' selected for user: " + selectedUser);
+            adapter.remove(selectedUser);
+        }
+        return super.onContextItemSelected(item);
     }
 }

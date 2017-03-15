@@ -120,7 +120,7 @@ public class DBContracts {
             + HADSDTable.PROGRESS + INTEGER_TYPE + COMMA_SEP
             + " PRIMARY KEY ("+HADSDTable.CREATION_DATE_PK +") "
             + "FOREIGN KEY(" + HADSDTable.NAME_ID_FK +") "
-            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";
+            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON DELETE CASCADE ON UPDATE CASCADE);";
 
     public static final String CREATE_QUALITY_OF_TABLE = "CREATE TABLE "
             + QualityOfLifeTable.TABLE_NAME + "("
@@ -132,7 +132,7 @@ public class DBContracts {
             + QualityOfLifeTable.PROGRESS + INTEGER_TYPE + COMMA_SEP
             + " PRIMARY KEY ("+QualityOfLifeTable.CREATION_DATE_PK +") "
             + "FOREIGN KEY(" + QualityOfLifeTable.NAME_ID_FK +") "
-            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";
+            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON DELETE CASCADE ON UPDATE CASCADE);";
 
     public static final String CREATE_DISTRESS_THERMOMETER_TABLE = "CREATE TABLE "
             + DistressThermometerTable.TABLE_NAME + "("
@@ -144,7 +144,7 @@ public class DBContracts {
             + DistressThermometerTable.PROGRESS + INTEGER_TYPE + COMMA_SEP
             + " PRIMARY KEY ("+DistressThermometerTable.CREATION_DATE_PK +") "
             + "FOREIGN KEY(" + DistressThermometerTable.NAME_ID_FK +") "
-            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON UPDATE CASCADE);";
+            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON DELETE CASCADE ON UPDATE CASCADE);";
 
     // Helper class manages database creation and version management
     public static class DatabaseHelper extends SQLiteOpenHelper {
