@@ -117,23 +117,6 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         if (Global.getSelectedUser() == null || Global.hasToCreateNewUser()) {
             createUser();
             onResumeWithSelectedUser();
-            /*
-            new AsyncTask<Void, Void, Void>(){
-
-                @Override
-                protected Void doInBackground(Void... params) {
-                    createUser();
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    super.onPostExecute(aVoid);
-                    onResumeWithSelectedUser();
-                }
-
-            }.execute();
-            */
         } else {
             onResumeWithSelectedUser();
         }
@@ -238,12 +221,19 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
 
         initSelectedUserAndDateInNavigation();
 
+        addDrawlerListernerBurgerMenu();
+    }
+
+    private void addDrawlerListernerBurgerMenu() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawerLayout != null) {
             drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     Log.i(CLASS_NAME, "On Navigation Drawer open. burger menu open");
+                    if(userNameEditText!=null)
+                        userNameEditText.clearFocus();
+
                     openPasswordProtection();
                     initSelectedUserAndDateInNavigation();
                     super.onDrawerOpened(drawerView);

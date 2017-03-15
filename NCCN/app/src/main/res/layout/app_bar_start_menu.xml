@@ -37,6 +37,12 @@
             android:paddingBottom="30dp"
             android:paddingTop="30dp">
 
+            <LinearLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_width="0px"
+                android:layout_height="0px" />
+
             <!-- HERE PUT IN YOUT GUI-->
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/user_name_edit_text"
