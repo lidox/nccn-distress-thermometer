@@ -13,23 +13,19 @@ you can then put a specific server config into that file like so:
 ````
 server {
   listen *:80 ;
-  server_name 134.99.218.19;
-
+  server_name YOUR_IP;
+ 
   access_log /var/log/nginx/search.access.log;
-
-  location / {
-    auth_basic           "Elastic Search Artur";
-    auth_basic_user_file /etc/nginx/conf.d/search.htpasswd;
+     
+  # proxy
+  location ~ / {
+    auth_basic           "Artur Private";
+    auth_basic_user_file /etc/nginx/.htpasswd;
 
     # Send everything to the Elasticsearch endpoint
-    try_files @elasticsearch /dev/null =404;
+    proxy_bind 127.0.0.1;
+    proxy_pass http://YOUR_IP:YOUR_PORT;
   }
 
-  # Endpoint to pass Elasticsearch queries to
-  location @elasticsearch {
-    proxy_pass http://134.99.218.19:9200;
-    proxy_read_timeout 90;
-  }
 }
-
 ````
