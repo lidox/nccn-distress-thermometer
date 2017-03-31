@@ -44,8 +44,6 @@ import java.util.List;
 public class ElasticQuestionnaire {
 
     private static final String CLASS_NAME = ElasticQuestionnaire.class.getSimpleName();
-    //public static final String ES_INDEX = "questionnaire-app";
-    //public static final String ES_TYPE = "scores";
 
     /**
      * Does a bulk operation to be faster
@@ -139,6 +137,7 @@ public class ElasticQuestionnaire {
      * }
      */
     //TODO: check this implementation
+    /*
     public static String update(final String es_type, final String apiString, final JSONObject params) {
         return updateByJSON(es_type, apiString, params);
     }
@@ -157,7 +156,7 @@ public class ElasticQuestionnaire {
             return response;
         }
     }
-
+*/
 
     /**
      * Synchronizes all questionnaire for all user in the list with elastic search

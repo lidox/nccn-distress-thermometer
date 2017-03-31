@@ -16,6 +16,8 @@
     <string name="c_select_elastic_search_index_name">com.artursworld.select_elastic_search_index_name</string>
     <string name="c_select_elastic_search_type_name">com.artursworld.select_elastic_search_type_name</string>
     <string name="c_pin_code">com.artursworld.pin.code</string>
+    <string name="c_elastic_search_username">com.artursworld.username</string>
+    <string name="c_elastic_search_password">com.artursworld.password</string>
 
     <string name="c_server_ip_elastic_search_default_value">10.0.2.2</string>
     <string name="c_elastic_search_index_name_default_value">questionnaire-app</string>

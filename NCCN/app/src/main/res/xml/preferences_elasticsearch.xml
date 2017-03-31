@@ -30,21 +30,38 @@
             android:title="@string/server_port_elastic_search" />
 
 
-    <EditTextPreference
-        android:defaultValue="@string/c_elastic_search_index_name_default_value"
-        android:key="@string/c_select_elastic_search_index_name"
-        android:layout="@layout/preference_layout"
-        android:summary="@string/select_elastic_search_index_name"
-        android:textSize="@dimen/textAppearanceLabelLargeSub"
-        android:title="@string/elastic_search_index_name" />
+        <EditTextPreference
+            android:defaultValue="@string/c_elastic_search_index_name_default_value"
+            android:key="@string/c_select_elastic_search_index_name"
+            android:layout="@layout/preference_layout"
+            android:summary="@string/select_elastic_search_index_name"
+            android:textSize="@dimen/textAppearanceLabelLargeSub"
+            android:title="@string/elastic_search_index_name" />
 
-    <EditTextPreference
-        android:defaultValue="@string/c_elastic_search_type_name_default_value"
-        android:key="@string/c_select_elastic_search_type_name"
-        android:layout="@layout/preference_layout"
-        android:summary="@string/select_elastic_search_type_name"
-        android:textSize="@dimen/textAppearanceLabelLargeSub"
-        android:title="@string/elastic_search_type_name" />
+        <EditTextPreference
+            android:defaultValue="@string/c_elastic_search_type_name_default_value"
+            android:key="@string/c_select_elastic_search_type_name"
+            android:layout="@layout/preference_layout"
+            android:summary="@string/select_elastic_search_type_name"
+            android:textSize="@dimen/textAppearanceLabelLargeSub"
+            android:title="@string/elastic_search_type_name" />
+
+        <EditTextPreference
+            android:defaultValue="@string/c_pin_code_default_value"
+            android:key="@string/c_elastic_search_username"
+            android:layout="@layout/preference_layout"
+            android:summary="@string/select_a_username_for_auth"
+            android:textSize="@dimen/textAppearanceLabelLargeSub"
+            android:title="@string/user_name" />
+
+        <EditTextPreference
+            android:defaultValue="@string/c_pin_code_default_value"
+            android:key="@string/c_elastic_search_password"
+            android:layout="@layout/preference_layout"
+            android:password="true"
+            android:summary="@string/select_a_password_for_auth"
+            android:textSize="@dimen/textAppearanceLabelLargeSub"
+            android:title="@string/password" />
 
     </PreferenceCategory>
 
