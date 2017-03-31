@@ -6,7 +6,7 @@ import java.util.Map;
 
 public enum OperationType {
 
-    PRE, POST;
+    PRE, POST, FOLLOW_UP;
 
     private static final Map<String, OperationType> lookupByName = new HashMap<String, OperationType>();
 

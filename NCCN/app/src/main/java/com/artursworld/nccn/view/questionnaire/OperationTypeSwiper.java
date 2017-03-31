@@ -119,8 +119,11 @@ public class OperationTypeSwiper {
 
     @NonNull
     private SwipeItem[] getSwipeItemsForOperationType() {
-        return new SwipeItem[]{new SwipeItem(OperationType.PRE, Strings.getStringByRId(R.string.pre_operation), Strings.getStringByRId(R.string.pre_operation_description)),
-                new SwipeItem(OperationType.POST, Strings.getStringByRId(R.string.post_operation), Strings.getStringByRId(R.string.post_operation_description))};
+        return new SwipeItem[]{
+                new SwipeItem(OperationType.PRE, Strings.getStringByRId(R.string.pre_operation), Strings.getStringByRId(R.string.pre_operation_description)),
+                new SwipeItem(OperationType.POST, Strings.getStringByRId(R.string.post_operation), Strings.getStringByRId(R.string.post_operation_description)),
+                new SwipeItem(OperationType.FOLLOW_UP, Strings.getStringByRId(R.string.follow_up), Strings.getStringByRId(R.string.follow_up_description))
+        };
     }
 
 }
