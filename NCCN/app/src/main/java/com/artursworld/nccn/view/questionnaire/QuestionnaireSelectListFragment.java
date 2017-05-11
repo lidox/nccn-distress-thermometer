@@ -65,15 +65,10 @@ public class QuestionnaireSelectListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         Log.i(CLASS_NAME, "onResume()");
         showQuestionnairesInListView();
     }
-
+    
     /**
      * Displays the questionnaires containing progress in percentage
      */
