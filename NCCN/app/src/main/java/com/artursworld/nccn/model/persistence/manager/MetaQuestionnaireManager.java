@@ -10,6 +10,7 @@ import android.util.Log;
 import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.controller.util.OperationType;
 import com.artursworld.nccn.model.entity.MetaQuestionnaire;
+import com.artursworld.nccn.model.entity.PsychoSocialSupportState;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.persistence.contracts.DBContracts;
 
@@ -55,9 +56,8 @@ public class MetaQuestionnaireManager extends EntityDbManager {
             Log.i(tableName, meta + " has been updated. Rows affected: " + rowsAffected);
         } catch (Exception e) {
             Log.e(tableName, "Exception! Could not update the meta data(" + meta + ") " + " " + e.getLocalizedMessage());
-        } finally {
-            return rowsAffected;
         }
+        return rowsAffected;
     }
 
 
@@ -100,6 +100,12 @@ public class MetaQuestionnaireManager extends EntityDbManager {
         if (meta.getOperationType() != null)
             values.put(DBContracts.MetaQuestionnaireTable.OPERATION_TYPE, meta.getOperationType().name());
 
+        if (meta.getPsychoSocialSupportState() != null)
+            values.put(DBContracts.MetaQuestionnaireTable.NEED_PSYCHOSOCIAL_SUPPORT, meta.getPsychoSocialSupportState().name());
+
+        if (meta.getOperationDate() != null)
+            values.put(DBContracts.MetaQuestionnaireTable.OPERATION_DATE, EntityDbManager.dateFormat.format(meta.getOperationDate()));
+
         return values;
     }
 
@@ -113,24 +119,6 @@ public class MetaQuestionnaireManager extends EntityDbManager {
         return getMetaQuestionnaire(date);
     }
 
-
-    /**
-     * Returns the meta data by creation date from database
-     *
-     * @param date the creation date
-     * @return returns the meta data by creation date from database
-     */
-    /*
-    public MetaQuestionnaire getMetaDataByCreationDate(String date){
-        try {
-            Date creationDate = EntityDbManager.dateFormat.parse(date);
-            return getMetaQuestionnaire(creationDate);
-        } catch (ParseException e) {
-            Log.e(CLASS_NAME, "Could not getMetaDataByCreationDate: " +e.getLocalizedMessage());
-        }
-        return null;
-    }
-    */
 
     /**
      * Helps to get meta data by creation date
@@ -176,6 +164,8 @@ public class MetaQuestionnaireManager extends EntityDbManager {
                 meta.setCreationDate(EntityDbManager.dateFormat.parse(cursor.getString(0)));
                 meta.setUpdateDate(EntityDbManager.dateFormat.parse(cursor.getString(1)));
                 meta.setOperationType(OperationType.findByName(cursor.getString(2)));
+                meta.setPsychoSocialSupportState(PsychoSocialSupportState.findByName(cursor.getString(3)));
+                meta.setOperationDate(EntityDbManager.dateFormat.parse(cursor.getString(4)));
 
             } catch (Exception e) {
                 Log.i(CLASS_NAME, "Failed to getMetaListByDate(" + creationDate + ")!" + e.getLocalizedMessage());
@@ -194,7 +184,9 @@ public class MetaQuestionnaireManager extends EntityDbManager {
         return new String[]{
                 DBContracts.MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE,
                 DBContracts.MetaQuestionnaireTable.UPDATE_DATE,
-                DBContracts.MetaQuestionnaireTable.OPERATION_TYPE
+                DBContracts.MetaQuestionnaireTable.OPERATION_TYPE,
+                DBContracts.MetaQuestionnaireTable.NEED_PSYCHOSOCIAL_SUPPORT,
+                DBContracts.MetaQuestionnaireTable.OPERATION_DATE
         };
     }
 }

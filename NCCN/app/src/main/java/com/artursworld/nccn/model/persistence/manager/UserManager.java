@@ -11,6 +11,7 @@ import android.util.Log;
 import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.Gender;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
@@ -70,6 +71,12 @@ public class UserManager extends EntityDbManager {
         if (user.getCreationDate() != null)
             values.put(DBContracts.UserTable.CREATION_DATE, EntityDbManager.dateFormat.format(user.getCreationDate()));
 
+        if (user.getBirthDate() != null)
+            values.put(DBContracts.UserTable.BIRTH_DATE, EntityDbManager.dateFormat.format(user.getBirthDate()));
+
+        if (user.getGender() != null)
+            values.put(DBContracts.UserTable.GENDER, user.getGender().name());
+
         return values;
     }
 
@@ -98,9 +105,8 @@ public class UserManager extends EntityDbManager {
         return new String[]{
                 DBContracts.UserTable.NAME_ID_PK,
                 DBContracts.UserTable.CREATION_DATE,
-                //DBContracts.UserTable.UPDATE_DATE,
-                //DBContracts.UserTable.BIRTH_DATE,
-                //DBContracts.UserTable.GENDER
+                DBContracts.UserTable.BIRTH_DATE,
+                DBContracts.UserTable.GENDER
         };
     }
 
@@ -109,11 +115,11 @@ public class UserManager extends EntityDbManager {
         User medicalUser = new User(cursor.getString(0));
         try {
             medicalUser.setCreationDate(EntityDbManager.dateFormat.parse(cursor.getString(1)));
+            medicalUser.setBirthDate(EntityDbManager.dateFormat.parse(cursor.getString(2)));
         } catch (Exception e) {
             Log.i(UserManager.class.getSimpleName(), "Could not load creation date for  user" + e.getLocalizedMessage());
         }
-        //medicalUser.setBmi(cursor.getDouble(6));
-        //medicalUser.setMarkedAsDeleted((cursor.getInt(7) == 1) ? true : false);
+        medicalUser.setGender(Gender.findByName(cursor.getString(3)));
         return medicalUser;
     }
 

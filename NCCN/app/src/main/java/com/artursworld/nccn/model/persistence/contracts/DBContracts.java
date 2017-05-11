@@ -22,11 +22,8 @@ public class DBContracts {
         public static final String TABLE_NAME = "user";
         public static final String CREATION_DATE= "creation_date";
         public static final String NAME_ID_PK = "name"; // primary key
-        public static final String UPDATE_DATE = "update_date";
         public static final String BIRTH_DATE = "birth_date";
         public static final String GENDER = "gender";
-        public static final String MARKED_AS_DELETED = "is_deleted";
-        public static final String PARTNERSHIP = "partnership";
     }
 
     public static abstract class HADSDTable {
@@ -79,6 +76,8 @@ public class DBContracts {
         public static final String CREATION_DATE_QUESTIONNAIRE = "creation_date"; //primary key
         public static final String UPDATE_DATE = "update_date";
         public static final String OPERATION_TYPE = "operation_type";
+        public static final String NEED_PSYCHOSOCIAL_SUPPORT = "need_psychosocial_support";
+        public static final String OPERATION_DATE = "operation_date";
     }
 
     // Create SQL queries
@@ -87,6 +86,8 @@ public class DBContracts {
             + MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE + DATE_TYPE + COMMA_SEP
             + MetaQuestionnaireTable.UPDATE_DATE + DATE_TYPE + COMMA_SEP
             + MetaQuestionnaireTable.OPERATION_TYPE + TEXT_TYPE + COMMA_SEP
+            + MetaQuestionnaireTable.NEED_PSYCHOSOCIAL_SUPPORT + TEXT_TYPE + COMMA_SEP
+            + MetaQuestionnaireTable.OPERATION_DATE + DATE_TYPE + COMMA_SEP
             + " PRIMARY KEY ("+MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE +")"
             + ");";
 
@@ -94,6 +95,8 @@ public class DBContracts {
             + UserTable.TABLE_NAME + "("
             + UserTable.CREATION_DATE + DATE_TYPE + COMMA_SEP
             + UserTable.NAME_ID_PK + TEXT_TYPE + COMMA_SEP
+            + UserTable.BIRTH_DATE + DATE_TYPE + COMMA_SEP
+            + UserTable.GENDER + TEXT_TYPE + COMMA_SEP
             + " PRIMARY KEY ("+UserTable.NAME_ID_PK +")"
             + ");";
 
@@ -149,7 +152,7 @@ public class DBContracts {
     // Helper class manages database creation and version management
     public static class DatabaseHelper extends SQLiteOpenHelper {
 
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 2;
         private static final String DATABASE_NAME = "app.db";
         private static DatabaseHelper instance;
 

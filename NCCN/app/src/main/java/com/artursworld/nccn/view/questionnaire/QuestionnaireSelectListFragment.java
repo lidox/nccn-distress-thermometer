@@ -1,7 +1,10 @@
 package com.artursworld.nccn.view.questionnaire;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
@@ -20,11 +25,14 @@ import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.AbstractQuestionnaire;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
+import com.artursworld.nccn.model.entity.MetaQuestionnaire;
+import com.artursworld.nccn.model.entity.PsychoSocialSupportState;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 
@@ -57,6 +65,11 @@ public class QuestionnaireSelectListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         Log.i(CLASS_NAME, "onResume()");
         showQuestionnairesInListView();
     }
@@ -160,14 +173,56 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 }
             }
             else{
-                //displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress);
                 Log.w(CLASS_NAME, "something went wrong");
             }
         }
         AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), list);
         questionnaireListView.setAdapter(adapter);
-        percentageAllTextView.setText(getPercentageForAllQuestionnairesByList(list) + " ");
+        int percentageForAllQuestionnaires = getPercentageForAllQuestionnairesByList(list);
+        askForProfessionalPsychosocialSupport(percentageForAllQuestionnaires);
+        percentageAllTextView.setText(percentageForAllQuestionnaires + " ");
         addOnItemClickListener(list);
+    }
+
+    private void askForProfessionalPsychosocialSupport(int percentageForAllQuestionnaires) {
+        //TODO:
+        Log.i(CLASS_NAME, "ask for Professional Psychosocial Support");
+        boolean hasNotAskedYet = true;
+        if(percentageForAllQuestionnaires == 100  && hasNotAskedYet){
+            MaterialDialog b = new MaterialDialog.Builder(this.getActivity())
+                    .title(R.string.wish_professional_psychosocial_support)
+                    .positiveText(R.string.yes)
+                    .negativeText(R.string.no)
+                    .customView(R.layout.dialog_select_questionnairies, true)
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            setPsychoSocialSupportState(PsychoSocialSupportState.REJECTED);
+                        }
+                    })
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            setPsychoSocialSupportState(PsychoSocialSupportState.ACCEPTED);
+
+                        }
+                    }).build();
+        }
+    }
+
+    private void setPsychoSocialSupportState(final PsychoSocialSupportState supportState) {
+        new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                MetaQuestionnaireManager db = new MetaQuestionnaireManager();
+                MetaQuestionnaire meta = db.getMetaDataByCreationDate(Global.getSelectedQuestionnaireDate());
+                meta.setPsychoSocialSupportState(supportState);
+                if(meta!=null)
+                    db.update(meta);
+                return null;
+            }
+        }.execute();
     }
 
     private void displayDefaultQuestionnaires(List<AbstractQuestionnaire> list, int hadsProgress, int distressProgress, int qualityProgress) {

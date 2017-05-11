@@ -205,4 +205,7 @@
     <string name="follow_up_description">Fortsetzung (Follow-up) der Befragung</string>
     <string name="select_a_username_for_auth">Wählen Sie einen Benutzernamen aus</string>
     <string name="select_a_password_for_auth">Wählen  Sie ein Passwort</string>
+    <string name="wish_professional_psychosocial_support">Wünschen Sie professionelle psychosoziale Unterstützung?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 </resources>
