@@ -10,6 +10,16 @@ PUT questionnaire-app
           "type":   "date", 
           "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd||epoch_millis"
         },
+		"birth-date":  {
+          "type":   "date", 
+          "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd||epoch_millis"
+        },
+		"operation-date":  {
+          "type":   "date", 
+          "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd||epoch_millis"
+        },
+		"gender":    { "type": "text"  },
+		"need-psychosocial-support":     { "type": "boolean"},
         "DT-distress-score":     { "type": "integer"}, 
         "DT-has-distress":     { "type": "boolean"}, 
         "operation-type":     {  "type":  "keyword"}, 
@@ -62,5 +72,6 @@ PUT questionnaire-app
       }
     }
   }
+}
 }
 ````
