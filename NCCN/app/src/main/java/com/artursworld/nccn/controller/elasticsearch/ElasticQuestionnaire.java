@@ -262,7 +262,7 @@ public class ElasticQuestionnaire {
                         params.put("operation-type", meta.getOperationType());
 
                     params.put("creation-date", EntityDbManager.dateFormat.format(date));
-                    params.put("user-name", Security.getMD5ByString(user.getName()));
+                    params.put("user-name", Security.encrypt(user.getName()));
                 } catch (Exception e) {
                     Log.e(CLASS_NAME, e.getLocalizedMessage());
                 }

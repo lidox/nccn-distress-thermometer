@@ -181,7 +181,10 @@ public class QualityOfLifeStep extends AbstractStep {
     }
 
     private boolean isAnAnswerSelected() {
-        RadioButton buttonToCheck = ((RadioButton) answersGroup.getChildAt(4));
-        return !buttonToCheck.isChecked();
+        if(answersGroup != null) {
+            RadioButton buttonToCheck = ((RadioButton) answersGroup.getChildAt(4));
+            return !buttonToCheck.isChecked();
+        }
+        return false;
     }
 }

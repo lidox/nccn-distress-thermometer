@@ -90,7 +90,7 @@ public class AbstractHadsdStep extends AbstractStep {
 
         // load current answers again
         HADSDQuestionnaireManager m = new HADSDQuestionnaireManager();
-        questionnaire = m.getHADSDQuestionnaireByDate_PK(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
+        questionnaire = m.getHADSDQuestionnaireByDate_PK(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
 
         // display old and new byte
         byte[] oldByte = questionnaire.getAnswerByNr(currentQuestionNumber);
@@ -122,7 +122,7 @@ public class AbstractHadsdStep extends AbstractStep {
         Log.i(CLASS_NAME, "loading data for question number = " + currentQuestionNumber + " ...");
         selectedUser = new UserManager().getUserByName(bundle.getString(WizardHADSD.SELECTED_USER));
         Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
-        questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(selectedUser.getName(), selectedQuestionnaireDate);
+        questionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(Global.getSelectedUser(), selectedQuestionnaireDate);
 
         if(questionnaire == null)
             getActivity().finish();

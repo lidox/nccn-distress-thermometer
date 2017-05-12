@@ -152,7 +152,7 @@ public class PracticalProblemsStep extends AbstractStep {
 
     @Override
     public void onNext() {
-        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(selectedUser.getName(), Global.getSelectedQuestionnaireDate());
+        questionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
         WizardNCCN.updateProgress(questionnaire, currentQuestionNumber);
         Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber );
     }

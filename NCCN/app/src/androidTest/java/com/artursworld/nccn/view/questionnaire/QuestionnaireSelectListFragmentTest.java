@@ -3,6 +3,7 @@ package com.artursworld.nccn.view.questionnaire;
 import android.test.InstrumentationTestCase;
 import android.test.RenamingDelegatingContext;
 
+import com.artursworld.nccn.controller.util.Security;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
@@ -15,6 +16,8 @@ import com.artursworld.nccn.model.persistence.manager.UserManager;
 import org.junit.Test;
 
 import java.util.Date;
+
+import static org.junit.Assert.assertNotEquals;
 
 public class QuestionnaireSelectListFragmentTest extends InstrumentationTestCase {
 
@@ -75,5 +78,15 @@ public class QuestionnaireSelectListFragmentTest extends InstrumentationTestCase
         assertEquals(77, distressProgress);
         assertEquals(33, qualityProgress);
     }
+
+    @Test
+    public void testEncryption1() {
+        String text = "Hallo-ABL!~-!§%!";
+        String encrypted = Security.encrypt(text);
+        assertNotEquals(encrypted, text);
+        String decrypted = Security.decrypt(encrypted);
+        assertEquals(text, decrypted);
+    }
+
 
 }
