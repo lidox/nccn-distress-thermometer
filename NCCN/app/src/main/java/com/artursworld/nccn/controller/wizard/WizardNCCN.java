@@ -17,6 +17,7 @@ import com.artursworld.nccn.model.wizard.distressthermometer.FamilyProblemsStep;
 import com.artursworld.nccn.model.wizard.distressthermometer.PracticalProblemsStep;
 import com.artursworld.nccn.model.wizard.distressthermometer.ReligiousSpiritualProblems;
 import com.artursworld.nccn.model.wizard.distressthermometer.ThermometerStep;
+import com.artursworld.nccn.model.wizard.psychosocial.PsychoSocialStep;
 import com.artursworld.nccn.model.wizard.qualityoflife.QualityOfLifeSpecialStep;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 import com.github.fcannizzaro.materialstepper.style.TextStepper;
@@ -41,6 +42,7 @@ public class WizardNCCN extends TextStepper {
         addStep(createFragment(new EmotionalProblemsStep()));
         addStep(createFragment(new ReligiousSpiritualProblems()));
         addStep(createFragment(new BodyProblemsStep()));
+        addStep(createFragment(new PsychoSocialStep()));
         super.onCreate(savedInstanceState);
     }
 

@@ -68,7 +68,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
         Log.i(CLASS_NAME, "onResume()");
         showQuestionnairesInListView();
     }
-    
+
     /**
      * Displays the questionnaires containing progress in percentage
      */
@@ -174,11 +174,12 @@ public class QuestionnaireSelectListFragment extends Fragment {
         AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), list);
         questionnaireListView.setAdapter(adapter);
         int percentageForAllQuestionnaires = getPercentageForAllQuestionnairesByList(list);
-        askForProfessionalPsychosocialSupport(percentageForAllQuestionnaires);
+        // askForProfessionalPsychosocialSupport(percentageForAllQuestionnaires);
         percentageAllTextView.setText(percentageForAllQuestionnaires + " ");
         addOnItemClickListener(list);
     }
 
+    /*
     private void askForProfessionalPsychosocialSupport(int percentageForAllQuestionnaires) {
         //TODO:
         Log.i(CLASS_NAME, "ask for Professional Psychosocial Support");
@@ -219,6 +220,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
             }
         }.execute();
     }
+    */
 
     private void displayDefaultQuestionnaires(List<AbstractQuestionnaire> list, int hadsProgress, int distressProgress, int qualityProgress) {
         Log.i(CLASS_NAME, "display default questionnaires");

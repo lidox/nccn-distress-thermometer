@@ -162,13 +162,28 @@ public class MetaQuestionnaireManager extends EntityDbManager {
             try {
                 meta = new MetaQuestionnaire(EntityDbManager.dateFormat.parse(cursor.getString(0)));
                 meta.setCreationDate(EntityDbManager.dateFormat.parse(cursor.getString(0)));
-                meta.setUpdateDate(EntityDbManager.dateFormat.parse(cursor.getString(1)));
-                meta.setOperationType(OperationType.findByName(cursor.getString(2)));
-                meta.setPsychoSocialSupportState(PsychoSocialSupportState.findByName(cursor.getString(3)));
-                meta.setOperationDate(EntityDbManager.dateFormat.parse(cursor.getString(4)));
-
             } catch (Exception e) {
                 Log.i(CLASS_NAME, "Failed to getMetaListByDate(" + creationDate + ")!" + e.getLocalizedMessage());
+            }
+            try {
+                meta.setUpdateDate(EntityDbManager.dateFormat.parse(cursor.getString(1)));
+            } catch (Exception e) {
+                Log.i(CLASS_NAME, e.getLocalizedMessage());
+            }
+            try {
+                meta.setOperationType(OperationType.findByName(cursor.getString(2)));
+            } catch (Exception e) {
+                Log.i(CLASS_NAME, e.getLocalizedMessage());
+            }
+            try {
+                meta.setPsychoSocialSupportState(PsychoSocialSupportState.findByName(cursor.getString(3)));
+            } catch (Exception e) {
+                Log.i(CLASS_NAME, e.getLocalizedMessage());
+            }
+            try {
+                meta.setUpdateDate(EntityDbManager.dateFormat.parse(cursor.getString(1)));
+            } catch (Exception e) {
+                Log.i(CLASS_NAME, e.getLocalizedMessage());
             }
             metaList.add(meta);
         }
