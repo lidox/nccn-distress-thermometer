@@ -1,4 +1,4 @@
-## Install NGIX
+## Install NGINX
 See [tutorial!](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-14-04-lts)
 
 ## Set Up Basic HTTP Authentication With Nginx
