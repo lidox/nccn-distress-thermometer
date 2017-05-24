@@ -103,6 +103,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
      * @param user         the selected user
      */
     private void fillQuestionnaireListView(User user, Date creationDate) {
+        Log.i(CLASS_NAME, "fillQuestionnaireListView for user("+user.getName()+") and creactionDate: " + creationDate);
         List<AbstractQuestionnaire> list = new ArrayList<>();
 
         int hadsProgress = 0;
@@ -111,6 +112,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
 
         if (Global.hasToCreateNewQuestionnaire()) {
+            Log.i(CLASS_NAME, "hasToCreateNewQuestionnaire");
             if (Global.hasToUseDefaultQuestionnaire()) {
                 displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress);
             } else {
@@ -131,16 +133,17 @@ public class QuestionnaireSelectListFragment extends Fragment {
             }
         } else {
             Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
+            Log.i(CLASS_NAME, "got selected Questionnaires For StartScreen = " + setOfBooleans);
             if (setOfBooleans != null) {
                 boolean hasToGetProgress = !Global.hasToCreateNewUser() && user != null;
-
+                Log.i(CLASS_NAME, "has to get progress of questionnaires =  " + hasToGetProgress);
                 // HADS-D
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
                     if (hasToGetProgress) {
                         HADSDQuestionnaire hadsdQuestionnaire = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), creationDate);
                         if (hadsdQuestionnaire != null) {
                             hadsProgress = hadsdQuestionnaire.getProgressInPercent();
-                            Log.i(CLASS_NAME, "Progress loading HADS-D = " + hadsProgress);
+                            Log.i(CLASS_NAME, "Progress loading HADS-D = " + hadsProgress + "%");
                         }
                     }
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
@@ -150,8 +153,10 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
                     if (hasToGetProgress) {
                         DistressThermometerQuestionnaire distressThermometerQuestionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), creationDate);
-                        if (distressThermometerQuestionnaire != null)
+                        if (distressThermometerQuestionnaire != null) {
                             distressProgress = distressThermometerQuestionnaire.getProgressInPercent();
+                            Log.i(CLASS_NAME, "Progress loading DistressThermometer = " + distressProgress + "%");
+                        }
                     }
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
                 }
@@ -161,7 +166,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
                         QolQuestionnaire qolQuestionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), creationDate);
                         if (qolQuestionnaire != null) {
                             qualityProgress = qolQuestionnaire.getProgressInPercent();
-                            Log.i(CLASS_NAME, "Progress loading QualityOfLife = " + qualityProgress);
+                            Log.i(CLASS_NAME, "Progress loading QualityOfLife = " + qualityProgress+ "%");
                         }
                     }
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
@@ -172,55 +177,15 @@ public class QuestionnaireSelectListFragment extends Fragment {
             }
         }
         AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), list);
-        questionnaireListView.setAdapter(adapter);
+        Log.i(CLASS_NAME, "Abstract Questionnaire list = " + list.toString());
+        if(adapter != null) {
+            questionnaireListView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
         int percentageForAllQuestionnaires = getPercentageForAllQuestionnairesByList(list);
-        // askForProfessionalPsychosocialSupport(percentageForAllQuestionnaires);
         percentageAllTextView.setText(percentageForAllQuestionnaires + " ");
         addOnItemClickListener(list);
     }
-
-    /*
-    private void askForProfessionalPsychosocialSupport(int percentageForAllQuestionnaires) {
-        //TODO:
-        Log.i(CLASS_NAME, "ask for Professional Psychosocial Support");
-        boolean hasNotAskedYet = true;
-        if(percentageForAllQuestionnaires == 100  && hasNotAskedYet){
-            MaterialDialog b = new MaterialDialog.Builder(this.getActivity())
-                    .title(R.string.wish_professional_psychosocial_support)
-                    .positiveText(R.string.yes)
-                    .negativeText(R.string.no)
-                    .customView(R.layout.dialog_select_questionnairies, true)
-                    .onNegative(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            setPsychoSocialSupportState(PsychoSocialSupportState.REJECTED);
-                        }
-                    })
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            setPsychoSocialSupportState(PsychoSocialSupportState.ACCEPTED);
-
-                        }
-                    }).build();
-        }
-    }
-
-    private void setPsychoSocialSupportState(final PsychoSocialSupportState supportState) {
-        new AsyncTask<Void, Void, Void>(){
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                MetaQuestionnaireManager db = new MetaQuestionnaireManager();
-                MetaQuestionnaire meta = db.getMetaDataByCreationDate(Global.getSelectedQuestionnaireDate());
-                meta.setPsychoSocialSupportState(supportState);
-                if(meta!=null)
-                    db.update(meta);
-                return null;
-            }
-        }.execute();
-    }
-    */
 
     private void displayDefaultQuestionnaires(List<AbstractQuestionnaire> list, int hadsProgress, int distressProgress, int qualityProgress) {
         Log.i(CLASS_NAME, "display default questionnaires");

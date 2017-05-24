@@ -216,6 +216,9 @@ public class UserManager extends EntityDbManager {
      */
     public long renameUser(final String oldName, final String newName) {
         if (oldName != null) {
+            if(newName.equals(oldName)){
+                return 0;
+            }
             Log.i(CLASS_NAME, "rename user from '" + oldName + "' to '" + newName + "'");
             User u = new UserManager().getUserByName(oldName);
             if (u != null) {
