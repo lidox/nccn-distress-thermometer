@@ -69,7 +69,8 @@ public class MetaQuestionnaire {
     public String toString(){
         StringBuilder ret = new StringBuilder();
         ret.append("operationType: " + getOperationType().name() +"\n");
-        ret.append("psychoSocialSupportState: " + getPsychoSocialSupportState().name() +"\n");
+        if(getPsychoSocialSupportState() != null)
+            ret.append("psychoSocialSupportState: " + getPsychoSocialSupportState().name() +"\n");
         if(operationDate!=null)
             ret.append("operationDate: "+EntityDbManager.dateFormat.format(operationDate) +"\n");
         if(updateDate!=null)

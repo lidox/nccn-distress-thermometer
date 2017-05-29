@@ -85,23 +85,25 @@ public class QualityOfLifeStep extends AbstractStep {
      */
     private void onSelectedAnswerChanged(RadioGroup answersGroup) {
         questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
-        RadioButton checkedRadioButton = (RadioButton) answersGroup.findViewById(answersGroup.getCheckedRadioButtonId());
-        int index = answersGroup.indexOfChild(checkedRadioButton);
-        Log.i(QualityOfLifeStep.class.getSimpleName(), "New box selected= '" + checkedRadioButton.getText() + "' with index = " + index + " and current questionNr = " + currentQuestionNumber);
+        if(questionnaire != null) {
+            RadioButton checkedRadioButton = (RadioButton) answersGroup.findViewById(answersGroup.getCheckedRadioButtonId());
+            int index = answersGroup.indexOfChild(checkedRadioButton);
+            Log.i(QualityOfLifeStep.class.getSimpleName(), "New box selected= '" + checkedRadioButton.getText() + "' with index = " + index + " and current questionNr = " + currentQuestionNumber);
 
-        // load current answers again because maybe there are already updates
-        QualityOfLifeManager m = new QualityOfLifeManager();
-        //questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(Global.getSelectedStatisticUser(), Global.getSelectedQuestionnaireDate());
+            // load current answers again because maybe there are already updates
+            QualityOfLifeManager m = new QualityOfLifeManager();
+            //questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(Global.getSelectedStatisticUser(), Global.getSelectedQuestionnaireDate());
 
 
-        // display old and new byte
-        String old = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
-        String newOne = Bits.getNewBinaryStringByRadioBtn(checkedRadioButton.isChecked(), index, old, true);
-        Log.i(QualityOfLifeStep.class.getSimpleName(), "Changed answer bits from: " + old + " to " + newOne);
+            // display old and new byte
+            String old = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
+            String newOne = Bits.getNewBinaryStringByRadioBtn(checkedRadioButton.isChecked(), index, old, true);
+            Log.i(QualityOfLifeStep.class.getSimpleName(), "Changed answer bits from: " + old + " to " + newOne);
 
-        // update new answer selections
-        questionnaire.setBitsByQuestionNr(currentQuestionNumber, newOne);
-        m.update(questionnaire);
+            // update new answer selections
+            questionnaire.setBitsByQuestionNr(currentQuestionNumber, newOne);
+            m.update(questionnaire);
+        }
     }
 
     /**
@@ -134,7 +136,7 @@ public class QualityOfLifeStep extends AbstractStep {
     private void checkRadioButtonByBits() {
         double questionNr = currentQuestionNumber + 1;
         int progressValue = (int) Math.floor(questionNr / 50 * 100);
-        if (questionnaire.getProgressInPercent() >= progressValue) {
+        if (questionnaire.getProgressInPercent() >= progressValue || questionnaire.getProgressInPercent() == 100) {
             byte[] answerByte = Bits.getByteByString(questionnaire.getBitsByQuestionNr(currentQuestionNumber));
             Log.i(QualityOfLifeStep.class.getSimpleName(), "answer bits loaded: " + Bits.getStringByByte(answerByte) + " for questionNr:" + (currentQuestionNumber) + "(index:" + currentQuestionNumber + ")");
             StringBuilder bits = new StringBuilder(Bits.getStringByByte(answerByte)).reverse();
