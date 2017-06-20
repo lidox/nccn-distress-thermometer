@@ -206,6 +206,7 @@
     <string name="select_a_username_for_auth">Wählen Sie einen Benutzernamen aus</string>
     <string name="select_a_password_for_auth">Wählen  Sie ein Passwort</string>
     <string name="wish_professional_psychosocial_support">Wünschen Sie professionelle psychosoziale Unterstützung?</string>
+    <string name="had_already_professional_psychosocial_support">Haben Sie bereits professionelle psychosoziale Unterstützung erhalten. Falls ja, seit welchem Monat?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
 </resources>

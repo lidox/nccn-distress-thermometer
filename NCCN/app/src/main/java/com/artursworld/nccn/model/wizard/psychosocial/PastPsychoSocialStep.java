@@ -1,31 +1,30 @@
 package com.artursworld.nccn.model.wizard.psychosocial;
 
+        import android.os.Bundle;
+        import android.support.annotation.NonNull;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.RadioButton;
+        import android.widget.RadioGroup;
+        import android.widget.TextView;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+        import com.artursworld.nccn.R;
+        import com.artursworld.nccn.controller.util.Global;
+        import com.artursworld.nccn.controller.util.Strings;
+        import com.artursworld.nccn.model.entity.MetaQuestionnaire;
+        import com.artursworld.nccn.model.entity.PsychoSocialSupportState;
+        import com.artursworld.nccn.model.entity.User;
+        import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
+        import com.artursworld.nccn.model.persistence.manager.UserManager;
+        import com.github.fcannizzaro.materialstepper.AbstractStep;
+        import com.rackspira.kristiawan.rackmonthpicker.RackMonthPicker;
+        import com.rackspira.kristiawan.rackmonthpicker.listener.DateMonthDialogListener;
 
-import com.artursworld.nccn.R;
-import com.artursworld.nccn.controller.util.Global;
-import com.artursworld.nccn.controller.util.Strings;
-import com.artursworld.nccn.model.entity.MetaQuestionnaire;
-import com.artursworld.nccn.model.entity.PsychoSocialSupportState;
-import com.artursworld.nccn.model.entity.User;
-import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
-import com.artursworld.nccn.model.persistence.manager.UserManager;
-import com.github.fcannizzaro.materialstepper.AbstractStep;
+public class PastPsychoSocialStep extends AbstractStep {
 
-import java.util.Date;
-
-public class PsychoSocialStep extends AbstractStep {
-
-    private String CLASS_NAME = PsychoSocialStep.class.getSimpleName();
+    private String CLASS_NAME = PastPsychoSocialStep.class.getSimpleName();
 
     // configuration
     private User selectedUser = null;
@@ -61,6 +60,7 @@ public class PsychoSocialStep extends AbstractStep {
         answerB_btn = (RadioButton) v.findViewById(R.id.answer_b);
         answerC_btn = (RadioButton) v.findViewById(R.id.answer_c);
         answerD_btn = (RadioButton) v.findViewById(R.id.answer_d);
+
         answersGroup = (RadioGroup) v.findViewById(R.id.answer_radio_group);
         return v;
     }
@@ -85,8 +85,12 @@ public class PsychoSocialStep extends AbstractStep {
      */
     private void onSelectedAnswerChanged(RadioGroup answersGroup) {
         int checkedRadioBoxIndex = getCheckedIndex(answersGroup);
-        PsychoSocialSupportState supportState = getPsychoSocialSupportStateByCheckedIndex(checkedRadioBoxIndex);
-        updatePsychoSocialSupportState(supportState);
+        if (checkedRadioBoxIndex == 0) {
+            openMonthClicker();
+        } else if (checkedRadioBoxIndex == 1) {
+            String hadPsychoSocialSupportState = "did not have support";
+            updatePastPsychoSocialSupportState(hadPsychoSocialSupportState);
+        }
     }
 
     private int getCheckedIndex(RadioGroup answersGroup) {
@@ -96,44 +100,21 @@ public class PsychoSocialStep extends AbstractStep {
         return index;
     }
 
-    private void updatePsychoSocialSupportState(PsychoSocialSupportState supportState) {
-        MetaQuestionnaireManager db = new MetaQuestionnaireManager();
-        MetaQuestionnaire meta = db.getMetaDataByCreationDate(Global.getSelectedQuestionnaireDate());
-        meta.setPsychoSocialSupportState(supportState);
-        if (meta != null)
-            db.update(meta);
-    }
-
-    /**
-     * Get the psychosocial support state by radio box index
-     *
-     * @param index the checked index
-     * @return the support state
-     */
-    @NonNull
-    private PsychoSocialSupportState getPsychoSocialSupportStateByCheckedIndex(int index) {
-        PsychoSocialSupportState supportState = PsychoSocialSupportState.NOT_ASKED;
-        if (index == 0) {
-            supportState = PsychoSocialSupportState.ACCEPTED;
-        } else if (index == 1) {
-            supportState = PsychoSocialSupportState.REJECTED;
-        }
-        return supportState;
-    }
 
     /**
      * Sets the UI texts and loads the database values to set UI
      */
     private void initBundledData() {
-        String question = Strings.getStringByRId(R.string.wish_professional_psychosocial_support);
+        String question = Strings.getStringByRId(R.string.had_already_professional_psychosocial_support);
         questionLabel.setText(question);
         answerA_btn.setText(Strings.getStringByRId(R.string.yes));
         answerB_btn.setText(Strings.getStringByRId(R.string.no));
+
+        // set Visible false to these UI elements, because they are not needed
         answerC_btn.setVisibility(View.INVISIBLE);
         answerD_btn.setVisibility(View.INVISIBLE);
 
         selectedUser = new UserManager().getUserByName(Global.getSelectedStatisticUser());
-        Date selectedQuestionnaireDate = Global.getSelectedQuestionnaireDate();
 
         MetaQuestionnaireManager db = new MetaQuestionnaireManager();
         MetaQuestionnaire meta = db.getMetaDataByCreationDate(Global.getSelectedQuestionnaireDate());
@@ -144,21 +125,6 @@ public class PsychoSocialStep extends AbstractStep {
             setRadioButtonByBits(meta);
             addAnswerChangeListener();
         }
-    }
-
-    /**
-     * Sets the radio button as 'checked' by byte array coming from database
-     */
-    private void setRadioButtonByBits(MetaQuestionnaire meta) {
-
-        if (meta.getPsychoSocialSupportState() == PsychoSocialSupportState.ACCEPTED) {
-            setRadioBoxCheckedByIndex(0, true);
-        } else if (meta.getPsychoSocialSupportState() == PsychoSocialSupportState.REJECTED) {
-            setRadioBoxCheckedByIndex(1, true);
-        } else {
-            setRadioBoxCheckedByIndex(4, true);
-        }
-
     }
 
     /**
@@ -175,7 +141,48 @@ public class PsychoSocialStep extends AbstractStep {
 
     @Override
     public String name() {
-        return "Psycho Social Question";
+        return "Past Psycho Social Question";
     }
 
+    //TODO:
+
+    /**
+     * Sets the radio button as 'checked' by byte array coming from database
+     */
+    private void setRadioButtonByBits(MetaQuestionnaire meta) {
+
+        if (meta.getPsychoSocialSupportState() == PsychoSocialSupportState.ACCEPTED) {
+            setRadioBoxCheckedByIndex(0, true);
+        } else if (meta.getPsychoSocialSupportState() == PsychoSocialSupportState.REJECTED) {
+            setRadioBoxCheckedByIndex(1, true);
+        } else {
+            setRadioBoxCheckedByIndex(4, true);
+        }
+    }
+
+    private void openMonthClicker() {
+        Log.i(CLASS_NAME, "yes he had support");
+        RackMonthPicker monthPicker = new RackMonthPicker(getActivity())
+                .setPositiveButton(new DateMonthDialogListener() {
+                    @Override
+                    public void onDateMonth(int month, int startDate, int endDate, int year, String monthLabel) {
+                        String pastPsychoSocialSupportState = "had support on " + monthLabel;
+                        Log.i(CLASS_NAME, pastPsychoSocialSupportState);
+                        updatePastPsychoSocialSupportState(pastPsychoSocialSupportState);
+                    }
+                })
+                .setNegativeText(Strings.getStringByRId(R.string.cancel));
+        monthPicker.show();
+    }
+
+    private void updatePastPsychoSocialSupportState(String hadPsychoSocialSupportState) {
+        MetaQuestionnaireManager db = new MetaQuestionnaireManager();
+        MetaQuestionnaire meta = db.getMetaDataByCreationDate(Global.getSelectedQuestionnaireDate());
+        meta.setPastPsychoSocialSupportState(hadPsychoSocialSupportState);
+        if (meta != null)
+            db.update(meta);
+    }
+
+
 }
+

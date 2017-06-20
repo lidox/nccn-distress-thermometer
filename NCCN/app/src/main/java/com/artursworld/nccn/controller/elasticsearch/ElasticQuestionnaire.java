@@ -23,6 +23,7 @@ import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.MetaQuestionnaire;
+import com.artursworld.nccn.model.entity.PsychoSocialSupportState;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
@@ -258,9 +259,12 @@ public class ElasticQuestionnaire {
                 JSONObject params = new JSONObject();
                 try {
                     MetaQuestionnaire meta = new MetaQuestionnaireManager().getMetaDataByCreationDate(date);
-                    if (meta != null)
+                    if (meta != null) {
                         params.put("operation-type", meta.getOperationType());
-
+                        PsychoSocialSupportState psychoSocialSupportState = meta.getPsychoSocialSupportState();
+                        params.put("need-psychosocial-support", psychoSocialSupportState == PsychoSocialSupportState.ACCEPTED);
+                        params.put("had-psychosocial-support", meta.getPastPsychoSocialSupportState());
+                    }
                     params.put("creation-date", EntityDbManager.dateFormat.format(date));
                     params.put("user-name", Security.encrypt(user.getName()));
                 } catch (Exception e) {
@@ -275,8 +279,10 @@ public class ElasticQuestionnaire {
 
                 QolQuestionnaire qol = new QualityOfLifeManager(ctx).getQolQuestionnaireByDate(user.getName(), date);
                 if (Questionnairy.canStatisticsBeDisplayed(qol.getProgressInPercent())) {
-                    params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
-                    params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
+                    if(qol.getGlobalHealthScore() > 0){
+                        params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
+                        params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
+                    }
                 }
 
                 HADSDQuestionnaire hads = new HADSDQuestionnaireManager(ctx).getHADSDQuestionnaireByDate_PK(user.getName(), date);

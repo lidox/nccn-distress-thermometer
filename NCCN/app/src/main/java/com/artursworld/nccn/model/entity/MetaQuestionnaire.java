@@ -12,6 +12,7 @@ public class MetaQuestionnaire {
     private Date operationDate = null;
     private OperationType operationType = null;
     private PsychoSocialSupportState psychoSocialSupportState = null;
+    private String pastPsychoSocialSupportState = null;
 
     public MetaQuestionnaire(Date creationDate){
         if(creationDate == null){
@@ -66,11 +67,21 @@ public class MetaQuestionnaire {
         this.operationDate = operationDate;
     }
 
+    public void setPastPsychoSocialSupportState(String pastPsychoSocialSupportState) {
+        this.pastPsychoSocialSupportState = pastPsychoSocialSupportState;
+    }
+
+    public String getPastPsychoSocialSupportState() {
+        return pastPsychoSocialSupportState;
+    }
+
     public String toString(){
         StringBuilder ret = new StringBuilder();
         ret.append("operationType: " + getOperationType().name() +"\n");
         if(getPsychoSocialSupportState() != null)
             ret.append("psychoSocialSupportState: " + getPsychoSocialSupportState().name() +"\n");
+        if(getPastPsychoSocialSupportState() != null)
+            ret.append("pastPsychoSocialSupportState: " + getPastPsychoSocialSupportState() +"\n");
         if(operationDate!=null)
             ret.append("operationDate: "+EntityDbManager.dateFormat.format(operationDate) +"\n");
         if(updateDate!=null)

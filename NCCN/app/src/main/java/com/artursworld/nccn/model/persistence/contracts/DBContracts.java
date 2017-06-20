@@ -3,7 +3,7 @@ package com.artursworld.nccn.model.persistence.contracts;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
+import android.util.Log;
 
 
 public class DBContracts {
@@ -15,12 +15,13 @@ public class DBContracts {
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
 
-    private DBContracts(){}
+    private DBContracts() {
+    }
 
     // column name definition
     public static abstract class UserTable {
         public static final String TABLE_NAME = "user";
-        public static final String CREATION_DATE= "creation_date";
+        public static final String CREATION_DATE = "creation_date";
         public static final String NAME_ID_PK = "name"; // primary key
         public static final String BIRTH_DATE = "birth_date";
         public static final String GENDER = "gender";
@@ -77,6 +78,7 @@ public class DBContracts {
         public static final String UPDATE_DATE = "update_date";
         public static final String OPERATION_TYPE = "operation_type";
         public static final String NEED_PSYCHOSOCIAL_SUPPORT = "need_psychosocial_support";
+        public static final String HAD_ALREADY_PSYCHOSOCIAL_SUPPORT = "had_already_psychosocial_support";
         public static final String OPERATION_DATE = "operation_date";
     }
 
@@ -88,7 +90,8 @@ public class DBContracts {
             + MetaQuestionnaireTable.OPERATION_TYPE + TEXT_TYPE + COMMA_SEP
             + MetaQuestionnaireTable.NEED_PSYCHOSOCIAL_SUPPORT + TEXT_TYPE + COMMA_SEP
             + MetaQuestionnaireTable.OPERATION_DATE + DATE_TYPE + COMMA_SEP
-            + " PRIMARY KEY ("+MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE +")"
+            + MetaQuestionnaireTable.HAD_ALREADY_PSYCHOSOCIAL_SUPPORT + TEXT_TYPE + COMMA_SEP
+            + " PRIMARY KEY (" + MetaQuestionnaireTable.CREATION_DATE_QUESTIONNAIRE + ")"
             + ");";
 
     public static final String CREATE_USER_TABLE = "CREATE TABLE "
@@ -97,7 +100,7 @@ public class DBContracts {
             + UserTable.NAME_ID_PK + TEXT_TYPE + COMMA_SEP
             + UserTable.BIRTH_DATE + DATE_TYPE + COMMA_SEP
             + UserTable.GENDER + TEXT_TYPE + COMMA_SEP
-            + " PRIMARY KEY ("+UserTable.NAME_ID_PK +")"
+            + " PRIMARY KEY (" + UserTable.NAME_ID_PK + ")"
             + ");";
 
     public static final String CREATE_HADSD_TABLE = "CREATE TABLE "
@@ -121,9 +124,9 @@ public class DBContracts {
             + HADSDTable.ANSWER_TO_QUESTION14 + BLOB_TYPE + COMMA_SEP
             + HADSDTable.LAST_QEUSTION_EDITED_NR + INTEGER_TYPE + COMMA_SEP
             + HADSDTable.PROGRESS + INTEGER_TYPE + COMMA_SEP
-            + " PRIMARY KEY ("+HADSDTable.CREATION_DATE_PK +") "
-            + "FOREIGN KEY(" + HADSDTable.NAME_ID_FK +") "
-            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON DELETE CASCADE ON UPDATE CASCADE);";
+            + " PRIMARY KEY (" + HADSDTable.CREATION_DATE_PK + ") "
+            + "FOREIGN KEY(" + HADSDTable.NAME_ID_FK + ") "
+            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK + ") ON DELETE CASCADE ON UPDATE CASCADE);";
 
     public static final String CREATE_QUALITY_OF_TABLE = "CREATE TABLE "
             + QualityOfLifeTable.TABLE_NAME + "("
@@ -133,9 +136,9 @@ public class DBContracts {
             + QualityOfLifeTable.ANSWERS_TO_QUESTIONS + BLOB_TYPE + COMMA_SEP
             + QualityOfLifeTable.LAST_QEUSTION_EDITED_NR + INTEGER_TYPE + COMMA_SEP
             + QualityOfLifeTable.PROGRESS + INTEGER_TYPE + COMMA_SEP
-            + " PRIMARY KEY ("+QualityOfLifeTable.CREATION_DATE_PK +") "
-            + "FOREIGN KEY(" + QualityOfLifeTable.NAME_ID_FK +") "
-            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON DELETE CASCADE ON UPDATE CASCADE);";
+            + " PRIMARY KEY (" + QualityOfLifeTable.CREATION_DATE_PK + ") "
+            + "FOREIGN KEY(" + QualityOfLifeTable.NAME_ID_FK + ") "
+            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK + ") ON DELETE CASCADE ON UPDATE CASCADE);";
 
     public static final String CREATE_DISTRESS_THERMOMETER_TABLE = "CREATE TABLE "
             + DistressThermometerTable.TABLE_NAME + "("
@@ -145,14 +148,14 @@ public class DBContracts {
             + DistressThermometerTable.ANSWERS_TO_QUESTIONS + BLOB_TYPE + COMMA_SEP
             + DistressThermometerTable.LAST_QEUSTION_EDITED_NR + INTEGER_TYPE + COMMA_SEP
             + DistressThermometerTable.PROGRESS + INTEGER_TYPE + COMMA_SEP
-            + " PRIMARY KEY ("+DistressThermometerTable.CREATION_DATE_PK +") "
-            + "FOREIGN KEY(" + DistressThermometerTable.NAME_ID_FK +") "
-            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK +") ON DELETE CASCADE ON UPDATE CASCADE);";
+            + " PRIMARY KEY (" + DistressThermometerTable.CREATION_DATE_PK + ") "
+            + "FOREIGN KEY(" + DistressThermometerTable.NAME_ID_FK + ") "
+            + "REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.NAME_ID_PK + ") ON DELETE CASCADE ON UPDATE CASCADE);";
 
     // Helper class manages database creation and version management
     public static class DatabaseHelper extends SQLiteOpenHelper {
 
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 3;
         private static final String DATABASE_NAME = "app.db";
         private static DatabaseHelper instance;
 
@@ -178,7 +181,11 @@ public class DBContracts {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             // Whenever you design a newer version, make sure to add some migration here.
+            String upgradeQuery = "ALTER TABLE " + MetaQuestionnaireTable.TABLE_NAME + " ADD COLUMN " + MetaQuestionnaireTable.HAD_ALREADY_PSYCHOSOCIAL_SUPPORT + " " + TEXT_TYPE;
+            if (oldVersion == 2 && newVersion == 3)
+                db.execSQL(upgradeQuery);
         }
+
     }
 
 }

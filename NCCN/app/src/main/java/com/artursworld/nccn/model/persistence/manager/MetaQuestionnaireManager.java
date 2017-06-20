@@ -103,6 +103,9 @@ public class MetaQuestionnaireManager extends EntityDbManager {
         if (meta.getPsychoSocialSupportState() != null)
             values.put(DBContracts.MetaQuestionnaireTable.NEED_PSYCHOSOCIAL_SUPPORT, meta.getPsychoSocialSupportState().name());
 
+        if (meta.getPastPsychoSocialSupportState() != null)
+            values.put(DBContracts.MetaQuestionnaireTable.HAD_ALREADY_PSYCHOSOCIAL_SUPPORT, meta.getPastPsychoSocialSupportState());
+
         if (meta.getOperationDate() != null)
             values.put(DBContracts.MetaQuestionnaireTable.OPERATION_DATE, EntityDbManager.dateFormat.format(meta.getOperationDate()));
 
@@ -185,6 +188,11 @@ public class MetaQuestionnaireManager extends EntityDbManager {
             } catch (Exception e) {
                 Log.i(CLASS_NAME, e.getLocalizedMessage());
             }
+            try {
+                meta.setPastPsychoSocialSupportState(cursor.getString(5));
+            } catch (Exception e) {
+                Log.i(CLASS_NAME, e.getLocalizedMessage());
+            }
             metaList.add(meta);
         }
 
@@ -201,7 +209,8 @@ public class MetaQuestionnaireManager extends EntityDbManager {
                 DBContracts.MetaQuestionnaireTable.UPDATE_DATE,
                 DBContracts.MetaQuestionnaireTable.OPERATION_TYPE,
                 DBContracts.MetaQuestionnaireTable.NEED_PSYCHOSOCIAL_SUPPORT,
-                DBContracts.MetaQuestionnaireTable.OPERATION_DATE
+                DBContracts.MetaQuestionnaireTable.OPERATION_DATE,
+                DBContracts.MetaQuestionnaireTable.HAD_ALREADY_PSYCHOSOCIAL_SUPPORT
         };
     }
 }

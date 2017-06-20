@@ -9,8 +9,8 @@ android {
         applicationId "com.artursworld.nccn"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 9
-        versionName "1.9"
+        versionCode 10
+        versionName "2.0"
     }
     buildTypes {
         release {
@@ -89,4 +89,6 @@ dependencies {
     //PIN CODE
     compile 'com.github.GoodieBag:Pinview:v1.3'
 
+    // month picker
+    compile 'com.github.lutvie72:RackMonthPicker:1.2'
 }
