@@ -9,8 +9,8 @@ android {
         applicationId "com.artursworld.nccn"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 8
-        versionName "1.8"
+        versionCode 9
+        versionName "1.9"
     }
     buildTypes {
         release {
@@ -56,6 +56,7 @@ dependencies {
     //material edit text
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'com.github.fcannizzaro:material-stepper:1.2.2'
+    // compile 'com.stepstone.stepper:material-stepper:3.2.3'
     compile 'org.adw.library:discrete-seekbar:1.0.1'
     compile 'com.android.support:design:23.2.1'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
