@@ -154,4 +154,24 @@ public class Global {
         String restoredText = prefs.getString(key, Strings.getStringByRId(R.string.c_pin_code_default_value));
         return restoredText;
     }
+
+    /**
+     * Check if encryption is enabled
+     * @return True if encryption is enabled. Otherwise false.
+     */
+    public static boolean isEncryptionEnabled() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        String key = App.getAppContext().getResources().getString(R.string.c_enable_encryption);
+        boolean isEncryptionEnabled = prefs.getBoolean(key, true);
+        return isEncryptionEnabled;
+    }
+
+    /**
+     * Enables or disables encryption
+     * @param isEncryptionEnabled
+     */
+    public static void setEncryptionEnabled(boolean isEncryptionEnabled) {
+        Share.putBoolean(Strings.getStringByRId(R.string.c_enable_encryption), isEncryptionEnabled);
+    }
+
 }

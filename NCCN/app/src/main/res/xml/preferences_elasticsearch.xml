@@ -65,7 +65,9 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pin_code">
+    <PreferenceCategory
+        android:title="@string/pin_code"
+        android:layout="@layout/preference_layout">
 
         <EditTextPreference
             android:defaultValue="@string/c_pin_code_default_value"
@@ -75,6 +77,14 @@
             android:summary="@string/select_a_pin_code"
             android:textSize="@dimen/textAppearanceLabelLargeSub"
             android:title="@string/pin_code" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/encryption">
+
+    <CheckBoxPreference
+        android:key="@string/c_enable_encryption"
+        android:title="@string/enable_encryption" />
 
     </PreferenceCategory>
 

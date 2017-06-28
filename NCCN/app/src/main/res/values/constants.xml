@@ -18,9 +18,11 @@
     <string name="c_pin_code">com.artursworld.pin.code</string>
     <string name="c_elastic_search_username">com.artursworld.username</string>
     <string name="c_elastic_search_password">com.artursworld.password</string>
+    <string name="c_enable_encryption">com.artursworld.enable_encryption</string>
 
     <string name="c_server_ip_elastic_search_default_value">10.0.2.2</string>
     <string name="c_elastic_search_index_name_default_value">questionnaire-app</string>
     <string name="c_elastic_search_type_name_default_value">scores</string>
     <string name="c_pin_code_default_value">00000</string>
+
 </resources>

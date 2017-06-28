@@ -209,4 +209,6 @@
     <string name="had_already_professional_psychosocial_support">Haben Sie bereits professionelle psychosoziale Unterstützung erhalten. Falls ja, seit welchem Monat?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="encryption">Verschlüsselung</string>
+    <string name="enable_encryption">Verschlüsselung aktiv</string>
 </resources>
