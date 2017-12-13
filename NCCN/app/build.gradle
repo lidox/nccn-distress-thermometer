@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 
-
 android {
     compileSdkVersion 24
     buildToolsVersion '25.0.0'
@@ -91,4 +90,8 @@ dependencies {
 
     // month picker
     compile 'com.github.lutvie72:RackMonthPicker:1.2'
+
+    // excel exporter
+    compile group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6'
+
 }

@@ -1,11 +1,15 @@
 package com.artursworld.nccn.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,6 +29,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
+import com.artursworld.nccn.controller.export.ExcelExporter;
+import com.artursworld.nccn.controller.permissions.Permissions;
 import com.artursworld.nccn.controller.util.Generator;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
@@ -39,8 +45,8 @@ import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.goodiebag.pinview.Pinview;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.security.PermissionCollection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +60,8 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     private UserStartConfiguration configurationDialog = null;
     private OperationTypeSwiper operationTypeSwiper = null;
     private DrawerLayout drawerLayout = null;
+    private static final Integer WRITE_EXST = 0x3;
+    private static final Integer READ_EXST = 0x4;
 
     // UI
     @BindView(R.id.user_name_edit_text)
@@ -175,6 +183,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         int id = item.getItemId();
 
         if (id == R.id.nav_user_start_configuration) {
+
             Log.i(CLASS_NAME, "nav_user_start_configuration selected");
             if (configurationDialog == null)
                 configurationDialog = new UserStartConfiguration(activity);
@@ -192,6 +201,10 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_elastic_database) {
             Intent i = new Intent(this, ElasticSearchPreferenceActivity.class);
             startActivity(i);
+        } else if(id == R.id.nav_export_excel){
+            Permissions.askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXST, StartMenu.this);
+            Permissions.askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXST, StartMenu.this);
+            ExcelExporter.export();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -231,7 +244,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     Log.i(CLASS_NAME, "On Navigation Drawer open. burger menu open");
-                    if(userNameEditText!=null)
+                    if (userNameEditText != null)
                         userNameEditText.clearFocus();
 
                     openPasswordProtection();
@@ -266,11 +279,10 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                     @Override
                     public void onDataEntered(Pinview pinview, boolean fromUser) {
                         Log.i(CLASS_NAME, "code entered is : " + pin.getValue());
-                        if(pin.getValue().equals(Global.getPinCode())){
+                        if (pin.getValue().equals(Global.getPinCode())) {
                             Log.i(CLASS_NAME, "correct pin code typed!");
                             dialog.cancel();
-                        }
-                        else
+                        } else
                             Log.i(CLASS_NAME, "incorrect pin code!");
                     }
                 });
@@ -311,10 +323,10 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     private void syncUser(String selectedUser) {
         User user = new UserManager().getUserByName(selectedUser);
         List<User> userList = new ArrayList<>();
-        if(user != null)
+        if (user != null)
             userList.add(user);
 
-         ElasticQuestionnaire.syncAll(activity, userList);
+        ElasticQuestionnaire.syncAll(activity, userList);
     }
 
     @Override
@@ -323,4 +335,5 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
+
 }
