@@ -32,49 +32,18 @@ public class CsvExporter {
         List<String[]> csvToExport = new ArrayList<>();
 
         // get values as list
+        //TODO: use the managers to get values
         List<String[]> hadsdValues = getHadsdQuestionnaireValues(user, ctx);
         List<String[]> qualityOfLifeValues = getQoLQuestionnaireValues(user, ctx);
-        List<String[]> distressThermometerValues = getDistressThermometerValues(user, ctx);
+        List<String[]> distressThermometerValues = new DistressThermometerQuestionnaireManager(ctx).getDistressThermometerValues(user, ctx);
 
-        //TODO: add all or splitt in 3 files?
+
         csvToExport.addAll(distressThermometerValues);
         csvToExport.addAll(hadsdValues);
         csvToExport.addAll(qualityOfLifeValues);
 
         return csvToExport;
     }
-
-    /**
-     * Get 'Distress thermometer' values by user
-     *
-     * @param user the selected user
-     * @param ctx  the database context
-     * @return information about 'Distress thermometer' questionnaire values
-     */
-    @NonNull
-    private static List<String[]> getDistressThermometerValues(User user, Context ctx) {
-        List<String[]> retList = new ArrayList<>();
-
-        // get 'Distress thermometer' questionnaire List
-        DistressThermometerQuestionnaireManager db = new DistressThermometerQuestionnaireManager(ctx);
-        List<DistressThermometerQuestionnaire> list = db.getDistressThermometerQuestionnaireList(user.getName());
-
-        // 'Quality Of Life' questionnaire information
-        for (int i = 0; i < list.size(); i++) {
-
-            // values to return
-            int valueCount = 2;
-            String[] csvRecordRow = new String[valueCount];
-
-            csvRecordRow[0] = getStringOrConstant(list.get(i).getUpdateDate(), "nil");
-            csvRecordRow[1] = getStringOrConstant(list.get(i).getDistressScore(), "nil");
-
-            retList.add(csvRecordRow);
-        }
-
-        return retList;
-    }
-
 
     /**
      * Get 'Quality Of Life' questionnaire values by user
