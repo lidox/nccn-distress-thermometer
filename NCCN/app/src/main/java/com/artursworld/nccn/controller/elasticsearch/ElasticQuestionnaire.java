@@ -266,7 +266,7 @@ public class ElasticQuestionnaire {
                         params.put("had-psychosocial-support", meta.getPastPsychoSocialSupportState());
                     }
                     params.put("creation-date", EntityDbManager.dateFormat.format(date));
-                    String userName = getUserNameByEncryption(user);
+                    String userName = Security.getUserNameByEncryption(user);
                     params.put("user-name", userName);
 
                 } catch (Exception e) {
@@ -296,19 +296,6 @@ public class ElasticQuestionnaire {
 
         }
         return bulk.toString();
-    }
-
-    private static String getUserNameByEncryption(User user) {
-        String userName = user.getName();
-
-        if(Global.isEncryptionEnabled()){
-            Log.i(CLASS_NAME, "user name encryption is enabled");
-            userName = Security.encrypt(user.getName());
-        }
-        else{
-            Log.i(CLASS_NAME, "user name encryption is disabled");
-        }
-        return userName;
     }
 
     /**

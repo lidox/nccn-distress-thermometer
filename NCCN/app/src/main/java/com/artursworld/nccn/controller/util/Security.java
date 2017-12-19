@@ -4,6 +4,8 @@ package com.artursworld.nccn.controller.util;
 import android.util.Base64;
 import android.util.Log;
 
+import com.artursworld.nccn.model.entity.User;
+
 import java.math.BigInteger;
 import java.security.Key;
 import java.security.MessageDigest;
@@ -64,6 +66,19 @@ public class Security {
             Log.e(CLASS_NAME, "Could not convert plain text '" + plainInputText + "' to  MD5-Hash " + e.getLocalizedMessage());
         }
         return hashtext;
+    }
+
+    public static String getUserNameByEncryption(User user) {
+        String userName = user.getName();
+
+        if(Global.isEncryptionEnabled()){
+            Log.i(CLASS_NAME, "user name encryption is enabled");
+            userName = Security.encrypt(user.getName());
+        }
+        else{
+            Log.i(CLASS_NAME, "user name encryption is disabled");
+        }
+        return userName;
     }
 
 
