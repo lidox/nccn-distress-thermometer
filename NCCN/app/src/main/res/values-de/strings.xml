@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Fragebogen App</string>
+    <string name="app_name">Frageboegen</string>
     <string name="ms_prev">ZURÜCK</string>
     <string name="ms_next">WEITER</string>
     <string name="ms_end">FERTIG</string>

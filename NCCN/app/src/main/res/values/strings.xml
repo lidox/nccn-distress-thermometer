@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">"Distress Thermometer"</string>
+    <string name="app_name">"Questionnaires"</string>
     <string name="ms_prev">"BACK"</string>
     <string name="ms_next">"NEXT"</string>
     <string name="ms_end">"FINISH"</string>
@@ -212,4 +212,5 @@
     <string name="encryption">Verschlüsselung</string>
     <string name="enable_encryption">Verschlüsselung aktiv</string>
     <string name="export_excel">Als Excel exportieren</string>
+    <string name="meta_data">META Informationen</string>
 </resources>

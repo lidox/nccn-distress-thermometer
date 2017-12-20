@@ -46,6 +46,8 @@ public class TestUtils {
             Log.d(CLASS_NAME, "HADS-D:" + q1.getAsJSON().toString());
         }
 
+        q1.setProgressInPercent(100);
+
         // insert questionnaire into database
         HADSDQuestionnaireManager q1Db = new HADSDQuestionnaireManager(context);
         q1Db.insertQuestionnaire(q1);
@@ -75,6 +77,7 @@ public class TestUtils {
         // exceptions
         questionnaire.setBitsByQuestionNr(29, getBinaryStringSingleSlot(8));
         questionnaire.setBitsByQuestionNr(30, getBinaryStringSingleSlot(8));
+        questionnaire.setProgressInPercent(100);
 
         // insert questionnaire into database
         QualityOfLifeManager manager = new QualityOfLifeManager(context);

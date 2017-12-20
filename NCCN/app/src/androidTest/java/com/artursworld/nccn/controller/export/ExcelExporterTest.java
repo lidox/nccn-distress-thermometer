@@ -85,4 +85,35 @@ public class ExcelExporterTest extends InstrumentationTestCase {
 
     }
 
+    @Test
+    public void testExport1() {
+
+        if (context != null)
+            Log.d(CLASS_NAME, "muhaha! This test context works like a charm. :)");
+
+
+        // create a user
+        User user = TestUtils.createUser(context);
+
+        // create random amount of Distress Thermometer questionnaires
+        double distressThermometerCount = Generator.getRandomInRange(1, 100);
+        for (int i = 0; i < distressThermometerCount; i++) {
+            TestUtils.createDistressThermometer(user, context);
+        }
+
+        double qolCount = Generator.getRandomInRange(1, 100);
+        for (int i = 0; i < qolCount; i++) {
+            TestUtils.createQualityOfLifeQuestionnaires(user, context);
+        }
+
+
+        double hadsdCount = Generator.getRandomInRange(1, 100);
+        for (int i = 0; i < hadsdCount; i++) {
+            TestUtils.createHadsdByUser(user, context);
+        }
+
+        ExcelExporter.export();
+
+    }
+
 }

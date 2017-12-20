@@ -18,8 +18,11 @@ import java.util.List;
 
 public class HADSDQuestionnaireManager extends EntityDbManager {
 
+    private static Context context = null;
+
     public HADSDQuestionnaireManager() {
         super(App.getAppContext());
+        context = App.getAppContext();
     }
 
     /**
@@ -28,6 +31,7 @@ public class HADSDQuestionnaireManager extends EntityDbManager {
      */
     public HADSDQuestionnaireManager(Context context) {
         super(context);
+        this.context = context;
     }
 
     /**
