@@ -26,15 +26,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import jxl.Cell;
-import jxl.CellView;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
-import jxl.format.CellFormat;
-import jxl.write.BoldStyle;
 import jxl.write.Label;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
@@ -43,7 +37,8 @@ public class ExcelExporter {
 
     private static String CLASS_NAME = ExcelExporter.class.getName();
 
-    public static void export() {
+    public static File export() {
+        File file = null;
         try {
             // get SD environment
             File sd = Environment.getExternalStorageDirectory();
@@ -69,7 +64,7 @@ public class ExcelExporter {
             if (isDirectoryCreated) {
 
                 // create file path
-                File file = new File(directory, fileName);
+                file = new File(directory, fileName);
 
                 // create workbook containing sheets later on
                 WorkbookSettings wbSettings = new WorkbookSettings();
@@ -126,6 +121,7 @@ public class ExcelExporter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return file;
     }
 
     /*

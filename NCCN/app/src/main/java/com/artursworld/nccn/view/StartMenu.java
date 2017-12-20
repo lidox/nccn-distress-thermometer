@@ -31,6 +31,7 @@ import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
 import com.artursworld.nccn.controller.export.ExcelExporter;
 import com.artursworld.nccn.controller.permissions.Permissions;
+import com.artursworld.nccn.controller.util.Files;
 import com.artursworld.nccn.controller.util.Generator;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
@@ -204,7 +205,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         } else if(id == R.id.nav_export_excel){
             Permissions.askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXST, StartMenu.this);
             Permissions.askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXST, StartMenu.this);
-            ExcelExporter.export();
+            Files.share(ExcelExporter.export());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

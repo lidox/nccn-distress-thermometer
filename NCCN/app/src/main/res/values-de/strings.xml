@@ -53,4 +53,6 @@
     <string name="swollen_or_bloated_feeling">Angeschwollen / aufgedunsen fühlen</string>
     <string name="memory_or_concentration">Gedächtnis / Konzentration</string>
     <string name="sexual_problems">Sexuelle Probleme</string>
+    <string name="exported_at">exportiert am</string>
+    <string name="share">Teilen</string>
 </resources>
