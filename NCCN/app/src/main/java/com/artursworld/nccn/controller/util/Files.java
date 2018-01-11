@@ -35,6 +35,8 @@ public class Files {
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
         sendIntent.setType("text/html");
-        App.getAppContext().startActivity(Intent.createChooser(sendIntent, Strings.getStringByRId(R.string.share)));
+        Intent intent = Intent.createChooser(sendIntent, Strings.getStringByRId(R.string.share));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        App.getAppContext().startActivity(intent);
     }
 }
