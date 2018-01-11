@@ -213,7 +213,8 @@ public class QolQuestionnaire  implements IQuestionnaire{
         String itemNUmber2 = getBitsByQuestionNr(30).substring(0, 7);
         int itemScore1 = getScoreByBits(itemNumber1);
         int itemScore2 = getScoreByBits(itemNUmber2);
-        return getSymptomScore(6, itemScore1, itemScore2);
+        double globalHealthScore = getSymptomScore(6, itemScore1, itemScore2);
+        return globalHealthScore;
     }
 
     /**
@@ -306,11 +307,18 @@ public class QolQuestionnaire  implements IQuestionnaire{
     }
 
     private double getMiddleScore(double rawScore, double range){
-        return (rawScore - 1) / range;
+        if(rawScore == 0)
+            return 0;
+
+        double zaehler = rawScore - 1;
+        double ret = zaehler / range;
+        return ret;
     }
 
     private double getSymptomScore(int range, double... rawValues){
-        return Math.floor(getMiddleScore(getRawScore(rawValues), range) * 100);
+        double rawScore = getRawScore(rawValues);
+        double middleScore = getMiddleScore(rawScore, range);
+        return Math.floor(middleScore * 100);
     }
 
     /**

@@ -12,7 +12,6 @@ import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
-import com.artursworld.nccn.controller.wizard.WizardNCCN;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
@@ -45,7 +44,8 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
 
     /**
      * Loads the UI elements and adds radio button change listener
-     * @param inflater the inflater
+     *
+     * @param inflater  the inflater
      * @param container the container
      * @return the view loaded by xml file
      */
@@ -60,10 +60,11 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
     /**
      * On selected seek bar change, a new byte array is calculated and
      * update the questionnaire to its new byte array
+     *
      * @param newValueIndex the new selected index of the seek bar
      */
     private void onSelectedAnswerChanged(int newValueIndex) {
-        Log.i("","New selected answer at index= '" + newValueIndex + " and current questionNr = " +currentQuestionNumber);
+        Log.i("", "New selected answer at index= '" + newValueIndex + " and current questionNr = " + currentQuestionNumber);
 
         // load current answers again because maybe there are already updates
         QualityOfLifeManager m = new QualityOfLifeManager();
@@ -72,7 +73,7 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
         // display oldBits and new byte
         String oldBits = questionnaire.getBitsByQuestionNr(currentQuestionNumber);
         String newOne = Bits.getNewBinaryStringByIndex(newValueIndex, oldBits);
-        Log.i(QualityOfLifeStep.class.getSimpleName(), "Changed answer bits from: "+ oldBits + " to " +newOne);
+        Log.i(QualityOfLifeStep.class.getSimpleName(), "Changed answer bits from: " + oldBits + " to " + newOne);
 
         // update new answer selections
         questionnaire.setBitsByQuestionNr(currentQuestionNumber, newOne);
@@ -85,7 +86,7 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
     private void initBundledData() {
         Bundle bundle = getArguments();
         String[] questionData = bundle.getStringArray(WizardQualityOfLife.QUESTION_DATA);
-        if (questionData != null){
+        if (questionData != null) {
             String question = questionData[0];
             questionLabel.setText(question);
         }
@@ -104,8 +105,8 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
         this.seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
-                Log.i("", "onProgressChanged("+value+")");
-                if(fromUser)
+                Log.i("", "onProgressChanged(" + value + ")");
+                if (fromUser)
                     onSelectedAnswerChanged(value);
             }
 
@@ -126,11 +127,11 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
      */
     private void setValuesByDB() {
         byte[] answerByte = Bits.getByteByString(questionnaire.getBitsByQuestionNr(currentQuestionNumber));
-        Log.i(QualityOfLifeStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr:" +(currentQuestionNumber));
+        Log.i(QualityOfLifeStep.class.getSimpleName(), "answer bits loaded: " + Bits.getStringByByte(answerByte) + " for questionNr:" + (currentQuestionNumber));
         StringBuilder bits = new StringBuilder(Bits.getStringByByte(answerByte)).reverse();
         int indexToCheck = bits.indexOf("1");
 
-        if(seekBar!= null)
+        if (seekBar != null)
             seekBar.setProgress(indexToCheck);
     }
 
@@ -153,7 +154,7 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
     public void onNext() {
         questionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(Global.getSelectedUser(), Global.getSelectedQuestionnaireDate());
         WizardQualityOfLife.updateProgress(questionnaire, currentQuestionNumber);
-        Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber );
+        Log.i(CLASS_NAME, "onNext with questionNr. " + currentQuestionNumber);
     }
 
     @Override
@@ -168,7 +169,16 @@ public class QualityOfLifeSpecialStep extends AbstractStep {
 
     @Override
     public String error() {
-        return "<b>You must click!</b> <small>this is the condition!</small>";
+        return Strings.getStringByRId(R.string.please_select_answer);
+    }
+
+    @Override
+    public boolean nextIf() {
+        Log.i(CLASS_NAME, "next If condition is met?");
+        if (seekBar != null)
+            onSelectedAnswerChanged(seekBar.getProgress());
+
+        return true;
     }
 }
 
