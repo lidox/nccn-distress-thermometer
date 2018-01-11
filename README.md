@@ -19,8 +19,8 @@ Check the [example PDF](http://www.uniklinik-duesseldorf.de/fileadmin/Datenpool/
 </table>
 
 ## Download APK
-[APK (release 2.2)](https://github.com/lidox/nccn-distress-thermometer/files/1622230/app-release-2-2.zip)
-[APK (release 2.3)](https://github.com/lidox/nccn-distress-thermometer/files/1622453/app-release-2-3.zip)
+* [APK (release 2.2)](https://github.com/lidox/nccn-distress-thermometer/files/1622230/app-release-2-2.zip)
+* [APK (release 2.3)](https://github.com/lidox/nccn-distress-thermometer/files/1622453/app-release-2-3.zip)
 
 ## Elasticsearch
 1. Documentation [Version 5.1](https://www.elastic.co/guide/en/elasticsearch/reference/5.1/index.html)
