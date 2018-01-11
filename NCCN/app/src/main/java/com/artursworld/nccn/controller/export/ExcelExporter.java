@@ -26,9 +26,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import jxl.Cell;
+import jxl.CellView;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
+import jxl.format.Alignment;
+import jxl.format.CellFormat;
+import jxl.format.UnderlineStyle;
 import jxl.write.Label;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
@@ -71,44 +78,61 @@ public class ExcelExporter {
                 wbSettings.setLocale(new Locale(Locale.GERMAN.getLanguage(), Locale.GERMAN.getCountry()));
                 WritableWorkbook workbook = Workbook.createWorkbook(file, wbSettings);
 
+                // cell format
+                WritableCellFormat headerCellFormat = new WritableCellFormat();
+                headerCellFormat.setAlignment(Alignment.CENTRE);
+                headerCellFormat.setFont(
+                        new WritableFont(
+                        WritableFont.ARIAL,
+                                10, WritableFont.BOLD,
+                                false,
+                                UnderlineStyle.NO_UNDERLINE,
+                                jxl.format.Colour.BLACK));
+
+
                 // create distress thermometer sheet
                 WritableSheet distressSheet = workbook.createSheet(Strings.getStringByRId(R.string.nccn_distress_thermometer), 0);
-                distressSheet = ExcelExporter.addDistressThermometerSheetHeader(distressSheet);
+                distressSheet = ExcelExporter.addDistressThermometerSheetHeader(distressSheet, headerCellFormat);
 
                 // create HADS-D  questionnaire sheet
                 WritableSheet hadsdSheet = workbook.createSheet(Strings.getStringByRId(R.string.hadsd_questionnaire), 1);
-                hadsdSheet = ExcelExporter.addHadsdSheetHeader(hadsdSheet);
+                hadsdSheet = ExcelExporter.addHadsdSheetHeader(hadsdSheet, headerCellFormat);
 
                 // Quality of life questionnaire
                 WritableSheet qolSheet = workbook.createSheet(Strings.getStringByRId(R.string.quality_of_life_questionnaire), 2);
-                qolSheet = ExcelExporter.addQualityOfLifeSheetHeader(qolSheet);
+                qolSheet = ExcelExporter.addQualityOfLifeSheetHeader(qolSheet, headerCellFormat);
 
                 // Brain Cancer Module
                 WritableSheet cancerSheet = workbook.createSheet(Strings.getStringByRId(R.string.brain_cancer_module), 3);
-                cancerSheet = ExcelExporter.addBrainCancerModuleSheetHeader(cancerSheet);
+                cancerSheet = ExcelExporter.addBrainCancerModuleSheetHeader(cancerSheet, headerCellFormat);
 
                 // Meta information
                 WritableSheet metaSheet = workbook.createSheet(Strings.getStringByRId(R.string.meta_data), 4);
-                metaSheet = ExcelExporter.addMetaSheetHeader(metaSheet);
+                metaSheet = ExcelExporter.addMetaSheetHeader(metaSheet, headerCellFormat);
 
                 // go through all user in database
                 for (User user : new UserManager().getAllUsers()) {
 
+                    // cell format
+                    WritableCellFormat cellFormat = new WritableCellFormat();
+                    cellFormat.setAlignment(Alignment.CENTRE);
+
                     //add data to distress thermometer sheet
-                    distressSheet = ExcelExporter.getDistressThermometerWorksheet(user, distressSheet, App.getAppContext());
+                    distressSheet = ExcelExporter.getDistressThermometerWorksheet(user, distressSheet, App.getAppContext(), cellFormat);
 
                     // add HADS-D sheet
-                    hadsdSheet = ExcelExporter.getHadsdWorksheet(user, hadsdSheet, App.getAppContext());
+                    hadsdSheet = ExcelExporter.getHadsdWorksheet(user, hadsdSheet, App.getAppContext(), cellFormat);
 
                     // add quality of life sheet
-                    qolSheet = ExcelExporter.getQualityOfLifeWorksheet(user, qolSheet, App.getAppContext());
+                    qolSheet = ExcelExporter.getQualityOfLifeWorksheet(user, qolSheet, App.getAppContext(), cellFormat);
 
                     // add brain cancer module sheet
-                    cancerSheet = ExcelExporter.getBrainCancerModuleWorksheet(user, cancerSheet, App.getAppContext());
+                    cancerSheet = ExcelExporter.getBrainCancerModuleWorksheet(user, cancerSheet, App.getAppContext(), cellFormat);
 
                     // add meta data infos
-                    metaSheet = ExcelExporter.getMetaQuestionnaireWorksheet(user, metaSheet);
+                    metaSheet = ExcelExporter.getMetaQuestionnaireWorksheet(user, metaSheet, cellFormat);
 
+                    autoFitColumnsByWritableSheets(distressSheet, hadsdSheet, qolSheet, cancerSheet, metaSheet);
                 }
 
                 // close workbook
@@ -124,41 +148,65 @@ public class ExcelExporter {
         return file;
     }
 
-    /*
-    private static void setHeader(WritableSheet sheet) {
-        try {
-            // Lets create a times font
-            WritableFont font = new WritableFont(WritableFont.ARIAL, 10);
-            WritableCellFormat cellFormatObj = new WritableCellFormat(font);
-            Cell readCell = sheet.getCell(0, 0);
 
-            CellFormat readFormat = readCell.getCellFormat() == null ? cellFormatObj : readCell.getCellFormat();
-            readFormat = new WritableCellFormat(readFormat);
-            newFormat.setAlignment(Alignment.CENTRE);
+    /**
+     * Auto fits every column in the sheets
+     *
+     * @param sheets the sheets to use
+     */
+    private static void autoFitColumnsByWritableSheets(WritableSheet... sheets) {
+        for (WritableSheet sheet : sheets) {
 
+            //
+            WritableCellFormat newFormat;
+            for (int j = 0; j < sheet.getColumns(); j++) {
+                for (int k = 0; k < sheet.getRows(); k++) {
+                    Cell readCell = sheet.getCell(j, k);
+                    WritableCellFormat cellFormatObj = new WritableCellFormat();
+                    CellFormat readFormat = readCell.getCellFormat() == null ? cellFormatObj : readCell.getCellFormat();
+                    newFormat = new WritableCellFormat(readFormat);
+                    try {
+                        newFormat.setAlignment(Alignment.CENTRE);
+                    } catch (WriteException e) {
+                        Log.e(CLASS_NAME, e.getLocalizedMessage());
+                    }
+                }
+            }
+            //
 
-            //bla
-            // Lets create a times font
-            WritableFont font = new WritableFont(WritableFont.ARIAL, 10);
+            for (int i = 0; i < sheet.getColumns(); i++) {
+                Cell[] cells = sheet.getColumn(i);
+                int longestStrLen = -1;
 
-            // Define the cell format
-            WritableCellFormat times = new WritableCellFormat(font);
+                if (cells.length == 0)
+                    continue;
 
-            // Lets automatically wrap the cells
-            //times.setWrap(true);
-            font.setBoldStyle(WritableFont.NO_BOLD);
+                /* Find the widest cell in the column. */
+                for (int j = 0; j < cells.length; j++) {
+                    if (cells[j].getContents().length() > longestStrLen) {
+                        String str = cells[j].getContents();
+                        if (str == null || str.isEmpty())
+                            continue;
+                        longestStrLen = str.trim().length();
+                    }
+                }
 
+                // If not found, skip the column.
+                if (longestStrLen == -1)
+                    continue;
 
-            CellView cv = new CellView();
-            cv.setFormat(times);
+                // If wider than the max width, crop width
+                if (longestStrLen > 255)
+                    longestStrLen = 255;
+                CellView cv = sheet.getColumnView(i);
 
-            sheet.setColumnView(0, cv);
-
-        } catch (Exception e) {
-            Log.e(CLASS_NAME, e.getLocalizedMessage());
+                // Every character is 256 units wide, so scale it
+                cv.setSize(longestStrLen * 256 + 100);
+                sheet.setColumnView(i, cv);
+            }
         }
     }
-    */
+
 
     /**
      * Adds first row containing header information about 'Meta information' into the sheet
@@ -166,15 +214,15 @@ public class ExcelExporter {
      * @param sheet the sheet to add the header
      * @return the sheet containing first row with header information for 'Meta information' questionnaire
      */
-    private static WritableSheet addMetaSheetHeader(WritableSheet sheet) {
+    private static WritableSheet addMetaSheetHeader(WritableSheet sheet, WritableCellFormat cellFormat) {
         if (sheet != null) {
             try {
-                sheet.addCell(new Label(0, 0, "user-name"));
-                sheet.addCell(new Label(1, 0, "creation-date"));
-                sheet.addCell(new Label(2, 0, "update-date"));
-                sheet.addCell(new Label(3, 0, "operation-type"));
-                sheet.addCell(new Label(4, 0, "had-psychosocial-support"));
-                sheet.addCell(new Label(5, 0, "need-psychosocial-support"));
+                sheet.addCell(new Label(0, 0, "user-name", cellFormat));
+                sheet.addCell(new Label(1, 0, "creation-date", cellFormat));
+                sheet.addCell(new Label(2, 0, "update-date", cellFormat));
+                sheet.addCell(new Label(3, 0, "operation-type", cellFormat));
+                sheet.addCell(new Label(4, 0, "had-psychosocial-support", cellFormat));
+                sheet.addCell(new Label(5, 0, "need-psychosocial-support", cellFormat));
             } catch (WriteException e) {
                 Log.e(CLASS_NAME, e.getLocalizedMessage());
             }
@@ -185,26 +233,27 @@ public class ExcelExporter {
     /**
      * Adds first row containing header information about 'Brain Cancer Module' into the sheet
      *
-     * @param sheet the sheet to add the header
+     * @param sheet      the sheet to add the header
+     * @param cellFormat
      * @return the sheet containing first row with header information for 'Brain Cancer Module' questionnaire
      */
-    private static WritableSheet addBrainCancerModuleSheetHeader(WritableSheet sheet) {
+    private static WritableSheet addBrainCancerModuleSheetHeader(WritableSheet sheet, WritableCellFormat cellFormat) {
         if (sheet != null) {
             try {
-                sheet.addCell(new Label(0, 0, "user-name"));
-                sheet.addCell(new Label(1, 0, "creation-date"));
-                sheet.addCell(new Label(2, 0, "update-date"));
-                sheet.addCell(new Label(3, 0, "future-uncertainty"));
-                sheet.addCell(new Label(4, 0, "visual-disorder"));
-                sheet.addCell(new Label(5, 0, "motor-dysfunction"));
-                sheet.addCell(new Label(6, 0, "communication-deficit"));
-                sheet.addCell(new Label(7, 0, "headaches"));
-                sheet.addCell(new Label(8, 0, "seizures"));
-                sheet.addCell(new Label(9, 0, "drowsiness"));
-                sheet.addCell(new Label(10, 0, "hair-loss"));
-                sheet.addCell(new Label(11, 0, "itchy-skin"));
-                sheet.addCell(new Label(12, 0, "weakness-of-legs"));
-                sheet.addCell(new Label(13, 0, "bladder-control"));
+                sheet.addCell(new Label(0, 0, "user-name", cellFormat));
+                sheet.addCell(new Label(1, 0, "creation-date", cellFormat));
+                sheet.addCell(new Label(2, 0, "update-date", cellFormat));
+                sheet.addCell(new Label(3, 0, "future-uncertainty", cellFormat));
+                sheet.addCell(new Label(4, 0, "visual-disorder", cellFormat));
+                sheet.addCell(new Label(5, 0, "motor-dysfunction", cellFormat));
+                sheet.addCell(new Label(6, 0, "communication-deficit", cellFormat));
+                sheet.addCell(new Label(7, 0, "headaches", cellFormat));
+                sheet.addCell(new Label(8, 0, "seizures", cellFormat));
+                sheet.addCell(new Label(9, 0, "drowsiness", cellFormat));
+                sheet.addCell(new Label(10, 0, "hair-loss", cellFormat));
+                sheet.addCell(new Label(11, 0, "itchy-skin", cellFormat));
+                sheet.addCell(new Label(12, 0, "weakness-of-legs", cellFormat));
+                sheet.addCell(new Label(13, 0, "bladder-control", cellFormat));
 
             } catch (WriteException e) {
                 Log.e(CLASS_NAME, e.getLocalizedMessage());
@@ -216,30 +265,31 @@ public class ExcelExporter {
     /**
      * Adds first row containing header information into the sheet
      *
-     * @param sheet the sheet to add the header
+     * @param sheet      the sheet to add the header
+     * @param cellFormat
      * @return the sheet containing first row with header information for Quality of Life questionnaire
      */
-    private static WritableSheet addQualityOfLifeSheetHeader(WritableSheet sheet) {
+    private static WritableSheet addQualityOfLifeSheetHeader(WritableSheet sheet, WritableCellFormat cellFormat) {
         if (sheet != null) {
             try {
-                sheet.addCell(new Label(0, 0, "user-name"));
-                sheet.addCell(new Label(1, 0, "creation-date"));
-                sheet.addCell(new Label(2, 0, "update-date"));
-                sheet.addCell(new Label(3, 0, "global-health-status"));
-                sheet.addCell(new Label(4, 0, "physical-functioning"));
-                sheet.addCell(new Label(5, 0, "role-functioning"));
-                sheet.addCell(new Label(6, 0, "emotional-functioning"));
-                sheet.addCell(new Label(7, 0, "cognitive-functioning"));
-                sheet.addCell(new Label(8, 0, "social-functioning"));
-                sheet.addCell(new Label(9, 0, "fatigue"));
-                sheet.addCell(new Label(10, 0, "nausea-and-vomiting"));
-                sheet.addCell(new Label(11, 0, "pain"));
-                sheet.addCell(new Label(12, 0, "dyspnoea"));
-                sheet.addCell(new Label(13, 0, "insomnia"));
-                sheet.addCell(new Label(14, 0, "appetite-loss"));
-                sheet.addCell(new Label(15, 0, "constipation"));
-                sheet.addCell(new Label(16, 0, "diarrhoea"));
-                sheet.addCell(new Label(17, 0, "financial-difficulties"));
+                sheet.addCell(new Label(0, 0, "user-name", cellFormat));
+                sheet.addCell(new Label(1, 0, "creation-date", cellFormat));
+                sheet.addCell(new Label(2, 0, "update-date", cellFormat));
+                sheet.addCell(new Label(3, 0, "global-health-status", cellFormat));
+                sheet.addCell(new Label(4, 0, "physical-functioning", cellFormat));
+                sheet.addCell(new Label(5, 0, "role-functioning", cellFormat));
+                sheet.addCell(new Label(6, 0, "emotional-functioning", cellFormat));
+                sheet.addCell(new Label(7, 0, "cognitive-functioning", cellFormat));
+                sheet.addCell(new Label(8, 0, "social-functioning", cellFormat));
+                sheet.addCell(new Label(9, 0, "fatigue", cellFormat));
+                sheet.addCell(new Label(10, 0, "nausea-and-vomiting", cellFormat));
+                sheet.addCell(new Label(11, 0, "pain", cellFormat));
+                sheet.addCell(new Label(12, 0, "dyspnoea", cellFormat));
+                sheet.addCell(new Label(13, 0, "insomnia", cellFormat));
+                sheet.addCell(new Label(14, 0, "appetite-loss", cellFormat));
+                sheet.addCell(new Label(15, 0, "constipation", cellFormat));
+                sheet.addCell(new Label(16, 0, "diarrhoea", cellFormat));
+                sheet.addCell(new Label(17, 0, "financial-difficulties", cellFormat));
             } catch (WriteException e) {
                 Log.e(CLASS_NAME, e.getLocalizedMessage());
             }
@@ -251,19 +301,20 @@ public class ExcelExporter {
     /**
      * Adds first row containing header information into the sheet
      *
-     * @param sheet the sheet to add the header
+     * @param sheet      the sheet to add the header
+     * @param cellFormat
      * @return the sheet containing first row with header information for HADS-D questionnaire
      */
-    private static WritableSheet addHadsdSheetHeader(WritableSheet sheet) {
+    private static WritableSheet addHadsdSheetHeader(WritableSheet sheet, WritableCellFormat cellFormat) {
         if (sheet != null) {
             try {
-                sheet.addCell(new Label(0, 0, "user-name"));
-                sheet.addCell(new Label(1, 0, "creation-date"));
-                sheet.addCell(new Label(2, 0, "update-date"));
-                sheet.addCell(new Label(3, 0, "anxiety-score"));
-                sheet.addCell(new Label(4, 0, "depression-score"));
-                sheet.addCell(new Label(5, 0, "has-anxiety"));
-                sheet.addCell(new Label(6, 0, "has-depression"));
+                sheet.addCell(new Label(0, 0, "user-name", cellFormat));
+                sheet.addCell(new Label(1, 0, "creation-date", cellFormat));
+                sheet.addCell(new Label(2, 0, "update-date", cellFormat));
+                sheet.addCell(new Label(3, 0, "anxiety-score", cellFormat));
+                sheet.addCell(new Label(4, 0, "depression-score", cellFormat));
+                sheet.addCell(new Label(5, 0, "has-anxiety", cellFormat));
+                sheet.addCell(new Label(6, 0, "has-depression", cellFormat));
             } catch (WriteException e) {
                 Log.e(CLASS_NAME, e.getLocalizedMessage());
             }
@@ -274,21 +325,21 @@ public class ExcelExporter {
     /**
      * Adds first row containing header information into the sheet
      *
-     * @param sheet the sheet to add the header
+     * @param sheet      the sheet to add the header
+     * @param cellFormat
      * @return the sheet containing first row with header information for distress thermometer questionnaire
      */
-    private static WritableSheet addDistressThermometerSheetHeader(WritableSheet sheet) {
+    private static WritableSheet addDistressThermometerSheetHeader(WritableSheet sheet, WritableCellFormat cellFormat) {
         if (sheet != null) {
             try {
-                sheet.addCell(new Label(0, 0, "user-name"));
-                sheet.addCell(new Label(1, 0, "creation-date"));
-                sheet.addCell(new Label(2, 0, "update-date"));
-                sheet.addCell(new Label(3, 0, "distress-score"));
-                sheet.addCell(new Label(4, 0, "has-distress"));
+                sheet.addCell(new Label(0, 0, "user-name", cellFormat));
+                sheet.addCell(new Label(1, 0, "creation-date", cellFormat));
+                sheet.addCell(new Label(2, 0, "update-date", cellFormat));
+                sheet.addCell(new Label(3, 0, "distress-score", cellFormat));
+                sheet.addCell(new Label(4, 0, "has-distress", cellFormat));
             } catch (WriteException e) {
                 Log.e(CLASS_NAME, e.getLocalizedMessage());
             }
-            //setHeader(sheet);
         }
         return sheet;
     }
@@ -301,7 +352,7 @@ public class ExcelExporter {
      * @param ctx   the context to use
      * @return the excel sheet containing distress thermometer data
      */
-    public static WritableSheet getDistressThermometerWorksheet(User user, WritableSheet sheet, Context ctx) {
+    public static WritableSheet getDistressThermometerWorksheet(User user, WritableSheet sheet, Context ctx, WritableCellFormat cellFormat) {
         if (sheet != null) {
             try {
 
@@ -320,11 +371,11 @@ public class ExcelExporter {
                         // put data into sheet
                         if (Questionnairy.canStatisticsBeDisplayed(questionnaire.getProgressInPercent())) {
                             int rowSize = sheet.getRows();
-                            sheet.addCell(new Label(0, rowSize, Security.getUserNameByEncryption(user)));
-                            sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(questionnaire.getCreationDate_PK())));
-                            sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(questionnaire.getUpdateDate())));
-                            sheet.addCell(new Label(3, rowSize, String.valueOf(questionnaire.getDistressScore())));
-                            sheet.addCell(new Label(4, rowSize, String.valueOf(questionnaire.hasDistress())));
+                            sheet.addCell(new Label(0, rowSize, Security.getUserNameByEncryption(user), cellFormat));
+                            sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(questionnaire.getCreationDate_PK()), cellFormat));
+                            sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(questionnaire.getUpdateDate()), cellFormat));
+                            sheet.addCell(new Label(3, rowSize, String.valueOf(questionnaire.getDistressScore()), cellFormat));
+                            sheet.addCell(new Label(4, rowSize, String.valueOf(questionnaire.hasDistress()), cellFormat));
                         }
                     }
 
@@ -345,7 +396,7 @@ public class ExcelExporter {
      * @param ctx   the context to use
      * @return the excel sheet containing 'HADS-D' data
      */
-    private static WritableSheet getHadsdWorksheet(User user, WritableSheet sheet, Context ctx) {
+    private static WritableSheet getHadsdWorksheet(User user, WritableSheet sheet, Context ctx, WritableCellFormat cellFormat) {
         if (sheet != null) {
             try {
 
@@ -364,13 +415,13 @@ public class ExcelExporter {
                         // put data into sheet
                         if (Questionnairy.canStatisticsBeDisplayed(questionnaire.getProgressInPercent())) {
                             int rowSize = sheet.getRows();
-                            sheet.addCell(new Label(0, rowSize, Security.getUserNameByEncryption(user)));
-                            sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(questionnaire.getCreationDate_PK())));
-                            sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(questionnaire.getUpdateDate())));
-                            sheet.addCell(new Label(3, rowSize, String.valueOf(questionnaire.getAnxietyScore())));
-                            sheet.addCell(new Label(4, rowSize, String.valueOf(questionnaire.getDepressionScore())));
-                            sheet.addCell(new Label(5, rowSize, String.valueOf(questionnaire.hasAnxiety())));
-                            sheet.addCell(new Label(6, rowSize, String.valueOf(questionnaire.hasDepression())));
+                            sheet.addCell(new Label(0, rowSize, Security.getUserNameByEncryption(user), cellFormat));
+                            sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(questionnaire.getCreationDate_PK()), cellFormat));
+                            sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(questionnaire.getUpdateDate()), cellFormat));
+                            sheet.addCell(new Label(3, rowSize, String.valueOf(questionnaire.getAnxietyScore()), cellFormat));
+                            sheet.addCell(new Label(4, rowSize, String.valueOf(questionnaire.getDepressionScore()), cellFormat));
+                            sheet.addCell(new Label(5, rowSize, String.valueOf(questionnaire.hasAnxiety()), cellFormat));
+                            sheet.addCell(new Label(6, rowSize, String.valueOf(questionnaire.hasDepression()), cellFormat));
                         }
                     }
 
@@ -391,7 +442,7 @@ public class ExcelExporter {
      * @param ctx   the context to use
      * @return the excel sheet containing 'Quality of Life' data
      */
-    private static WritableSheet getQualityOfLifeWorksheet(User user, WritableSheet sheet, Context ctx) {
+    private static WritableSheet getQualityOfLifeWorksheet(User user, WritableSheet sheet, Context ctx, WritableCellFormat cellFormat) {
         if (sheet != null) {
             try {
 
@@ -411,23 +462,23 @@ public class ExcelExporter {
                         if (Questionnairy.canStatisticsBeDisplayed(questionnaire.getProgressInPercent())) {
                             int rowSize = sheet.getRows();
                             sheet.addCell(new Label(0, rowSize, Security.getUserNameByEncryption(user)));
-                            sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(questionnaire.getCreationDate_PK())));
-                            sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(questionnaire.getUpdateDate())));
-                            sheet.addCell(new Label(3, rowSize, String.valueOf(questionnaire.getGlobalHealthScore())));
-                            sheet.addCell(new Label(4, rowSize, String.valueOf(questionnaire.getPhysicalFunctioningScore())));
-                            sheet.addCell(new Label(5, rowSize, String.valueOf(questionnaire.getRoleFunctioningScore())));
-                            sheet.addCell(new Label(6, rowSize, String.valueOf(questionnaire.getEmotionalFunctioningScore())));
-                            sheet.addCell(new Label(7, rowSize, String.valueOf(questionnaire.getCognitiveFunctioningScore())));
-                            sheet.addCell(new Label(8, rowSize, String.valueOf(questionnaire.getSocialFunctioningScore())));
-                            sheet.addCell(new Label(9, rowSize, String.valueOf(questionnaire.getFatigueScore())));
-                            sheet.addCell(new Label(10, rowSize, String.valueOf(questionnaire.getNauseaAndVomitingScore())));
-                            sheet.addCell(new Label(11, rowSize, String.valueOf(questionnaire.getPainScore())));
-                            sheet.addCell(new Label(12, rowSize, String.valueOf(questionnaire.getDyspnoeaScore())));
-                            sheet.addCell(new Label(13, rowSize, String.valueOf(questionnaire.getInsomniaScore())));
-                            sheet.addCell(new Label(14, rowSize, String.valueOf(questionnaire.getAppetiteLossScore())));
-                            sheet.addCell(new Label(15, rowSize, String.valueOf(questionnaire.getConstipationScore())));
-                            sheet.addCell(new Label(16, rowSize, String.valueOf(questionnaire.getDiarrhoeaScore())));
-                            sheet.addCell(new Label(17, rowSize, String.valueOf(questionnaire.getFinancialDifficultiesScore())));
+                            sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(questionnaire.getCreationDate_PK()), cellFormat));
+                            sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(questionnaire.getUpdateDate()), cellFormat));
+                            sheet.addCell(new Label(3, rowSize, String.valueOf(questionnaire.getGlobalHealthScore()), cellFormat));
+                            sheet.addCell(new Label(4, rowSize, String.valueOf(questionnaire.getPhysicalFunctioningScore()), cellFormat));
+                            sheet.addCell(new Label(5, rowSize, String.valueOf(questionnaire.getRoleFunctioningScore()), cellFormat));
+                            sheet.addCell(new Label(6, rowSize, String.valueOf(questionnaire.getEmotionalFunctioningScore()), cellFormat));
+                            sheet.addCell(new Label(7, rowSize, String.valueOf(questionnaire.getCognitiveFunctioningScore()), cellFormat));
+                            sheet.addCell(new Label(8, rowSize, String.valueOf(questionnaire.getSocialFunctioningScore()), cellFormat));
+                            sheet.addCell(new Label(9, rowSize, String.valueOf(questionnaire.getFatigueScore()), cellFormat));
+                            sheet.addCell(new Label(10, rowSize, String.valueOf(questionnaire.getNauseaAndVomitingScore()), cellFormat));
+                            sheet.addCell(new Label(11, rowSize, String.valueOf(questionnaire.getPainScore()), cellFormat));
+                            sheet.addCell(new Label(12, rowSize, String.valueOf(questionnaire.getDyspnoeaScore()), cellFormat));
+                            sheet.addCell(new Label(13, rowSize, String.valueOf(questionnaire.getInsomniaScore()), cellFormat));
+                            sheet.addCell(new Label(14, rowSize, String.valueOf(questionnaire.getAppetiteLossScore()), cellFormat));
+                            sheet.addCell(new Label(15, rowSize, String.valueOf(questionnaire.getConstipationScore()), cellFormat));
+                            sheet.addCell(new Label(16, rowSize, String.valueOf(questionnaire.getDiarrhoeaScore()), cellFormat));
+                            sheet.addCell(new Label(17, rowSize, String.valueOf(questionnaire.getFinancialDifficultiesScore()), cellFormat));
                         }
                     }
 
@@ -448,7 +499,7 @@ public class ExcelExporter {
      * @param ctx   the context to use
      * @return the excel sheet containing 'Brain Cancer Module' data
      */
-    private static WritableSheet getBrainCancerModuleWorksheet(User user, WritableSheet sheet, Context ctx) {
+    private static WritableSheet getBrainCancerModuleWorksheet(User user, WritableSheet sheet, Context ctx, WritableCellFormat cellFormat) {
         if (sheet != null) try {
 
             // get all questionnaire date for a single user
@@ -467,19 +518,19 @@ public class ExcelExporter {
                     if (Questionnairy.canStatisticsBeDisplayed(questionnaire.getProgressInPercent())) {
                         int rowSize = sheet.getRows();
                         sheet.addCell(new Label(0, rowSize, Security.getUserNameByEncryption(user)));
-                        sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(questionnaire.getCreationDate_PK())));
-                        sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(questionnaire.getUpdateDate())));
-                        sheet.addCell(new Label(3, rowSize, String.valueOf(questionnaire.getFutureUncertaintyScore())));
-                        sheet.addCell(new Label(4, rowSize, String.valueOf(questionnaire.getVisualDisorderScore())));
-                        sheet.addCell(new Label(5, rowSize, String.valueOf(questionnaire.getMotorDysfunctionScore())));
-                        sheet.addCell(new Label(6, rowSize, String.valueOf(questionnaire.getCommunicationDeficitScore())));
-                        sheet.addCell(new Label(7, rowSize, String.valueOf(questionnaire.getHeadachesScore())));
-                        sheet.addCell(new Label(8, rowSize, String.valueOf(questionnaire.getSeizuresScore())));
-                        sheet.addCell(new Label(9, rowSize, String.valueOf(questionnaire.getDrowsinessScore())));
-                        sheet.addCell(new Label(10, rowSize, String.valueOf(questionnaire.getHairLossScore())));
-                        sheet.addCell(new Label(11, rowSize, String.valueOf(questionnaire.getItchySkinScore())));
-                        sheet.addCell(new Label(12, rowSize, String.valueOf(questionnaire.getWeaknessOfLegsScore())));
-                        sheet.addCell(new Label(13, rowSize, String.valueOf(questionnaire.getBladderControlScore())));
+                        sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(questionnaire.getCreationDate_PK()), cellFormat));
+                        sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(questionnaire.getUpdateDate()), cellFormat));
+                        sheet.addCell(new Label(3, rowSize, String.valueOf(questionnaire.getFutureUncertaintyScore()), cellFormat));
+                        sheet.addCell(new Label(4, rowSize, String.valueOf(questionnaire.getVisualDisorderScore()), cellFormat));
+                        sheet.addCell(new Label(5, rowSize, String.valueOf(questionnaire.getMotorDysfunctionScore()), cellFormat));
+                        sheet.addCell(new Label(6, rowSize, String.valueOf(questionnaire.getCommunicationDeficitScore()), cellFormat));
+                        sheet.addCell(new Label(7, rowSize, String.valueOf(questionnaire.getHeadachesScore()), cellFormat));
+                        sheet.addCell(new Label(8, rowSize, String.valueOf(questionnaire.getSeizuresScore()), cellFormat));
+                        sheet.addCell(new Label(9, rowSize, String.valueOf(questionnaire.getDrowsinessScore()), cellFormat));
+                        sheet.addCell(new Label(10, rowSize, String.valueOf(questionnaire.getHairLossScore()), cellFormat));
+                        sheet.addCell(new Label(11, rowSize, String.valueOf(questionnaire.getItchySkinScore()), cellFormat));
+                        sheet.addCell(new Label(12, rowSize, String.valueOf(questionnaire.getWeaknessOfLegsScore()), cellFormat));
+                        sheet.addCell(new Label(13, rowSize, String.valueOf(questionnaire.getBladderControlScore()), cellFormat));
                     }
                 }
 
@@ -499,7 +550,7 @@ public class ExcelExporter {
      * @param sheet the sheet to fill with data
      * @return the excel sheet containing meta information
      */
-    private static WritableSheet getMetaQuestionnaireWorksheet(User user, WritableSheet sheet) {
+    private static WritableSheet getMetaQuestionnaireWorksheet(User user, WritableSheet sheet, WritableCellFormat cellFormat) {
 
         if (sheet != null) try {
 
@@ -517,11 +568,11 @@ public class ExcelExporter {
                     // put data into sheet
                     int rowSize = sheet.getRows();
                     sheet.addCell(new Label(0, rowSize, Security.getUserNameByEncryption(user)));
-                    sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(meta.getCreationDate())));
-                    sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(meta.getUpdateDate())));
-                    sheet.addCell(new Label(3, rowSize, String.valueOf(meta.getOperationType())));
-                    sheet.addCell(new Label(4, rowSize, String.valueOf(meta.getPastPsychoSocialSupportState())));
-                    sheet.addCell(new Label(5, rowSize, String.valueOf(meta.getPsychoSocialSupportState().name())));
+                    sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(meta.getCreationDate()), cellFormat));
+                    sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(meta.getUpdateDate()), cellFormat));
+                    sheet.addCell(new Label(3, rowSize, String.valueOf(meta.getOperationType()), cellFormat));
+                    sheet.addCell(new Label(4, rowSize, String.valueOf(meta.getPastPsychoSocialSupportState()), cellFormat));
+                    sheet.addCell(new Label(5, rowSize, String.valueOf(meta.getPsychoSocialSupportState().name()), cellFormat));
                 }
             }
 

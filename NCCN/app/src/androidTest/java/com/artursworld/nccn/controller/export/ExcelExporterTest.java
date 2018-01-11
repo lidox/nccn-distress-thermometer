@@ -18,6 +18,8 @@ import java.io.OutputStream;
 import java.util.Locale;
 
 import jxl.WorkbookSettings;
+import jxl.format.Alignment;
+import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.biff.WritableWorkbookImpl;
@@ -76,7 +78,10 @@ public class ExcelExporterTest extends InstrumentationTestCase {
                 }
             }, true, wbSettings);
             WritableSheet sheet = workbook.createSheet("Distress Worksheet", 0);
-            sheet = ExcelExporter.getDistressThermometerWorksheet(user, sheet, context);
+            WritableCellFormat cellFormat = new WritableCellFormat();
+            cellFormat.setAlignment(Alignment.CENTRE);
+
+            sheet = ExcelExporter.getDistressThermometerWorksheet(user, sheet, context, cellFormat);
             Assert.assertEquals("check sheet size", (int) distressThermometerCount, sheet.getRows());
 
         } catch (Exception e) {
@@ -113,7 +118,7 @@ public class ExcelExporterTest extends InstrumentationTestCase {
         }
 
         ExcelExporter.export();
-
+        System.out.print("finished");
     }
 
 }
