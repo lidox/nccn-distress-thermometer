@@ -1,11 +1,12 @@
-# NCCN 
-This app contains following questionnaires: Distress Thermometer, HADSD Questionnaire and 'EORTC QLQ-C30 Quality Of Life'
+# Questionnaire App
+This app is used for research reasons and contains following questionnaires: 
 
-## Distress Thermometer
-The German version of the NCCN Distress-Thermometer Empirical examination of a screening instrument for the detection of psychosocial load for cancer patients.
-Check the [example PDF](http://www.uniklinik-duesseldorf.de/fileadmin/Datenpool/einrichtungen/klinik_fuer_gastroenterologie_hepatologie_und_infektiologie_id6/Darmzentrum/Formulare_deutsch/distressthermometer.de.pdf)
+- [Distress Thermometer](https://www.nccn.org/patients/resources/life_with_cancer/pdf/nccn_distress_thermometer.pdf)
+- [Hospital Anxiety and Depression Scale (HADS) Questionnaire](http://www.svri.org/sites/default/files/attachments/2016-01-13/HADS.pdf)
+- [EORTC QLQ-C30 Quality Of Life](http://groups.eortc.be/qol/eortc-qlq-c30)
+- [Brain cancer module](http://www.eortc.be/qol/files/ScoringInstructions/BN20_summary.pdf)
 
-## UI Demo
+# UI Demo
 
 <table sytle="border: 0px;">
 <tr>
@@ -22,29 +23,5 @@ Check the [example PDF](http://www.uniklinik-duesseldorf.de/fileadmin/Datenpool/
 * [APK (release 2.2)](https://github.com/lidox/nccn-distress-thermometer/files/1622230/app-release-2-2.zip)
 * [APK (release 2.3)](https://github.com/lidox/nccn-distress-thermometer/files/1622453/app-release-2-3.zip)
 
-## Elasticsearch
-1. Documentation [Version 5.1](https://www.elastic.co/guide/en/elasticsearch/reference/5.1/index.html)
 
-2. location:
-``` bash 
-cd /software/elasticsearch-5.1.2/bin
-``` 
-
-3. Create Index 
-```curl
-curl -XPUT 'http://localhost:9200/questionnaires/' -d '{
-    "settings" : {
-        "index" : {
-            "number_of_shards" : 1, 
-            "number_of_replicas" : 0
-        }
-    }
-}'
-
-// now check the indexes created
-curl 'localhost:9200/_cat/indices?v'
-```
-
-## Kibana
-![kibana](https://cloud.githubusercontent.com/assets/7879175/23508805/a22f0020-ff53-11e6-994d-7c4de58d3603.JPG)
 
