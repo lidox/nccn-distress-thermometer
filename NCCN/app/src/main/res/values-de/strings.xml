@@ -13,7 +13,7 @@
     <string name="work_or_school">Arbeit / Schule</string>
     <string name="transport">Beförderung (Transport)</string>
     <string name="childcare">Kinderbetreuung</string>
-    <string name="enougt_power">Gar nicht belastet</string>
+    <string name="enougt_power">Kaum belastet</string>
     <string name="lot_of_problems">Extrem belastet</string>
     <string name="thermometer_description">Bitte wählen Sie die Zahl aus, die am besten beschreibt, wie belastet Sie sich in der letzten Woche einschließlich heute gefühlt haben.</string>
     <string name="checkbox_description">Bitte geben Sie an, ob Sie in einem der nachfolgenden Bereiche in der letzten Woche einschließlich heute Probleme hatten. Für \'JA\' kreuzen Sie den jedeweiligen Bereich an. Für \'NEIN\' lassen Sie das Feld frei.</string>

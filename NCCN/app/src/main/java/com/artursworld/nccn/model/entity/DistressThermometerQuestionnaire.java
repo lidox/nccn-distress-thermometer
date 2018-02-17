@@ -1,22 +1,18 @@
 package com.artursworld.nccn.model.entity;
 
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.artursworld.nccn.controller.elasticsearch.ElasticQuestionnaire;
 import com.artursworld.nccn.controller.util.Bits;
-import com.artursworld.nccn.controller.util.Dates;
 import com.artursworld.nccn.controller.util.Security;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
-import com.artursworld.nccn.model.persistence.manager.UserManager;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
 
-public class DistressThermometerQuestionnaire  implements IQuestionnaire{
+public class DistressThermometerQuestionnaire implements IQuestionnaire{
 
     private Date creationDate_PK;
     private String userNameId_FK;
