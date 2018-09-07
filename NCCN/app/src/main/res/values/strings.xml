@@ -211,7 +211,8 @@
     <string name="no">Nein</string>
     <string name="encryption">Verschlüsselung</string>
     <string name="enable_encryption">Verschlüsselung aktiv</string>
-    <string name="export_excel">Als Excel exportieren</string>
+    <string name="export_excel">Lokale Daten exportieren</string>
+    <string name="send_report">Datenbank exportieren</string>
     <string name="meta_data">META Informationen</string>
     <string name="exported_at">exportiert am</string>
     <string name="share">Teilen</string>

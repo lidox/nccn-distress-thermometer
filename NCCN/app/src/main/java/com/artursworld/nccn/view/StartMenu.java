@@ -3,13 +3,10 @@ package com.artursworld.nccn.view;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -46,7 +43,11 @@ import com.artursworld.nccn.view.user.UserStartConfiguration;
 import com.goodiebag.pinview.Pinview;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.security.PermissionCollection;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -122,7 +123,6 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void createUserBAndOnResumeWithSelectedUser() {
-        //TODO: async
         if (Global.getSelectedUser() == null || Global.hasToCreateNewUser()) {
             createUser();
             onResumeWithSelectedUser();
@@ -202,10 +202,20 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_elastic_database) {
             Intent i = new Intent(this, ElasticSearchPreferenceActivity.class);
             startActivity(i);
-        } else if(id == R.id.nav_export_excel){
+        } else if (id == R.id.nav_export_excel) {
             Permissions.askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXST, StartMenu.this);
             Permissions.askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXST, StartMenu.this);
             Files.share(ExcelExporter.export());
+        } else if (id == R.id.nav_send_report) {
+            Permissions.askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXST, StartMenu.this);
+            Permissions.askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXST, StartMenu.this);
+            try {
+                JSONArray array = new GetReportDataTask(this).execute().get();
+                Files.share(ExcelExporter.export(array));
+            }
+            catch (Exception e){
+                Log.e(CLASS_NAME, e.getLocalizedMessage());
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -335,6 +345,43 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
         return true;
+    }
+
+    private static class GetReportDataTask extends AsyncTask<Void, Void, JSONArray> {
+
+        private WeakReference<StartMenu> activityReference;
+
+        // only retain a weak reference to the activity
+        GetReportDataTask(StartMenu context) {
+            activityReference = new WeakReference<>(context);
+        }
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+
+            // do some long running task...
+            String result = ElasticQuestionnaire.getAllRecords();
+
+            JSONArray docs = null;
+            try {
+                JSONObject o = new JSONObject(result);
+                docs = o.getJSONObject("hits").getJSONArray("hits");
+            } catch (JSONException e) {
+                Log.e(GetReportDataTask.class.getSimpleName(), e.getLocalizedMessage());
+            }
+            return docs;
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray result) {
+
+            // get a reference to the activity if it is still there
+            StartMenu activity = activityReference.get();
+            if (activity == null || activity.isFinishing()) return;
+
+            // modify the activity's UI
+            Log.i(GetReportDataTask.class.getSimpleName(), "Export Service Finished");
+        }
     }
 
 }
