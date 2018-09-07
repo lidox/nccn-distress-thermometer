@@ -7,23 +7,18 @@ import android.util.Log;
 
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.config.App;
-import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.HttpGet;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.auth.AuthenticationException;
 import cz.msebera.android.httpclient.auth.UsernamePasswordCredentials;
 import cz.msebera.android.httpclient.client.HttpClient;
 import cz.msebera.android.httpclient.client.ResponseHandler;
@@ -40,10 +35,9 @@ public class ElasticRestClient {
     // private static final String BASE_URL = "http://10.0.2.2:9200/"; // Android uses this IP to access localhost
 
     private static final String CLASS_NAME = ElasticRestClient.class.getSimpleName();
-    private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.get(getAbsoluteUrl(url), params, responseHandler);
+    public static String get(String ES_INDEX, String ES_TYPE, String apiString, Object params) {
+        return doHttpRequest(METHOD.GET, ES_INDEX, ES_TYPE, apiString, params);
     }
 
     @NonNull
@@ -79,7 +73,7 @@ public class ElasticRestClient {
      * @param params     the parameters to send
      * @return the response of the request
      */
-    private static String postOrPut(METHOD httpMethod, String ES_INDEX, String ES_TYPE, String apiString, Object params) {
+    private static String doHttpRequest(METHOD httpMethod, String ES_INDEX, String ES_TYPE, String apiString, Object params) {
         String response = null;
         try {
             HttpClient httpClient = HttpClientBuilder.create().build();
@@ -105,7 +99,7 @@ public class ElasticRestClient {
             Header basicAuthHeader = new BasicScheme(Charset.forName("UTF-8")).authenticate(credentials, postMethod, null);
             postMethod.addHeader(basicAuthHeader);
         } catch (Exception e) {
-            Log.e(CLASS_NAME, "Could not add basic authentication! "+e.getLocalizedMessage());
+            Log.e(CLASS_NAME, "Could not add basic authentication! " + e.getLocalizedMessage());
         } finally {
             return postMethod;
         }
@@ -120,17 +114,6 @@ public class ElasticRestClient {
     }
 
     /**
-     * Post using a JSON Object as param
-     *
-     * @param apiString
-     * @param params
-     * @return
-     */
-    public static String post(String ES_INDEX, String ES_TYPE, String apiString, JSONObject params) {
-        return postOrPut(METHOD.POST, ES_INDEX, ES_TYPE, apiString, params);
-    }
-
-    /**
      * Post using a String as param
      *
      * @param apiString
@@ -138,11 +121,7 @@ public class ElasticRestClient {
      * @return
      */
     public static String post(String ES_INDEX, String ES_TYPE, String apiString, String params) {
-        return postOrPut(METHOD.POST, ES_INDEX, ES_TYPE, apiString, params);
-    }
-
-    public static String put(String ES_INDEX, String ES_TYPE, String apiString, JSONObject params) {
-        return postOrPut(METHOD.PUT, ES_INDEX, ES_TYPE, apiString, params);
+        return doHttpRequest(METHOD.POST, ES_INDEX, ES_TYPE, apiString, params);
     }
 
     /**
@@ -163,46 +142,18 @@ public class ElasticRestClient {
             else if (httpMethod == METHOD.PUT)
                 method = new HttpPut(getAbsoluteUrl(ES_INDEX + "/" + ES_TYPE + "/" + apiString));
 
+            else if (httpMethod == METHOD.GET) {
+                method = new HttpGet(getAbsoluteUrl(ES_INDEX + "/" + ES_TYPE + "/" + apiString));
+            }
+
             method.setHeader("Content-Type", "application/json");
-            method.setEntity(new ByteArrayEntity(params.toString().getBytes("UTF8")));
+            if (params != null) {
+                method.setEntity(new ByteArrayEntity(params.toString().getBytes("UTF8")));
+            }
+
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         }
         return method;
     }
-
-    /*
-    //TODO: refactor
-    public void getHttpRequest(String url) {
-        try {
-            ElasticRestClient.get(url, null, new JsonHttpResponseHandler() { // instead of 'get' use twitter/tweet/1
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    // If the response is JSONObject instead of expected JSONArray
-                    Log.i(CLASS_NAME, "onSuccess: " + response.toString());
-                }
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                    Log.i(CLASS_NAME, "onSuccess: " + response.toString());
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    Log.e(CLASS_NAME, "onFailure");
-                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                }
-
-                @Override
-                public void onRetry(int retryNo) {
-                    Log.i(CLASS_NAME, "onRetry " + retryNo);
-                    // called when request is retried
-                }
-            });
-        } catch (Exception e) {
-            Log.e(CLASS_NAME, e.getLocalizedMessage());
-        }
-    }
-    */
 }

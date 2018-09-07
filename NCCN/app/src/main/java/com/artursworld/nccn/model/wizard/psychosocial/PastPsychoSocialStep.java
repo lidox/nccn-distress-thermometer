@@ -144,8 +144,6 @@ public class PastPsychoSocialStep extends AbstractStep {
         return "Past Psycho Social Question";
     }
 
-    //TODO:
-
     /**
      * Sets the radio button as 'checked' by byte array coming from database
      */

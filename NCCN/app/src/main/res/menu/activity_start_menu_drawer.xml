@@ -18,6 +18,11 @@
             android:id="@+id/nav_export_excel"
             android:icon="@drawable/ic_file_download_black_24dp"
             android:title="@string/export_excel" />
+
+        <item
+            android:id="@+id/nav_send_report"
+            android:icon="@drawable/report_baseline_assignment_black_18dp"
+            android:title="@string/send_report" />
     </group>
 
     <item android:title="@string/settings">

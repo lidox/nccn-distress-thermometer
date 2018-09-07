@@ -47,6 +47,18 @@ public class ElasticQuestionnaire {
     private static final String CLASS_NAME = ElasticQuestionnaire.class.getSimpleName();
 
     /**
+     * Make a HTTP GET request to elastic search
+     *
+     * @return the requests response
+     */
+    public static String getAllRecords() {
+        Log.i(CLASS_NAME, "getAllRecords");
+        final String apiString = "_search?pretty=true&q=*:*";
+        return ElasticRestClient.get(getIndex(), getType(), apiString, "{ \"size\" : \"1000\"}");
+    }
+
+
+    /**
      * Does a bulk operation to be faster
      *
      * @param updateBulkAsString contains all operations forming a big bulk
@@ -64,24 +76,6 @@ public class ElasticQuestionnaire {
          */
         final String apiString = "_bulk";
         return ElasticRestClient.post("you-can-let", "this-here", apiString, updateBulkAsString);
-    }
-
-    public void post(final String es_type, final String apiString, final Pair<String, String>... pairs) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... something) {
-                JSONObject params = new JSONObject();
-                for (Pair<String, String> pair : pairs) {
-                    try {
-                        params.put(pair.first, pair.second);
-                    } catch (JSONException e) {
-                        Log.e(CLASS_NAME, e.getLocalizedMessage());
-                    }
-                }
-                ElasticRestClient.post(getIndex(), es_type, apiString, params);
-                return null;
-            }
-        }.execute();
     }
 
     /**
@@ -109,55 +103,6 @@ public class ElasticQuestionnaire {
         String type = sp.getString(value, defaultValue);
         return type;
     }
-
-    /**
-     * POST /customer/external/1/_update?pretty
-     * {
-     * "doc": { "name": "Jane Doe" }
-     * }
-     */
-    /**
-     public static String update(final String apiString, final Pair<String, String>... pairs) {
-     //TODO: check this implementation
-     JSONObject params = new JSONObject();
-     for (Pair<String, String> pair : pairs) {
-     try {
-     params.put(pair.first, pair.second);
-     } catch (JSONException e) {
-     Log.e(CLASS_NAME, e.getLocalizedMessage());
-     }
-     }
-     return updateByJSON(apiString, params);
-     }
-     **/
-
-    /**
-     * POST /customer/external/1/_update?pretty
-     * {
-     * "doc": { "name": "Jane Doe" }
-     * }
-     */
-    //TODO: check this implementation
-    /*
-    public static String update(final String es_type, final String apiString, final JSONObject params) {
-        return updateByJSON(es_type, apiString, params);
-    }
-
-    @Nullable
-    private static String updateByJSON(String es_type, String apiString, JSONObject params) {
-        //TODO: not implemented yet
-        String response = null;
-        try {
-            JSONObject docObject = new JSONObject();
-            docObject.put("doc", params);
-            response = ElasticRestClient.post(getIndex(), es_type, apiString, docObject);
-        } catch (JSONException e) {
-            Log.e(CLASS_NAME, e.getLocalizedMessage());
-        } finally {
-            return response;
-        }
-    }
-*/
 
     /**
      * Synchronizes all questionnaire for all user in the list with elastic search
@@ -281,7 +226,7 @@ public class ElasticQuestionnaire {
 
                 QolQuestionnaire qol = new QualityOfLifeManager(ctx).getQolQuestionnaireByDate(user.getName(), date);
                 if (Questionnairy.canStatisticsBeDisplayed(qol.getProgressInPercent())) {
-                    if(qol.getGlobalHealthScore() > 0){
+                    if (qol.getGlobalHealthScore() > 0) {
                         params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
                         params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
                     }

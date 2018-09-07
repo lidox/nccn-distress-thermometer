@@ -2,6 +2,7 @@ package com.artursworld.nccn.controller.export;
 
 import android.content.Context;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.artursworld.nccn.R;
@@ -21,8 +22,13 @@ import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +50,138 @@ public class ExcelExporter {
 
     private static String CLASS_NAME = ExcelExporter.class.getName();
 
+    public static File export(JSONArray questionnaireData) {
+
+        File file = null;
+        try {
+            // get SD environment
+            File sd = Environment.getExternalStorageDirectory();
+            String fileName = getExcelFileName();
+
+            // get directory
+            File baseDirectory = new File(sd.getAbsolutePath());
+            File directory = new File(baseDirectory, Strings.getStringByRId(R.string.app_name));
+
+            //create directory if not exist
+            boolean isDirectoryCreated = directory.exists();
+            if (!isDirectoryCreated) {
+                isDirectoryCreated = directory.mkdir();
+            }
+
+            if (isDirectoryCreated) {
+
+                // create file path
+                file = new File(directory, fileName);
+
+                // create workbook containing sheets later on
+                WorkbookSettings wbSettings = new WorkbookSettings();
+                wbSettings.setLocale(new Locale(Locale.GERMAN.getLanguage(), Locale.GERMAN.getCountry()));
+                WritableWorkbook workbook = Workbook.createWorkbook(file, wbSettings);
+                WritableCellFormat headerCellFormat = getWritableCellFormat();
+
+                // create sheet
+                WritableSheet sheet = workbook.createSheet(Strings.getStringByRId(R.string.app_name), 0);
+
+
+                sheet = getSheetHeader(sheet, headerCellFormat);
+
+                // cell format
+                WritableCellFormat cellFormat = new WritableCellFormat();
+                cellFormat.setAlignment(Alignment.CENTRE);
+
+                //add data to sheet
+                sheet = addDataToWorksheet(questionnaireData, sheet, cellFormat);
+                autoFitColumnsByWritableSheets(sheet);
+
+                // close workbook
+                workbook.write();
+                workbook.close();
+
+                Log.d(CLASS_NAME, "excel created successfully");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    private static WritableSheet addDataToWorksheet(JSONArray questionnaireData, WritableSheet sheet, WritableCellFormat cellFormat) {
+        if (sheet != null) {
+            try {
+
+                // for each questionnaire
+                for (int index = 0; index < questionnaireData.length(); index++) { // int index = 0; index < questionnaireData.length(); index++
+
+                    // save row size
+                    int rowSize = sheet.getRows();
+
+                    // get questionnaire
+                    JSONObject singleQuestionnaire = questionnaireData.getJSONObject(index).getJSONObject("_source");
+
+                    // get all key of a single questionnaire
+                    Iterator<String> singleQuestionnaireKeys = singleQuestionnaire.keys();
+
+                    // for each key
+                    while (singleQuestionnaireKeys.hasNext()) {
+                        String key = singleQuestionnaireKeys.next();
+                        String value = String.valueOf(singleQuestionnaire.get(key));
+
+                        // add a cell at the place
+                        sheet.addCell(new Label(getExcelHeaderKeyList().indexOf(key), rowSize, value, cellFormat));
+                    }
+
+                }
+
+            } catch (Exception e) {
+                Log.e(CLASS_NAME, e.getLocalizedMessage());
+            }
+        }
+        return sheet;
+    }
+
+    private static WritableSheet getSheetHeader(WritableSheet sheet, WritableCellFormat headerCellFormat) {
+        if (sheet != null) {
+            try {
+
+                List<String> headerKeyList = getExcelHeaderKeyList();
+                for (int index = 0; index < headerKeyList.size(); index++) {
+                    sheet.addCell(new Label(index, 0, headerKeyList.get(index), headerCellFormat));
+                }
+
+            } catch (Exception e) {
+                Log.e(CLASS_NAME, e.getLocalizedMessage());
+            }
+        }
+        return sheet;
+    }
+
+    @NonNull
+    private static WritableCellFormat getWritableCellFormat() throws WriteException {
+        // cell format
+        WritableCellFormat headerCellFormat = new WritableCellFormat();
+        headerCellFormat.setAlignment(Alignment.CENTRE);
+        headerCellFormat.setFont(
+                new WritableFont(
+                        WritableFont.ARIAL,
+                        10, WritableFont.BOLD,
+                        false,
+                        UnderlineStyle.NO_UNDERLINE,
+                        jxl.format.Colour.BLACK));
+        return headerCellFormat;
+    }
+
+    @NonNull
+    private static String getExcelFileName() {
+        // get file name to create
+        StringBuilder builder = new StringBuilder();
+        builder.append(Strings.getStringByRId(R.string.app_name));
+        builder.append("-");
+        builder.append(Dates.getFileNameDate(new Date()));
+        builder.append(".xls");
+        return builder.toString();
+    }
+
     public static File export() {
         File file = null;
         try {
@@ -51,12 +189,7 @@ public class ExcelExporter {
             File sd = Environment.getExternalStorageDirectory();
 
             // get file name to create
-            StringBuilder builder = new StringBuilder();
-            builder.append(Strings.getStringByRId(R.string.app_name));
-            builder.append("-");
-            builder.append(Dates.getFileNameDate(new Date()));
-            builder.append(".xls");
-            String fileName = builder.toString();
+            String fileName = getExcelFileName();
 
             // get directory
             File baseDirectory = new File(sd.getAbsolutePath());
@@ -79,20 +212,12 @@ public class ExcelExporter {
                 WritableWorkbook workbook = Workbook.createWorkbook(file, wbSettings);
 
                 // cell format
-                WritableCellFormat headerCellFormat = new WritableCellFormat();
-                headerCellFormat.setAlignment(Alignment.CENTRE);
-                headerCellFormat.setFont(
-                        new WritableFont(
-                        WritableFont.ARIAL,
-                                10, WritableFont.BOLD,
-                                false,
-                                UnderlineStyle.NO_UNDERLINE,
-                                jxl.format.Colour.BLACK));
+                WritableCellFormat headerCellFormat = getWritableCellFormat();
 
 
                 // create distress thermometer sheet
                 WritableSheet distressSheet = workbook.createSheet(Strings.getStringByRId(R.string.nccn_distress_thermometer), 0);
-                distressSheet = ExcelExporter.addDistressThermometerSheetHeader(distressSheet, headerCellFormat);
+                distressSheet = ExcelExporter.addDistressSheetHeader(distressSheet, headerCellFormat);
 
                 // create HADS-D  questionnaire sheet
                 WritableSheet hadsdSheet = workbook.createSheet(Strings.getStringByRId(R.string.hadsd_questionnaire), 1);
@@ -329,7 +454,7 @@ public class ExcelExporter {
      * @param cellFormat
      * @return the sheet containing first row with header information for distress thermometer questionnaire
      */
-    private static WritableSheet addDistressThermometerSheetHeader(WritableSheet sheet, WritableCellFormat cellFormat) {
+    private static WritableSheet addDistressSheetHeader(WritableSheet sheet, WritableCellFormat cellFormat) {
         if (sheet != null) {
             try {
                 sheet.addCell(new Label(0, 0, "user-name", cellFormat));
@@ -582,4 +707,51 @@ public class ExcelExporter {
 
         return sheet;
     }
+
+    public static List<String> getExcelHeaderKeyList() {
+        List<String> keys = new ArrayList<>();
+        keys.add("user-name");
+        keys.add("creation-date");
+        keys.add("operation-type");
+        keys.add("need-psychosocial-support");
+        keys.add("had-psychosocial-support");
+        keys.add("DT-distress-score");
+        keys.add("DT-has-distress");
+        keys.add("DT-update-date");
+        keys.add("QLQC30-global-health-status");
+        keys.add("QLQC30-physical-functioning");
+        keys.add("QLQC30-role-functioning");
+        keys.add("QLQC30-emotional-functioning");
+        keys.add("QLQC30-cognitive-functioning");
+        keys.add("QLQC30-social-functioning");
+        keys.add("QLQC30-fatigue");
+        keys.add("QLQC30-nausea-and-vomiting");
+        keys.add("QLQC30-pain");
+        keys.add("QLQC30-dyspnoea");
+        keys.add("QLQC30-insomnia");
+        keys.add("QLQC30-appetite-loss");
+        keys.add("QLQC30-constipation");
+        keys.add("QLQC30-diarrhoea");
+        keys.add("QLQC30-financial-difficulties");
+        keys.add("QLQC30-update-date");
+        keys.add("BN20-future-uncertainty");
+        keys.add("BN20-visual-disorder");
+        keys.add("BN20-motor-dysfunction");
+        keys.add("BN20-communication-deficit");
+        keys.add("BN20-headaches");
+        keys.add("BN20-seizures");
+        keys.add("BN20-drowsiness");
+        keys.add("BN20-hair-loss");
+        keys.add("BN20-itchy-skin");
+        keys.add("BN20-weakness-of-legs");
+        keys.add("BN20-bladder-control");
+        keys.add("BN20-update-date");
+        keys.add("HADS-D-anxiety-score");
+        keys.add("HADS-D-depression-score");
+        keys.add("HADS-D-has-depression");
+        keys.add("HADS-D-has-anxiety");
+        keys.add("HADS-D-update-date");
+        return keys;
+    }
+
 }
