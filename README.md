@@ -23,7 +23,7 @@ This app is used for research reasons and contains following questionnaires:
 * [APK (release 2.2)](https://github.com/lidox/nccn-distress-thermometer/files/1622230/app-release-2-2.zip)
 * [APK (release 2.3)](https://github.com/lidox/nccn-distress-thermometer/files/1622453/app-release-2-3.zip)
 * [APK (release 2.4)](https://github.com/lidox/nccn-distress-thermometer/files/1733562/app-release-2-4.zip) - 17.02.2018
-* [APK (release 2.5)](https://github.com/lidox/nccn-distress-thermometer/files/2360090/app-release-2-5.zip) - 07.09.2018
+* [APK (release 2.5)](https://github.com/lidox/nccn-distress-thermometer/files/2360142/app-release-2-5.zip) - 07.09.2018
 
 
 # KIBANA Demo
