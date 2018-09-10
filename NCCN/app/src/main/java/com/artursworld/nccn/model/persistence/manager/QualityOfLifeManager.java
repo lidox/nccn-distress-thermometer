@@ -158,24 +158,6 @@ public class QualityOfLifeManager extends EntityDbManager {
     }
 
     /**
-     String WHERE_CLAUSE = DBContracts.DistressThermometerTable.CREATION_DATE_PK + " =?";
-     String[] WHERE_ARGS = new String[] {EntityDbManager.dateFormat.format(questionnaire.getCreationDate_PK())};
-
-     if (questionnaire.getCreationDate_PK() == null) {
-     Log.e(CLASS_NAME,"Cannot update questionnaire: " + questionnaire);
-     return;
-     }
-
-     try {
-     ContentValues contentValues = getQuestionnaireContentValues(questionnaire);
-     database.update(DBContracts.DistressThermometerTable.TABLE_NAME, contentValues, WHERE_CLAUSE, WHERE_ARGS);
-     Log.i(CLASS_NAME,questionnaire + " has been updated");
-     } catch (Exception e) {
-     Log.e(CLASS_NAME,"Exception! Could not update the questionnaire(" + questionnaire + ") " + " " + e.getLocalizedMessage());
-     }
-     */
-
-    /**
      * Get questionnaire by username and creation date
      * @param userName the users userName
      * @param date the questionnaires creation date
