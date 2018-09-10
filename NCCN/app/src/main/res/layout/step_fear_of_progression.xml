@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:id="@+id/question_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textColor="@color/colorWhite"
+                android:paddingTop="20dp"
+                android:text="Question"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        </RelativeLayout>
+
+        <RadioGroup
+            android:id="@+id/answer_radio_group"
+            android:layout_below="@+id/question"
+            android:paddingLeft="70dp"
+            android:layout_marginTop="70dp"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/textAppearanceLabelLarge"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/answer_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:text="A"
+                android:layout_margin="@dimen/answer_margin"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/answer_b"
+                android:text="B"
+                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:layout_margin="@dimen/answer_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/answer_c"
+                android:text="C"
+                android:layout_margin="@dimen/answer_margin"
+                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <RadioButton
+                android:id="@+id/answer_d"
+                android:text="D"
+                android:layout_margin="@dimen/answer_margin"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:layout_height="wrap_content"
+                />
+
+            <RadioButton
+                android:id="@+id/answer_e"
+                android:text="E"
+                android:layout_margin="@dimen/answer_margin"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/textAppearanceLabelLarge"
+                android:layout_height="wrap_content"
+                />
+
+            <RadioButton
+                android:id="@+id/no_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/answer_margin"
+                android:buttonTint="@color/colorPrimary"
+                android:text="F"
+                android:visibility="invisible"
+                android:textSize="@dimen/textAppearanceLabelLarge" />
+
+        </RadioGroup>
+
+    </RelativeLayout>
+</ScrollView>

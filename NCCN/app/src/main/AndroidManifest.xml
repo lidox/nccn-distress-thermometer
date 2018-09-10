@@ -23,6 +23,7 @@
         <activity android:name=".controller.wizard.WizardNCCN" />
         <activity android:name=".controller.wizard.WizardHADSD" />
         <activity android:name=".controller.wizard.WizardQualityOfLife" />
+        <activity android:name=".controller.wizard.WizardFearOfProgression" />
         <activity android:name=".view.user.SelectUserActivity" />
         <activity android:name=".view.statistics.StatisticsTabsActivity"></activity>
         <activity android:name=".model.pereferences.ElasticSearchPreferenceActivity"></activity>
