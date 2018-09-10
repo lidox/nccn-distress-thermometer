@@ -121,6 +121,7 @@
     <string name="x_questions_answered">% aller Fragen beantwortet</string>
     <string name="hadsd_questionnaire">HADS-D Fragebogen</string>
     <string name="nccn_distress_thermometer">Gefühls-Thermometer</string>
+    <string name="fear_of_progression_questionnaire">Fragebogen zu Zukunftssorgen</string>
     <string name="quality_of_life_questionnaire">Fragebogen zur Lebensqualität</string>
     <string name="user_statistics">Auswertungen</string>
     <string name="user_start_configuration">Benutzer Konfiguration</string>
@@ -216,4 +217,24 @@
     <string name="meta_data">META Informationen</string>
     <string name="exported_at">exportiert am</string>
     <string name="share">Teilen</string>
+
+    <!-- Fear of Progression in Partners of Chronically Ill Patients -->
+    <string name="q1_fear_of_progression">Wenn ich an den weiteren Verlauf der Erkrankung denke, bekomme ich Angst.</string>
+    <string name="q2_fear_of_progression">Vor Arztterminen oder Kontrolluntersuchungen bin ich ganz nervös.</string>
+    <string name="q3_fear_of_progression">Ich habe Angst, dass meine Partnerin/mein Partner Schmerzen haben könnte.</string>
+    <string name="q4_fear_of_progression">Der Gedanke, sie/er könnte im Beruf nicht mehr so leitungsfähig sein, macht mir Angst.</string>
+    <string name="q5_fear_of_progression">Wenn ich Angst habe, spüre ich das auch körperlich (z.B. Herzklopfen, Magenschmerzen, Verspannung).</string>
+    <string name="q6_fear_of_progression">Die Frage, ob meine Kinder die Krankheit auch bekommen könnten, beunruhigt mich.</string>
+    <string name="q7_fear_of_progression">Es beunruhigt mich, dass meine Partnerin/mein Partner im Alltag auf fremde Hilfe angewiesen sein könnte.</string>
+    <string name="q8_fear_of_progression">Ich habe Sorge, dass ich meinen Hobbys wegen der Erkrankung irgendwann nicht mehr nachgehen kann.</string>
+    <string name="q9_fear_of_progression">Ich habe Angst vor drastischen medizinischen Maßnahmen.</string>
+    <string name="q10_fear_of_progression">Ich mache mir Sorgen, dass die Medikamente dem Körper meiner Partnerin/meines Partners schaden könnte.</string>
+    <string name="q11_fear_of_progression">Mich beunruhigt, was aus der Familie wird, wenn ihr/ihm etwas passieren könnte.</string>
+    <string name="q12_fear_of_progression">Der Gedanke, sie/er könnte wegen Krankheit in der Arbeit ausfallen, beunruhigt mich.</string>
+    <string name="a1_fear_of_progression">nie</string>
+    <string name="a2_fear_of_progression">selten</string>
+    <string name="a3_fear_of_progression">manchmal</string>
+    <string name="a4_fear_of_progression">oft</string>
+    <string name="a5_fear_of_progression">sehr oft</string>
+
 </resources>

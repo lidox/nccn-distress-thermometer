@@ -19,11 +19,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.artursworld.nccn.R;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
+import com.artursworld.nccn.controller.wizard.WizardFearOfProgression;
 import com.artursworld.nccn.controller.wizard.WizardHADSD;
 import com.artursworld.nccn.controller.wizard.WizardNCCN;
 import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.AbstractQuestionnaire;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.FearOfProgressionQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.MetaQuestionnaire;
 import com.artursworld.nccn.model.entity.PsychoSocialSupportState;
@@ -31,6 +33,7 @@ import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
+import com.artursworld.nccn.model.persistence.manager.FearOfProgressionManager;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
@@ -83,7 +86,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
                 User user = new User(Strings.getStringByRId(R.string.user_name));
 
                 fillQuestionnaireListView(user, newCreationDate);
-            } else if(Global.getSelectedQuestionnaireDate() != null){
+            } else if (Global.getSelectedQuestionnaireDate() != null) {
                 //TODO: async
                 Log.i(CLASS_NAME, "Questionnaires already exists. So show questionnaires in ListView");
                 User user = new UserManager().getUserByName(Global.getSelectedUser());
@@ -103,12 +106,13 @@ public class QuestionnaireSelectListFragment extends Fragment {
      * @param user         the selected user
      */
     private void fillQuestionnaireListView(User user, Date creationDate) {
-        Log.i(CLASS_NAME, "fillQuestionnaireListView for user("+user.getName()+") and creactionDate: " + creationDate);
+        Log.i(CLASS_NAME, "fillQuestionnaireListView for user(" + user.getName() + ") and creactionDate: " + creationDate);
         List<AbstractQuestionnaire> list = new ArrayList<>();
 
         int hadsProgress = 0;
         int distressProgress = 0;
         int qualityProgress = 0;
+        int fearProgress = 0;
 
 
         if (Global.hasToCreateNewQuestionnaire()) {
@@ -126,8 +130,13 @@ public class QuestionnaireSelectListFragment extends Fragment {
 
                     if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire)))
                         list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
-                }
-                else{
+
+                    if (setOfBooleans.contains(Strings.getStringByRId(R.string.fear_of_progression_questionnaire))){
+                        Log.d(CLASS_NAME, "Adding Fear-of-Progression questionnaire to Listview on Start Screen");
+                        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.fear_of_progression_questionnaire), fearProgress));
+                    }
+
+                } else {
                     displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress);
                 }
             }
@@ -161,24 +170,35 @@ public class QuestionnaireSelectListFragment extends Fragment {
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
                 }
 
+                // Quality Of Life
                 if (setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
                     if (hasToGetProgress) {
                         QolQuestionnaire qolQuestionnaire = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), creationDate);
                         if (qolQuestionnaire != null) {
                             qualityProgress = qolQuestionnaire.getProgressInPercent();
-                            Log.i(CLASS_NAME, "Progress loading QualityOfLife = " + qualityProgress+ "%");
+                            Log.i(CLASS_NAME, "Progress loading QualityOfLife = " + qualityProgress + "%");
                         }
                     }
                     list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
                 }
-            }
-            else{
+                // Fear of Progression Questionnaire
+                if (setOfBooleans.contains(Strings.getStringByRId(R.string.fear_of_progression_questionnaire))) {
+                    if (hasToGetProgress) {
+                        FearOfProgressionQuestionnaire fearOfProgressionQuestionnaire = new FearOfProgressionManager().getQuestionnaireByDate(user.getName(), creationDate);
+                        if (fearOfProgressionQuestionnaire != null) {
+                            fearProgress = fearOfProgressionQuestionnaire.getProgressInPercent();
+                            Log.i(CLASS_NAME, "Progress loading FearOfProgression = " + fearProgress + "%");
+                        }
+                    }
+                    list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.fear_of_progression_questionnaire), fearProgress));
+                }
+            } else {
                 Log.w(CLASS_NAME, "something went wrong");
             }
         }
         AbstractQuestionnaireItemAdapter adapter = new AbstractQuestionnaireItemAdapter(getActivity(), list);
         Log.i(CLASS_NAME, "Abstract Questionnaire list = " + list.toString());
-        if(adapter != null) {
+        if (adapter != null) {
             questionnaireListView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
@@ -245,6 +265,10 @@ public class QuestionnaireSelectListFragment extends Fragment {
         if (isQualityOfLifeQuestionnaire) {
             ret = WizardQualityOfLife.class;
         }
+        boolean isFearOfProgressionQuestionnaire = selectedQuestionnaireName.equalsIgnoreCase(Strings.getStringByRId(R.string.fear_of_progression_questionnaire));
+        if (isFearOfProgressionQuestionnaire) {
+            ret = WizardFearOfProgression.class;
+        }
         return ret;
     }
 
@@ -279,10 +303,15 @@ public class QuestionnaireSelectListFragment extends Fragment {
                     questionnaire.setCreationDate_PK(creationDate);
                     new QualityOfLifeManager().insertQuestionnaire(questionnaire);
                 }
+                boolean isFearOfProgressionQuestionnaire = item.getName().equalsIgnoreCase(Strings.getStringByRId(R.string.quality_of_life_questionnaire));
+                if (isFearOfProgressionQuestionnaire) {
+                    FearOfProgressionQuestionnaire questionnaire = new FearOfProgressionQuestionnaire(selectedUserName);
+                    questionnaire.setCreationDate_PK(creationDate);
+                    new FearOfProgressionManager().insertQuestionnaire(questionnaire);
+                }
             }
             Global.setHasToCreateNewQuestionnaire(false);
-        }
-        else{
+        } else {
             Log.i(CLASS_NAME, "does NOT create new questionnaires, because does not have to do it.");
         }
     }
@@ -300,12 +329,15 @@ public class QuestionnaireSelectListFragment extends Fragment {
             for (AbstractQuestionnaire item : list) {
                 double factor = 1;
                 if (item.getName().equals(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
-                    factor = 14. / 70;
+                    factor = 14. / 82;
                 } else if (item.getName().equals(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
-                    factor = 6. / 70;
+                    factor = 6. / 82;
                 } else if (item.getName().equals(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
-                    factor = 50. / 70;
+                    factor = 50. / 82;
+                } else if (item.getName().equals(Strings.getStringByRId(R.string.fear_of_progression_questionnaire))) {
+                    factor = 12. / 82;
                 }
+
                 sum += factor * item.getProgressInPercent();
             }
 

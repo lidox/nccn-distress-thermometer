@@ -86,6 +86,8 @@ public class UserStartConfiguration {
         CheckBox checkbox1 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_1);
         CheckBox checkbox2 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_2);
         CheckBox checkbox3 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_3);
+        CheckBox checkbox4 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_4);
+
         Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
         if (setOfBooleans != null) {
             if (!setOfBooleans.contains(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
@@ -96,6 +98,9 @@ public class UserStartConfiguration {
             }
             if (!setOfBooleans.contains(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
                 checkbox3.setChecked(false);
+            }
+            if (!setOfBooleans.contains(Strings.getStringByRId(R.string.fear_of_progression_questionnaire))) {
+                checkbox4.setChecked(false);
             }
         }
     }
@@ -109,6 +114,8 @@ public class UserStartConfiguration {
         CheckBox checkbox1 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_1);
         CheckBox checkbox2 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_2);
         CheckBox checkbox3 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_3);
+        CheckBox checkbox4 = (CheckBox) dialog.getView().findViewById(R.id.questionnaire_4);
+
         Set<String> selectedQuestionnairesSet = new HashSet<String>();
         if (checkbox1.isChecked()) {
             selectedQuestionnairesSet.add(Strings.getStringByRId(R.string.hadsd_questionnaire));
@@ -118,6 +125,9 @@ public class UserStartConfiguration {
         }
         if (checkbox3.isChecked()) {
             selectedQuestionnairesSet.add(Strings.getStringByRId(R.string.quality_of_life_questionnaire));
+        }
+        if (checkbox4.isChecked()) {
+            selectedQuestionnairesSet.add(Strings.getStringByRId(R.string.fear_of_progression_questionnaire));
         }
         Log.i(CLASS_NAME, "Following questionnaires are selected to be displayed on start screen=" + selectedQuestionnairesSet);
         Share.putStringSet(Strings.getStringByRId(R.string.c_selected_questionnaires), selectedQuestionnairesSet);

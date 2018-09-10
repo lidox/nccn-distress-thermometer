@@ -524,4 +524,128 @@
         <item>@array/question49_quality_of_life</item>
         <item>@array/question50_quality_of_life</item>
     </string-array>
+
+    <!-- Fear of Progression in Partners of Chronically Ill Patients -->
+    <string-array name="q1_fear_of_progression">
+        <item>@string/q1_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q2_fear_of_progression">
+        <item>@string/q2_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q3_fear_of_progression">
+        <item>@string/q3_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q4_fear_of_progression">
+        <item>@string/q4_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q5_fear_of_progression">
+        <item>@string/q5_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q6_fear_of_progression">
+        <item>@string/q6_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q7_fear_of_progression">
+        <item>@string/q7_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q8_fear_of_progression">
+        <item>@string/q8_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q9_fear_of_progression">
+        <item>@string/q9_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q10_fear_of_progression">
+        <item>@string/q10_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q11_fear_of_progression">
+        <item>@string/q11_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q12_fear_of_progression">
+        <item>@string/q12_fear_of_progression</item>
+        <item>@string/a1_fear_of_progression</item>
+        <item>@string/a2_fear_of_progression</item>
+        <item>@string/a3_fear_of_progression</item>
+        <item>@string/a4_fear_of_progression</item>
+        <item>@string/a5_fear_of_progression</item>
+    </string-array>
+
+    <string-array name="q1_fear_of_progression_questionnaire">
+        <item>@array/q1_fear_of_progression</item>
+        <item>@array/q2_fear_of_progression</item>
+        <item>@array/q3_fear_of_progression</item>
+        <item>@array/q4_fear_of_progression</item>
+        <item>@array/q5_fear_of_progression</item>
+        <item>@array/q6_fear_of_progression</item>
+        <item>@array/q7_fear_of_progression</item>
+        <item>@array/q8_fear_of_progression</item>
+        <item>@array/q9_fear_of_progression</item>
+        <item>@array/q10_fear_of_progression</item>
+        <item>@array/q11_fear_of_progression</item>
+        <item>@array/q12_fear_of_progression</item>
+    </string-array>
 </resources>

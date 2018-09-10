@@ -88,6 +88,16 @@
                 android:text="@string/quality_of_life_questionnaire"
                 android:textSize="@dimen/textAppearanceLabel" />
 
+            <CheckBox
+                android:id="@+id/questionnaire_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/questionnaire_3"
+                android:layout_margin="10dp"
+                android:checked="true"
+                android:text="@string/fear_of_progression_questionnaire"
+                android:textSize="@dimen/textAppearanceLabel" />
+
         </RelativeLayout>
 
     </RelativeLayout>
