@@ -29,7 +29,7 @@ import com.github.fcannizzaro.materialstepper.style.TextStepper;
  */
 public class WizardNCCN extends TextStepper {
 
-    private static String CLASS_NAME = WizardHADSD.class.getSimpleName();
+    private static String CLASS_NAME = WizardNCCN.class.getSimpleName();
     private int currentWizardPosition = 1;
 
     @Override
@@ -50,7 +50,7 @@ public class WizardNCCN extends TextStepper {
 
     private AbstractStep createFragment(AbstractStep fragment) {
         Bundle bundle = new Bundle();
-        bundle.putInt(WizardQualityOfLife.QUESTION_NUMBER, currentWizardPosition ++);
+        bundle.putInt(WizardQualityOfLife.QUESTION_NUMBER, currentWizardPosition ++); // TODO: Why "WizardQualityOfLife"?
         String selectedUserName = Global.getSelectedUser();
         bundle.putString(WizardQualityOfLife.SELECTED_USER, selectedUserName);
         fragment.setArguments(bundle);
