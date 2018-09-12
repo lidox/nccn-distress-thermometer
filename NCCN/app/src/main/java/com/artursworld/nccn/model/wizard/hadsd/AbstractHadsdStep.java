@@ -16,6 +16,7 @@ import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardHADSD;
+import com.artursworld.nccn.model.entity.FearOfProgressionQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
@@ -138,7 +139,7 @@ public class AbstractHadsdStep extends AbstractStep {
      */
     private void checkRadioButtonByBits() {
         double questionNr = currentQuestionNumber + 1;
-        int progressValue = (int) Math.floor(questionNr / questionnaire.getQuestionCount() * 100);
+        int progressValue = (int) Math.floor(questionNr / FearOfProgressionQuestionnaire.getQuestionCount() * 100);
         if(questionnaire.getProgressInPercent() >= progressValue){
             byte[] answerByte = questionnaire.getAnswerByNr(currentQuestionNumber);
             Log.i(AbstractHadsdStep.class.getSimpleName(), "answer bits loaded: "+ Bits.getStringByByte(answerByte) + " for questionNr: " +(currentQuestionNumber+1) + "(index:"+currentQuestionNumber+")");
