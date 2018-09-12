@@ -1,5 +1,9 @@
 ````JSON
 PUT questionnaire-app 
+
+
+PUT questionnaire-app 
+
 {
   "mappings": {
     "scores": { 
@@ -10,7 +14,7 @@ PUT questionnaire-app
           "type":   "date", 
           "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd||epoch_millis"
         },
-		"birth-date":  {
+	"birth-date":  {
           "type":   "date", 
           "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd||epoch_millis"
         },
@@ -27,6 +31,11 @@ PUT questionnaire-app
           "type":   "date", 
           "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd||epoch_millis"
         },
+        "FOP-update-date":  {
+          "type":   "date", 
+          "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd||epoch_millis"
+        },
+ "FOP-score":     { "type": "integer"}, 
         "HADS-D-depression-score":     { "type": "integer"}, 
         "HADS-D-anxiety-score":     { "type": "integer"}, 
         "HADS-D-has-depression":     { "type": "boolean"}, 
@@ -73,5 +82,7 @@ PUT questionnaire-app
     }
   }
 }
+
+
 }
 ````
