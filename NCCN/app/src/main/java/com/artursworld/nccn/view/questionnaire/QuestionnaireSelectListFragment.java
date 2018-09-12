@@ -118,7 +118,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
         if (Global.hasToCreateNewQuestionnaire()) {
             Log.i(CLASS_NAME, "hasToCreateNewQuestionnaire");
             if (Global.hasToUseDefaultQuestionnaire()) {
-                displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress);
+                displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress, fearProgress);
             } else {
                 Set<String> setOfBooleans = Global.getSelectedQuestionnairesForStartScreen();
                 if (setOfBooleans != null) {
@@ -137,7 +137,7 @@ public class QuestionnaireSelectListFragment extends Fragment {
                     }
 
                 } else {
-                    displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress);
+                    displayDefaultQuestionnaires(list, hadsProgress, distressProgress, qualityProgress, fearProgress);
                 }
             }
         } else {
@@ -207,11 +207,12 @@ public class QuestionnaireSelectListFragment extends Fragment {
         addOnItemClickListener(list);
     }
 
-    private void displayDefaultQuestionnaires(List<AbstractQuestionnaire> list, int hadsProgress, int distressProgress, int qualityProgress) {
+    private void displayDefaultQuestionnaires(List<AbstractQuestionnaire> list, int hadsProgress, int distressProgress, int qualityProgress, int fearProgress) {
         Log.i(CLASS_NAME, "display default questionnaires");
         list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.hadsd_questionnaire), hadsProgress));
         list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.nccn_distress_thermometer), distressProgress));
         list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.quality_of_life_questionnaire), qualityProgress));
+        list.add(new AbstractQuestionnaire(Strings.getStringByRId(R.string.fear_of_progression_questionnaire), fearProgress));
     }
 
     private void addOnItemClickListener(final List<AbstractQuestionnaire> abstractQuestionnairesList) {
@@ -326,16 +327,30 @@ public class QuestionnaireSelectListFragment extends Fragment {
         if (list != null) {
             int count = list.size();
             double sum = 0;
+
+            double allQuestionsCount = 0;
+            for (AbstractQuestionnaire item : list) {
+                if (item.getName().equals(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
+                    allQuestionsCount += 14.;
+                } else if (item.getName().equals(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
+                    allQuestionsCount += 6.;
+                } else if (item.getName().equals(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
+                    allQuestionsCount += 50.;
+                } else if (item.getName().equals(Strings.getStringByRId(R.string.fear_of_progression_questionnaire))) {
+                    allQuestionsCount += FearOfProgressionQuestionnaire.getQuestionCount();
+                }
+            }
+
             for (AbstractQuestionnaire item : list) {
                 double factor = 1;
                 if (item.getName().equals(Strings.getStringByRId(R.string.hadsd_questionnaire))) {
-                    factor = 14. / 82;
+                    factor = 14. / allQuestionsCount;
                 } else if (item.getName().equals(Strings.getStringByRId(R.string.nccn_distress_thermometer))) {
-                    factor = 6. / 82;
+                    factor = 6. / allQuestionsCount;
                 } else if (item.getName().equals(Strings.getStringByRId(R.string.quality_of_life_questionnaire))) {
-                    factor = 50. / 82;
+                    factor = 50. / allQuestionsCount;
                 } else if (item.getName().equals(Strings.getStringByRId(R.string.fear_of_progression_questionnaire))) {
-                    factor = 12. / 82;
+                    factor = FearOfProgressionQuestionnaire.getQuestionCount() / allQuestionsCount;
                 }
 
                 sum += factor * item.getProgressInPercent();
