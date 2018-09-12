@@ -91,9 +91,9 @@ public class FearOfProgressionQuestionnaire implements IQuestionnaire {
             case 1:
                 selectedAnswerIndexQ1 = newIndex;
             case 2:
-                selectedAnswerIndexQ1 = newIndex;
+                selectedAnswerIndexQ2 = newIndex;
             case 3:
-                selectedAnswerIndexQ1 = newIndex;
+                selectedAnswerIndexQ3 = newIndex;
             case 4:
                 selectedAnswerIndexQ4 = newIndex;
             case 5:
@@ -261,9 +261,8 @@ public class FearOfProgressionQuestionnaire implements IQuestionnaire {
         JSONObject params = new JSONObject();
         try {
             String prefix = "FOP-";
-            // TODO:FOP go on here
-            // params.put(prefix + "future-uncertainty", getFutureUncertaintyScore());
-            params.put(prefix + "update-date", EntityDbManager.dateFormat.format(getCreationDate_PK()));
+            params.put(prefix + "score", getScore());
+            params.put(prefix + "update-date", EntityDbManager.dateFormat.format(getUpdateDate()));
         } catch (Exception e) {
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         } finally {
@@ -271,5 +270,15 @@ public class FearOfProgressionQuestionnaire implements IQuestionnaire {
         }
     }
 
+    public double getScore() {
+
+        return selectedAnswerIndexQ1 + selectedAnswerIndexQ2 + selectedAnswerIndexQ3 + selectedAnswerIndexQ4
+                     + selectedAnswerIndexQ5 + selectedAnswerIndexQ6 + selectedAnswerIndexQ7 +selectedAnswerIndexQ8
+                     + selectedAnswerIndexQ9 + selectedAnswerIndexQ10 + selectedAnswerIndexQ11 +selectedAnswerIndexQ12;
+    }
+
+    public static double getQuestionCount() {
+        return 12.;
+    }
 }
 
