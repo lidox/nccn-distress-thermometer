@@ -60,7 +60,7 @@ public class Share {
     /**
      * Writes key-value pair into shared preferences
      *
-     * @param key the key
+     * @param key   the key
      * @param value the value of type string
      * @return True if the function (put key-value pair into shared preferances) was succesful). Otherwise false
      */
@@ -70,6 +70,7 @@ public class Share {
         if (key != null && value != null) {
             prefs.putString(key, value);
             prefs.commit();
+            prefs.apply();
             isFunctionSuccesful = true;
         }
         return isFunctionSuccesful;
@@ -82,24 +83,17 @@ public class Share {
      * @param value
      */
     public static void putBoolean(final String key, final boolean value) {
-        AsyncTask a = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... unusedParams) {
-                SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).edit();
-                if (key != null) {
-                    prefs.putBoolean(key, value);
-                    prefs.commit();
-                    //String logMessage = "set global value(key=" + key + ", value=" + value + ")";
-                    //Log.i(CLASS_NAME, logMessage);
-                }
-                return null;
-            }
-        }.execute();
-
         try {
-            a.get();
-        }
-        catch (Exception e){
+            SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).edit();
+            if (key != null) {
+                prefs.putBoolean(key, value);
+                prefs.commit();
+                prefs.apply();
+                //String logMessage = "set global value(key=" + key + ", value=" + value + ")";
+                //Log.i(CLASS_NAME, logMessage);
+            }
+
+        } catch (Exception e) {
             String logMessage = "could not set global value(key=" + key + ", value=" + value + ") ";
             Log.e(CLASS_NAME, logMessage + e.getLocalizedMessage());
         }
@@ -112,25 +106,16 @@ public class Share {
      * @param value
      */
     public static void putStringSet(final String key, final Set<String> value) {
-        AsyncTask a = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... unusedParams) {
-                SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).edit();
-                if (key != null && value != null) {
-                    prefs.putStringSet(key, value);
-                    prefs.commit();
-                    prefs.apply();
-                    //String logMessage = "set global value(key=" + key + ", value=" + value + ")";
-                    //Log.i(CLASS_NAME, logMessage);
-                }
-                return null;
-            }
-        }.execute();
-
         try {
-            a.get();
-        }
-        catch (Exception e){
+            SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext()).edit();
+            if (key != null && value != null) {
+                prefs.putStringSet(key, value);
+                prefs.commit();
+                prefs.apply();
+                //String logMessage = "set global value(key=" + key + ", value=" + value + ")";
+                //Log.i(CLASS_NAME, logMessage);
+            }
+        } catch (Exception e) {
             String logMessage = "could not set global value(key=" + key + ", value=" + value + ") ";
             Log.e(CLASS_NAME, logMessage + e.getLocalizedMessage());
         }
