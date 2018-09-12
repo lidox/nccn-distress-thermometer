@@ -212,8 +212,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
             try {
                 JSONArray array = new GetReportDataTask(this).execute().get();
                 Files.share(ExcelExporter.export(array));
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 Log.e(CLASS_NAME, e.getLocalizedMessage());
             }
         }
