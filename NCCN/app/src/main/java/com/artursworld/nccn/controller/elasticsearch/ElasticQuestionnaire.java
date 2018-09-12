@@ -21,6 +21,7 @@ import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Security;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.FearOfProgressionQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.MetaQuestionnaire;
 import com.artursworld.nccn.model.entity.PsychoSocialSupportState;
@@ -28,6 +29,7 @@ import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.EntityDbManager;
+import com.artursworld.nccn.model.persistence.manager.FearOfProgressionManager;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
@@ -235,6 +237,10 @@ public class ElasticQuestionnaire {
                 HADSDQuestionnaire hads = new HADSDQuestionnaireManager(ctx).getHADSDQuestionnaireByDate_PK(user.getName(), date);
                 if (Questionnairy.canStatisticsBeDisplayed(hads.getProgressInPercent()))
                     params = addAllKeyValuePairs(hads.getAsJSON(), params);
+
+                FearOfProgressionQuestionnaire fearQuestionnaire = new FearOfProgressionManager().getQuestionnaireByDate(user.getName(), date);
+                if (Questionnairy.canStatisticsBeDisplayed(fearQuestionnaire.getProgressInPercent()))
+                    params = addAllKeyValuePairs(fearQuestionnaire.getAsJSON(), params);
 
                 bulk.append(ElasticQuestionnaire.getGenericBulk(date, getType(), params.toString()));
             }
