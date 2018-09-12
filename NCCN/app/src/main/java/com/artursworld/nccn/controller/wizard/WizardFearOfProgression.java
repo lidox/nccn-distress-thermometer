@@ -13,6 +13,7 @@ import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.FearOfProgressionQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
+import com.artursworld.nccn.model.persistence.manager.FearOfProgressionManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
 import com.artursworld.nccn.model.wizard.fearofprogression.WizardFearOfProgressionStep;
@@ -95,23 +96,24 @@ public class WizardFearOfProgression extends TextStepper {
         finish();
     }
 
-    // TODO: update progress
     public static void updateProgress(final FearOfProgressionQuestionnaire questionnaire, int questionNr) {
-        /*
-        int progressValue = (int) Math.floor(questionNr / 50. * 100);
-        if (questionnaire.getProgressInPercent() < progressValue) {
-            Log.i(CLASS_NAME, "new progress value = " + progressValue);
-            questionnaire.setProgressInPercent(progressValue);
 
-            new AsyncTask<Void, Void, Void>() {
+        if (questionnaire != null) {
 
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    new QualityOfLifeManager().update(questionnaire);
-                    return null;
-                }
-            }.execute();
+            int progressValue = (int) Math.floor(questionNr / questionnaire.getQuestionCount() * 100);
+            if (questionnaire.getProgressInPercent() < progressValue) {
+                Log.i(CLASS_NAME, "new progress value = " + progressValue);
+                questionnaire.setProgressInPercent(progressValue);
+
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        new FearOfProgressionManager().update(questionnaire);
+                        return null;
+                    }
+                }.execute();
+            }
         }
-        */
     }
 }

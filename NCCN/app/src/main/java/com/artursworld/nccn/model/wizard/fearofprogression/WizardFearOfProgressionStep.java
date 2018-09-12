@@ -11,7 +11,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.artursworld.nccn.R;
-import com.artursworld.nccn.controller.util.Bits;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.controller.wizard.WizardFearOfProgression;
@@ -19,9 +18,7 @@ import com.artursworld.nccn.controller.wizard.WizardQualityOfLife;
 import com.artursworld.nccn.model.entity.FearOfProgressionQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.FearOfProgressionManager;
-import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
 import com.artursworld.nccn.model.persistence.manager.UserManager;
-import com.artursworld.nccn.model.wizard.qualityoflife.QualityOfLifeStep;
 import com.github.fcannizzaro.materialstepper.AbstractStep;
 
 public class WizardFearOfProgressionStep extends AbstractStep {
@@ -121,7 +118,7 @@ public class WizardFearOfProgressionStep extends AbstractStep {
         if (questionnaire != null) {
 
             RadioButton checkedRadioButton = (RadioButton) answersGroup.findViewById(answersGroup.getCheckedRadioButtonId());
-            int newIndex = answersGroup.indexOfChild(checkedRadioButton);
+            int newIndex = answersGroup.indexOfChild(checkedRadioButton) + 1;
 
             Log.i(CLASS_NAME, "New box selected= '" + checkedRadioButton.getText() + "' with index = " + newIndex + " and current questionNr = " + currentQuestionNumber);
             Log.i(CLASS_NAME, "Changed answer bits from: " + questionnaire.getSelectedAnswerIndexByQuestionNr(currentQuestionNumber) + " to " + newIndex);
@@ -136,21 +133,20 @@ public class WizardFearOfProgressionStep extends AbstractStep {
      * Sets the radio button as 'checked'
      */
     private void checkRadioButtonByBits() {
-        double questionNr = currentQuestionNumber + 1;
-        int numberOfQuestions = 12;
+        double questionNr = currentQuestionNumber;
+        int numberOfQuestions = (int) FearOfProgressionQuestionnaire.getQuestionCount();
         int progressValue = (int) Math.floor(questionNr / numberOfQuestions * 100);
 
         if (questionnaire != null) {
 
             if (questionnaire.getProgressInPercent() >= progressValue || questionnaire.getProgressInPercent() == 100) {
 
-                int indexToCheck = questionnaire.getSelectedAnswerIndexByQuestionNr(currentQuestionNumber);
-                setRadioBoxCheckedByIndex(indexToCheck - 1, true);
+                int indexToCheck = questionnaire.getSelectedAnswerIndexByQuestionNr(currentQuestionNumber) - 1;
+                setRadioBoxCheckedByIndex(indexToCheck, true);
 
             } else {
                 setRadioBoxCheckedByIndex(5, true);
             }
-
         }
     }
 
