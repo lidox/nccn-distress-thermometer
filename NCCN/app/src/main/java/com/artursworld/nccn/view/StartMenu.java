@@ -86,7 +86,14 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onResume() {
         super.onResume();
-        createUserBAndOnResumeWithSelectedUser();
+
+        createNewUserIfNeedTo();
+
+        // show questionnaire list fragment
+        if (getWindow().getDecorView().getRootView().findViewById(R.id.fragment_container) != null) {
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new QuestionnaireSelectListFragment()).commit();
+        }
     }
 
     @Override
@@ -95,52 +102,25 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         operationTypeSwiper = null;
     }
 
-    private void onResumeWithSelectedUser() {
+    private void createNewUserIfNeedTo() {
+        if (Global.getSelectedUser() == null || Global.hasToCreateNewUser()) {
+            String defaultUserName = Strings.getStringByRId(R.string.user) + Generator.getRandomInRange(0, 100000);
+            Log.i(CLASS_NAME, "Creating new User(" + defaultUserName + "), because no global user has been set");
+            boolean hasCreated = new UserManager().insertUser(new User(defaultUserName));
+
+            if (hasCreated) {
+                Global.setSelectedUserName(defaultUserName);
+                Global.setHasToCreateNewUser(false);
+                Global.setHasToCreateNewQuestionnaire(true);
+            }
+
+        }
+
         userNameEditText.setText(Global.getSelectedUser());
         Log.i(CLASS_NAME, "Display global user(" + Global.getSelectedUser() + ") in MaterialEditText");
 
         // add change listener
         addOnUserNameTextChangeListener();
-
-        // init swipe for operation type e.g. pre-operation
-        View rootView = getWindow().getDecorView().getRootView();
-
-        addQuestionnaireListFragment(rootView);
-    }
-
-    private void addQuestionnaireListFragment(View rootView) {
-        // Check that the activity is using the layout version with
-        // the fragment_container FrameLayout
-        if (rootView.findViewById(R.id.fragment_container) != null) {
-
-            // Create a new Fragment to be placed in the activity layout
-            QuestionnaireSelectListFragment fragment = new QuestionnaireSelectListFragment();
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment).commit();
-        }
-    }
-
-    private void createUserBAndOnResumeWithSelectedUser() {
-        if (Global.getSelectedUser() == null || Global.hasToCreateNewUser()) {
-            createUser();
-            onResumeWithSelectedUser();
-        } else {
-            onResumeWithSelectedUser();
-        }
-
-    }
-
-    private void createUser() {
-        String defaultUserName = Strings.getStringByRId(R.string.user) + Generator.getRandomInRange(0, 100000);
-        Log.i(CLASS_NAME, "Creating new User(" + defaultUserName + "), because no global user has been set");
-        boolean hasCreated = new UserManager().insertUser(new User(defaultUserName));
-        if (hasCreated) {
-            Global.setSelectedUserName(defaultUserName);
-            Global.setHasToCreateNewUser(false);
-            Global.setHasToCreateNewQuestionnaire(true);
-        }
     }
 
     /**
@@ -257,7 +237,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                     if (userNameEditText != null)
                         userNameEditText.clearFocus();
 
-                    openPasswordProtection();
+                    //openPasswordProtection(); //TODO: passord off
                     initSelectedUserAndDateInNavigation();
                     super.onDrawerOpened(drawerView);
                 }
