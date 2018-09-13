@@ -77,11 +77,7 @@ public class Global {
             String dateAsString = EntityDbManager.dateFormat.format(newCreationDate);
             Log.i(CLASS_NAME, "CREATION Q-DATE changed to: " + dateAsString + " (old value="+ EntityDbManager.dateFormat.format(getSelectedQuestionnaireDate()) + ")");
             Share.putString(stringId, dateAsString);
-
-            String stringByRId2 = Strings.getStringByRId(R.string.c_has_to_create_default_questionnaire);
-            Share.putBoolean(stringByRId2, true);
-
-        }
+                    }
         catch (Exception e){
             Log.e(CLASS_NAME, e.getLocalizedMessage());
         }
@@ -92,7 +88,12 @@ public class Global {
     }
 
     public static void setHasToCreateNewUser(boolean hasToCreateNewUser) {
-        Log.i(CLASS_NAME, "setHasToCreateNewUser(" + hasToCreateNewUser +")");
+        if(hasToCreateNewUser){
+            Log.e(CLASS_NAME, "Create New User ON");
+        }
+        else {
+            Log.e(CLASS_NAME, "Create New User OFF");
+        }
         Share.putBoolean(Strings.getStringByRId(R.string.c_create_new_user), hasToCreateNewUser);
     }
 
@@ -101,6 +102,13 @@ public class Global {
     }
 
     public static void setHasToUseDefaultQuestionnaire(boolean hasToUseDefaultQuestionnaire) {
+        if(hasToUseDefaultQuestionnaire){
+            Log.e(CLASS_NAME, "Default Questions ON");
+        }
+        else {
+            Log.e(CLASS_NAME, "Default Questions OFF");
+        }
+
         Share.putBoolean(Strings.getStringByRId(R.string.c_has_to_create_default_questionnaire), hasToUseDefaultQuestionnaire);
     }
 
