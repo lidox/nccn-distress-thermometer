@@ -57,6 +57,10 @@ public class UserStartConfiguration {
                             // set shared preferences
                             setQuestionnairesToBeDisplayedOnStartScreen(dialog);
 
+                            Log.e(CLASS_NAME, "Default Questionnaire = "+Global.hasToUseDefaultQuestionnaire()+"");
+                            Log.e(CLASS_NAME, "Create new Questionnaire = "+Global.hasToCreateNewQuestionnaire()+"");
+                            Log.e(CLASS_NAME, "Create new User = "+Global.hasToCreateNewUser()+"");
+
                             // refresh and finish();
                             activity.finish();
                             activity.startActivity(activity.getIntent());
@@ -192,10 +196,14 @@ public class UserStartConfiguration {
      */
     private void setSwitcherCheckedByResourceId(int barToggleLayoutId, Switch switcher) {
         if(barToggleLayoutId == R.id.toggle_user_layout){
-            switcher.setChecked(!Global.hasToCreateNewUser());
+            boolean hasToCreateNewUser = !Global.hasToCreateNewUser();
+            Global.setHasToCreateNewUser(hasToCreateNewUser);
+            switcher.setChecked(hasToCreateNewUser);
         }
         else if(barToggleLayoutId == R.id.included_questionnaire_title){
-            switcher.setChecked(!Global.hasToUseDefaultQuestionnaire());
+            boolean hasToUseDefaultQuestionnaire = !Global.hasToUseDefaultQuestionnaire();
+            Global.setHasToUseDefaultQuestionnaire(hasToUseDefaultQuestionnaire);
+            switcher.setChecked(hasToUseDefaultQuestionnaire);
         }
     }
 
