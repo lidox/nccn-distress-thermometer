@@ -1,9 +1,6 @@
 ````JSON
 PUT questionnaire-app 
 
-
-PUT questionnaire-app 
-
 {
   "mappings": {
     "scores": { 
@@ -81,8 +78,5 @@ PUT questionnaire-app
       }
     }
   }
-}
-
-
 }
 ````
