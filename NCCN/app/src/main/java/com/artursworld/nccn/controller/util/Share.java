@@ -89,8 +89,6 @@ public class Share {
                 prefs.putBoolean(key, value);
                 prefs.commit();
                 prefs.apply();
-                //String logMessage = "set global value(key=" + key + ", value=" + value + ")";
-                //Log.i(CLASS_NAME, logMessage);
             }
 
         } catch (Exception e) {
