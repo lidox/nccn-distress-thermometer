@@ -11,6 +11,7 @@ import android.util.Log;
 import com.artursworld.nccn.controller.config.App;
 import com.artursworld.nccn.controller.util.Global;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.FearOfProgressionQuestionnaire;
 import com.artursworld.nccn.model.entity.Gender;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
@@ -162,6 +163,7 @@ public class UserManager extends EntityDbManager {
         List<QolQuestionnaire> listA = new QualityOfLifeManager().getQolQuestionnaireList(userName);
         List<HADSDQuestionnaire> listB = new HADSDQuestionnaireManager().getHadsdQuestionnaireListByUserName(userName);
         List<DistressThermometerQuestionnaire> listC = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireList(userName);
+        List<FearOfProgressionQuestionnaire> listd = new FearOfProgressionManager().getQuestionnaireListByUserName(userName);
 
         List<String> dateList = new ArrayList<>();
         for (QolQuestionnaire item : listA) {
@@ -179,6 +181,13 @@ public class UserManager extends EntityDbManager {
         }
 
         for (DistressThermometerQuestionnaire item : listC) {
+            String questionnaireDate = EntityDbManager.dateFormat.format(item.getCreationDate_PK());
+            if (!dateList.contains(questionnaireDate)) {
+                dateList.add(questionnaireDate);
+            }
+        }
+
+        for (FearOfProgressionQuestionnaire item : listd) {
             String questionnaireDate = EntityDbManager.dateFormat.format(item.getCreationDate_PK());
             if (!dateList.contains(questionnaireDate)) {
                 dateList.add(questionnaireDate);
