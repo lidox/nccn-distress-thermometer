@@ -49,6 +49,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -237,7 +238,7 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
                     if (userNameEditText != null)
                         userNameEditText.clearFocus();
 
-                    //openPasswordProtection(); //TODO: passord off
+                    openPasswordProtection();
                     initSelectedUserAndDateInNavigation();
                     super.onDrawerOpened(drawerView);
                 }
@@ -303,20 +304,11 @@ public class StartMenu extends AppCompatActivity implements NavigationView.OnNav
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.sync:
-                syncUser(Global.getSelectedUser());
+                ElasticQuestionnaire.syncAll(activity, new ArrayList<>(Arrays.asList(new UserManager().getUserByName(Global.getSelectedUser()))));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void syncUser(String selectedUser) {
-        User user = new UserManager().getUserByName(selectedUser);
-        List<User> userList = new ArrayList<>();
-        if (user != null)
-            userList.add(user);
-
-        ElasticQuestionnaire.syncAll(activity, userList);
     }
 
     @Override
