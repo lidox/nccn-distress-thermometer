@@ -751,6 +751,8 @@ public class ExcelExporter {
         keys.add("HADS-D-has-depression");
         keys.add("HADS-D-has-anxiety");
         keys.add("HADS-D-update-date");
+        keys.add("FOP-score");
+        keys.add("FOP-update-date");
         return keys;
     }
 

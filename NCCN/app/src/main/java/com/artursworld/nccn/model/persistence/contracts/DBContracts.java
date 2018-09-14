@@ -175,7 +175,7 @@ public class DBContracts {
 
     // CREATE FEAR OF PROGRESSION
     private static final String SQL_CREATE_FEAR_OF_PROGRESSION_TABLE =
-            "CREATE TABLE " + FoPTable.TABLE_NAME + " ("
+            "CREATE TABLE IF NOT EXISTS " + FoPTable.TABLE_NAME + " ("
                     + FoPTable.CREATION_DATE_PK + DATE_TYPE + COMMA_SEP
                     + FoPTable.COLUMN_NAME_ID_FK + TEXT_TYPE + COMMA_SEP
                     + FoPTable.UPDATE_DATE + DATE_TYPE + COMMA_SEP
@@ -230,6 +230,9 @@ public class DBContracts {
             String upgradeQuery = "ALTER TABLE " + MetaQuestionnaireTable.TABLE_NAME + " ADD COLUMN " + MetaQuestionnaireTable.HAD_ALREADY_PSYCHOSOCIAL_SUPPORT + " " + TEXT_TYPE;
             if (oldVersion == 2 && newVersion == 3) {
                 db.execSQL(upgradeQuery);
+            }
+            if(newVersion == 4){
+                db.execSQL(SQL_CREATE_FEAR_OF_PROGRESSION_TABLE);
             }
         }
 

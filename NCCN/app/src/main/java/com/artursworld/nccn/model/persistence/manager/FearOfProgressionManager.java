@@ -74,7 +74,7 @@ public class FearOfProgressionManager extends EntityDbManager {
     }
 
     @NonNull
-    private List<FearOfProgressionQuestionnaire> getQuestionnaireListByUserName(String userName) {
+    public List<FearOfProgressionQuestionnaire> getQuestionnaireListByUserName(String userName) {
         List<FearOfProgressionQuestionnaire> resultList = new ArrayList<>();
         try {
             Cursor cursor = database.query(DBContracts.FoPTable.TABLE_NAME,

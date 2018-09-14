@@ -39,6 +39,7 @@ import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -116,11 +117,14 @@ public class ElasticQuestionnaire {
      */
     public static String syncAll(final Context ctx, final List<User> userList) {
         final List<String> responseList = new ArrayList<>();
+
+
         // open dialog
         MaterialDialog.Builder b = new MaterialDialog.Builder(ctx)
                 .title(R.string.synchronisation)
                 .customView(R.layout.dialog_sync_elasticsearch, true);
-        MaterialDialog dialog = b.show();
+        final MaterialDialog dialog = b.show();
+
         if (dialog != null) {
             final AnimatedCircleLoadingView animatedCircleLoadingView = (AnimatedCircleLoadingView) dialog.getView().findViewById(R.id.circle_loading_view);
             if (animatedCircleLoadingView != null) {
@@ -130,7 +134,7 @@ public class ElasticQuestionnaire {
                     @Override
                     protected List<String> doInBackground(Void... params) {
 
-                        //List<User> userList = new UserManager(ctx).getAllUsers();
+                        List<User> userList = new UserManager(ctx).getAllUsers();
                         double userCount = userList.size();
                         double userLoadedCount = 0;
                         for (User user : userList) {
@@ -173,10 +177,13 @@ public class ElasticQuestionnaire {
                                 e.printStackTrace();
                             }
                         }
-                        if (hasErrors)
+                        if (hasErrors) {
                             animatedCircleLoadingView.stopFailure();
-                        else
+                        } else {
                             animatedCircleLoadingView.stopOk();
+                        }
+
+                        // dialog.dismiss();
                     }
                 }.execute();
             }
@@ -221,26 +228,42 @@ public class ElasticQuestionnaire {
                 }
 
 
-                DistressThermometerQuestionnaire thermo = new DistressThermometerQuestionnaireManager(ctx).getDistressThermometerQuestionnaireByDate(user.getName(), date);
-                if (Questionnairy.canStatisticsBeDisplayed(thermo.getProgressInPercent()))
-                    params = addAllKeyValuePairs(thermo.getAsJSON(), params);
+                DistressThermometerQuestionnaire distressThermometerQuestionnaire = new DistressThermometerQuestionnaireManager().getDistressThermometerQuestionnaireByDate(user.getName(), date);
+                if (distressThermometerQuestionnaire != null) {
+                    if (Questionnairy.canStatisticsBeDisplayed(distressThermometerQuestionnaire.getProgressInPercent()))
+                        params = addAllKeyValuePairs(distressThermometerQuestionnaire.getAsJSON(), params);
+                }
 
 
-                QolQuestionnaire qol = new QualityOfLifeManager(ctx).getQolQuestionnaireByDate(user.getName(), date);
-                if (Questionnairy.canStatisticsBeDisplayed(qol.getProgressInPercent())) {
-                    if (qol.getGlobalHealthScore() > 0) {
-                        params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
-                        params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
+                QolQuestionnaire qol = new QualityOfLifeManager().getQolQuestionnaireByDate(user.getName(), date);
+                if (qol != null) {
+                    if (Questionnairy.canStatisticsBeDisplayed(qol.getProgressInPercent())) {
+                        if (qol.getGlobalHealthScore() > 0) {
+                            params = addAllKeyValuePairs(qol.getQLQC30AsJSON(), params);
+                            params = addAllKeyValuePairs(qol.getBN20AsJSON(), params);
+                        }
                     }
                 }
 
-                HADSDQuestionnaire hads = new HADSDQuestionnaireManager(ctx).getHADSDQuestionnaireByDate_PK(user.getName(), date);
-                if (Questionnairy.canStatisticsBeDisplayed(hads.getProgressInPercent()))
-                    params = addAllKeyValuePairs(hads.getAsJSON(), params);
+
+                HADSDQuestionnaire hads = new HADSDQuestionnaireManager().getHADSDQuestionnaireByDate_PK(user.getName(), date);
+                if (hads != null) {
+                    if (Questionnairy.canStatisticsBeDisplayed(hads.getProgressInPercent()))
+                        if(hads.getAnxietyScore() > 0 ){
+                            params = addAllKeyValuePairs(hads.getAsJSON(), params);
+                        }
+                }
+
 
                 FearOfProgressionQuestionnaire fearQuestionnaire = new FearOfProgressionManager().getQuestionnaireByDate(user.getName(), date);
-                if (Questionnairy.canStatisticsBeDisplayed(fearQuestionnaire.getProgressInPercent()))
-                    params = addAllKeyValuePairs(fearQuestionnaire.getAsJSON(), params);
+                if (fearQuestionnaire != null) {
+                    if (Questionnairy.canStatisticsBeDisplayed(fearQuestionnaire.getProgressInPercent()))
+                        if (fearQuestionnaire.getScore() >= 12 && fearQuestionnaire.getScore() <=60) {
+                            params = addAllKeyValuePairs(fearQuestionnaire.getAsJSON(), params);
+                        }
+
+                }
+
 
                 bulk.append(ElasticQuestionnaire.getGenericBulk(date, getType(), params.toString()));
             }
