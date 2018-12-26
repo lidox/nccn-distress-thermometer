@@ -12,11 +12,13 @@ import com.artursworld.nccn.controller.util.Questionnairy;
 import com.artursworld.nccn.controller.util.Security;
 import com.artursworld.nccn.controller.util.Strings;
 import com.artursworld.nccn.model.entity.DistressThermometerQuestionnaire;
+import com.artursworld.nccn.model.entity.FearOfProgressionQuestionnaire;
 import com.artursworld.nccn.model.entity.HADSDQuestionnaire;
 import com.artursworld.nccn.model.entity.MetaQuestionnaire;
 import com.artursworld.nccn.model.entity.QolQuestionnaire;
 import com.artursworld.nccn.model.entity.User;
 import com.artursworld.nccn.model.persistence.manager.DistressThermometerQuestionnaireManager;
+import com.artursworld.nccn.model.persistence.manager.FearOfProgressionManager;
 import com.artursworld.nccn.model.persistence.manager.HADSDQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.MetaQuestionnaireManager;
 import com.artursworld.nccn.model.persistence.manager.QualityOfLifeManager;
@@ -235,6 +237,10 @@ public class ExcelExporter {
                 WritableSheet metaSheet = workbook.createSheet(Strings.getStringByRId(R.string.meta_data), 4);
                 metaSheet = ExcelExporter.addMetaSheetHeader(metaSheet, headerCellFormat);
 
+                // Fear Of Progression
+                WritableSheet fobSheet = workbook.createSheet(Strings.getStringByRId(R.string.fear_of_progression_questionnaire), 5);
+                fobSheet = ExcelExporter.addFearOfProgressionSheetHeader(fobSheet, headerCellFormat);
+
                 // go through all user in database
                 for (User user : new UserManager().getAllUsers()) {
 
@@ -257,7 +263,10 @@ public class ExcelExporter {
                     // add meta data infos
                     metaSheet = ExcelExporter.getMetaQuestionnaireWorksheet(user, metaSheet, cellFormat);
 
-                    autoFitColumnsByWritableSheets(distressSheet, hadsdSheet, qolSheet, cancerSheet, metaSheet);
+                    // add fear of progression
+                    fobSheet = ExcelExporter.getFearOfProgressionWorksheet(user, fobSheet, cellFormat);
+
+                    autoFitColumnsByWritableSheets(distressSheet, hadsdSheet, qolSheet, cancerSheet, metaSheet, fobSheet);
                 }
 
                 // close workbook
@@ -754,6 +763,70 @@ public class ExcelExporter {
         keys.add("FOP-score");
         keys.add("FOP-update-date");
         return keys;
+    }
+
+
+    /**
+     * Adds first row containing header information into the sheet
+     *
+     * @param sheet      the sheet to add the header
+     * @param cellFormat
+     * @return the sheet containing first row with header information for distress thermometer questionnaire
+     */
+    private static WritableSheet addFearOfProgressionSheetHeader(WritableSheet sheet, WritableCellFormat cellFormat) {
+        if (sheet != null) {
+            try {
+                sheet.addCell(new Label(0, 0, "user-name", cellFormat));
+                sheet.addCell(new Label(1, 0, "creation-date", cellFormat));
+                sheet.addCell(new Label(2, 0, "FOP-update-date", cellFormat));
+                sheet.addCell(new Label(3, 0, "FOP-score", cellFormat));
+            } catch (WriteException e) {
+                Log.e(CLASS_NAME, e.getLocalizedMessage());
+            }
+        }
+        return sheet;
+    }
+
+    /**
+     * Fills excel sheet with FearOfProgression data
+     *
+     * @param user  the user selected
+     * @param sheet the sheet to fill with data
+     * @return the excel sheet containing distress thermometer data
+     */
+    public static WritableSheet getFearOfProgressionWorksheet(User user, WritableSheet sheet, WritableCellFormat cellFormat) {
+        if (sheet != null) {
+            try {
+
+                // get all questionnaire date for a single user
+                List<Date> dates = new UserManager().getQuestionnaireDateListByUserName(user.getName());
+                Log.d(CLASS_NAME, "FearOfProgression questionnaires count: " + dates.size());
+
+                // for each questionnaire
+                for (int index = 0; index < dates.size(); index++) {
+
+                    // get questionnaire by date
+                    FearOfProgressionManager db = new FearOfProgressionManager();
+                    FearOfProgressionQuestionnaire questionnaire = db.getQuestionnaireByDate(user.getName(), dates.get(index));
+
+                    if (questionnaire != null) {
+                        // put data into sheet
+                        if (Questionnairy.canStatisticsBeDisplayed(questionnaire.getProgressInPercent())) {
+                            int rowSize = sheet.getRows();
+                            sheet.addCell(new Label(0, rowSize, Security.getUserNameByEncryption(user), cellFormat));
+                            sheet.addCell(new Label(1, rowSize, Dates.getGermanDateByDate(questionnaire.getCreationDate_PK()), cellFormat));
+                            sheet.addCell(new Label(2, rowSize, Dates.getGermanDateByDate(questionnaire.getUpdateDate()), cellFormat));
+                            sheet.addCell(new Label(3, rowSize, String.valueOf(questionnaire.getScore()), cellFormat));
+                        }
+                    }
+
+                }
+
+            } catch (WriteException e) {
+                Log.e(CLASS_NAME, e.getLocalizedMessage());
+            }
+        }
+        return sheet;
     }
 
 }
